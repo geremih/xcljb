@@ -12,8 +12,7 @@
                      "randr" {:union #{"NotifyData"}
                               :event #{"Notify"}}})
 
-(def ^:private PRIMITIVE-TYPES (atom {"BOOL" :ubyte
-                                      "BYTE" :ubyte
+(def ^:private PRIMITIVE-TYPES (atom {"BYTE" :ubyte
                                       "INT8" :byte
                                       "INT16" :int16
                                       "INT32" :int32
@@ -62,9 +61,11 @@
 (defn- parse-field [elem]
   (let [{:keys [name type enum altenum mask]} (:attrs elem)
         prim? (@PRIMITIVE-TYPES type)]
-    (if prim?
-      (ir/->PrimitiveField name type enum altenum mask)
-      (ir/->Field name type enum altenum mask))))
+    (cond
+     (= type "BOOL") (ir/->BoolField name 1)
+     (= type "BOOL32") (ir/->BoolField name 4)
+     prim? (ir/->PrimitiveField name type enum altenum mask)
+     :else (ir/->Field name type enum altenum mask))))
 
 (defn- parse-list [elem]
   (let [{:keys [name type enum altenum mask]} (:attrs elem)
@@ -72,9 +73,10 @@
                (parse-expression e)
                nil)
         prim? (@PRIMITIVE-TYPES type)]
-    (if prim?
-      (ir/->PrimitiveList name type enum altenum mask expr)
-      (ir/->List name type enum altenum mask expr))))
+    (cond
+     (or (= type "char") (= type "STRING8")) (ir/->StringField name expr)
+     prim? (ir/->PrimitiveList name type enum altenum mask expr)
+     :else (ir/->List name type enum altenum mask expr))))
 
 (defn- parse-valueparam [elem]
   (assert (= (:tag elem) :valueparam))

@@ -123,6 +123,61 @@
   (gen-read-type-name [_]
     (symbol "_")))
 
+(defrecord BoolField [name size]
+  Measurable
+  (gen-sizeof [this]
+    (:size this))
+  (gen-read-sizeof [this]
+    (.gen-sizeof this))
+
+  CodeSerializable
+  (gen-to-frame [this]
+    (case (:size this)
+      1 :ubyte
+      4 :uint32))
+  (gen-to-value [this]
+    (let [s-this (symbol "this")
+          k-name (-> this (:name) (beautify :arg) (keyword))]
+      `(if (~k-name ~s-this)
+         1
+         0)))
+
+  ReadableType
+  (gen-read-type [this]
+    (let [s-ch (symbol "ch")]
+      `(if (= (xcljb.gen-common/read-bytes ~s-ch ~(:size this)) 1)
+         true
+         false)))
+  (gen-read-type-name [this]
+    (-> this (:name) (beautify :arg) (symbol))))
+
+(defrecord StringField [name expr]
+  Measurable
+  (gen-sizeof [this]
+    (let [s-this (symbol "this")
+          k-name (-> this (:name) (beautify :arg) (keyword))]
+      `(count (~k-name ~s-this))))
+  (gen-read-sizeof [this]
+    (assert (:expr this))
+    (.gen-eval (:expr this)))
+
+  CodeSerializable
+  (gen-to-frame [this]
+    `(gloss.core/string :ascii))
+  (gen-to-value [this]
+    (let [s-this (symbol "this")
+          k-name (-> this (:name) (beautify :arg) (keyword))]
+      `(~k-name ~s-this)))
+
+  ReadableType
+  (gen-read-type [this]
+    (assert (:expr this))
+    (let [s-ch (symbol "ch")
+          len (-> this (:expr) (.gen-eval))]
+      `(xcljb.gen-common/read-string ~s-ch ~len)))
+  (gen-read-type-name [this]
+    (-> this (:name) (beautify :arg) (symbol))))
+
 (defrecord PrimitiveField [name type enum altenum mask]
   Measurable
   (gen-sizeof [this]
@@ -295,7 +350,9 @@
   (some #(instance? % inst) classes))
 
 (defn- gen-args [content]
-  (let [fs (filter #(instance-of? % [PrimitiveField
+  (let [fs (filter #(instance-of? % [BoolField
+                                     StringField
+                                     PrimitiveField
                                      Field
                                      PrimitiveList
                                      List
