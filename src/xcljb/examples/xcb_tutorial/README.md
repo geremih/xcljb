@@ -1,0 +1,1 @@
+The examples listed here are taken from http://www.x.org/releases/X11R7.7/doc/libxcb/tutorial/index.html, translated to Clojure. The chapters and sections are listed at the start of each example, so one can compare between programming in XCB and XCLJB.
