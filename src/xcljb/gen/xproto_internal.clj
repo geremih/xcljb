@@ -142,7 +142,10 @@
    backing-stores
    (.read-type BYTE ch)
    save-unders
-   (.read-type BOOL ch)
+   (if
+    (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+    true
+    false)
    root-depth
    (.read-type CARD8 ch)
    allowed-depths-len
@@ -190,15 +193,9 @@
    _
    (xcljb.gen-common/read-pad ch 2)
    authorization-protocol-name
-   (clojure.core/doall
-    (clojure.core/repeatedly
-     authorization-protocol-name-len
-     (clojure.core/fn [] (.read-type char ch))))
+   (xcljb.gen-common/read-string ch authorization-protocol-name-len)
    authorization-protocol-data
-   (clojure.core/doall
-    (clojure.core/repeatedly
-     authorization-protocol-data-len
-     (clojure.core/fn [] (.read-type char ch))))]
+   (xcljb.gen-common/read-string ch authorization-protocol-data-len)]
   (->SetupRequest
    byte-order
    protocol-major-version
@@ -223,10 +220,7 @@
    length
    (.read-type CARD16 ch)
    reason
-   (clojure.core/doall
-    (clojure.core/repeatedly
-     reason-len
-     (clojure.core/fn [] (.read-type char ch))))]
+   (xcljb.gen-common/read-string ch reason-len)]
   (->SetupFailed
    status
    reason-len
@@ -246,10 +240,7 @@
    length
    (.read-type CARD16 ch)
    reason
-   (clojure.core/doall
-    (clojure.core/repeatedly
-     (clojure.core/* length 4)
-     (clojure.core/fn [] (.read-type char ch))))]
+   (xcljb.gen-common/read-string ch (clojure.core/* length 4))]
   (->SetupAuthenticate status length reason)))
 
 (clojure.core/defn
@@ -297,10 +288,7 @@
    _
    (xcljb.gen-common/read-pad ch 4)
    vendor
-   (clojure.core/doall
-    (clojure.core/repeatedly
-     vendor-len
-     (clojure.core/fn [] (.read-type char ch))))
+   (xcljb.gen-common/read-string ch vendor-len)
    pixmap-formats
    (clojure.core/doall
     (clojure.core/repeatedly
@@ -384,10 +372,7 @@
   [name-len
    (.read-type CARD8 ch)
    name
-   (clojure.core/doall
-    (clojure.core/repeatedly
-     name-len
-     (clojure.core/fn [] (.read-type char ch))))]
+   (xcljb.gen-common/read-string ch name-len)]
   (->STR name-len name)))
 
 (clojure.core/defn
@@ -455,9 +440,9 @@
 
 (clojure.core/defn
  read-GetWindowAttributesReply
- [ch len__1395 val__1061__auto__]
+ [ch len__1433 val__1104__auto__]
  (clojure.core/let
-  [backing-store val__1061__auto__]
+  [backing-store val__1104__auto__]
   (clojure.core/let
    [visual
     (.read-type VISUALID ch)
@@ -472,13 +457,22 @@
     backing-pixel
     (.read-type CARD32 ch)
     save-under
-    (.read-type BOOL ch)
+    (if
+     (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+     true
+     false)
     map-is-installed
-    (.read-type BOOL ch)
+    (if
+     (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+     true
+     false)
     map-state
     (.read-type CARD8 ch)
     override-redirect
-    (.read-type BOOL ch)
+    (if
+     (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+     true
+     false)
     colormap
     (.read-type COLORMAP ch)
     all-event-masks
@@ -490,7 +484,7 @@
     _
     (xcljb.gen-common/read-pad ch 2)]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       (.sizeof CARD8)
       (.sizeof VISUALID)
@@ -499,26 +493,26 @@
       (.sizeof CARD8)
       (.sizeof CARD32)
       (.sizeof CARD32)
-      (.sizeof BOOL)
-      (.sizeof BOOL)
+      1
+      1
       (.sizeof CARD8)
-      (.sizeof BOOL)
+      1
       (.sizeof COLORMAP)
       (.sizeof CARD32)
       (.sizeof CARD32)
       (.sizeof CARD16)
       2)]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1395))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1433))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1395)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1433)
+       size__1103__auto__))))
    (->GetWindowAttributesReply
     backing-store
     visual
@@ -538,9 +532,9 @@
 
 (clojure.core/defn
  read-GetGeometryReply
- [ch len__1396 val__1061__auto__]
+ [ch len__1434 val__1104__auto__]
  (clojure.core/let
-  [depth val__1061__auto__]
+  [depth val__1104__auto__]
   (clojure.core/let
    [root
     (.read-type WINDOW ch)
@@ -557,7 +551,7 @@
     _
     (xcljb.gen-common/read-pad ch 2)]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       (.sizeof CARD8)
       (.sizeof WINDOW)
@@ -568,23 +562,23 @@
       (.sizeof CARD16)
       2)]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1396))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1434))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1396)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1434)
+       size__1103__auto__))))
    (->GetGeometryReply depth root x y width height border-width))))
 
 (clojure.core/defn
  read-QueryTreeReply
- [ch len__1397 val__1061__auto__]
+ [ch len__1435 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [root
     (.read-type WINDOW ch)
@@ -600,7 +594,7 @@
       children-len
       (clojure.core/fn [] (.read-type WINDOW ch))))]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       1
       (.sizeof WINDOW)
@@ -609,80 +603,73 @@
       14
       (clojure.core/* (.sizeof WINDOW) children-len))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1397))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1435))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1397)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1435)
+       size__1103__auto__))))
    (->QueryTreeReply root parent children-len children))))
 
 (clojure.core/defn
  read-InternAtomReply
- [ch len__1398 val__1061__auto__]
+ [ch len__1436 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [atom (.read-type ATOM ch)]
    (clojure.core/let
-    [size__1060__auto__ (clojure.core/+ 1 (.sizeof ATOM))]
+    [size__1103__auto__ (clojure.core/+ 1 (.sizeof ATOM))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1398))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1436))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1398)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1436)
+       size__1103__auto__))))
    (->InternAtomReply atom))))
 
 (clojure.core/defn
  read-GetAtomNameReply
- [ch len__1399 val__1061__auto__]
+ [ch len__1437 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [name-len
     (.read-type CARD16 ch)
     _
     (xcljb.gen-common/read-pad ch 22)
     name
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      name-len
-      (clojure.core/fn [] (.read-type char ch))))]
+    (xcljb.gen-common/read-string ch name-len)]
    (clojure.core/let
-    [size__1060__auto__
-     (clojure.core/+
-      1
-      (.sizeof CARD16)
-      22
-      (clojure.core/* (.sizeof char) name-len))]
+    [size__1103__auto__
+     (clojure.core/+ 1 (.sizeof CARD16) 22 name-len)]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1399))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1437))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1399)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1437)
+       size__1103__auto__))))
    (->GetAtomNameReply name-len name))))
 
 (clojure.core/defn
  read-GetPropertyReply
- [ch len__1400 val__1061__auto__]
+ [ch len__1438 val__1104__auto__]
  (clojure.core/let
-  [format val__1061__auto__]
+  [format val__1104__auto__]
   (clojure.core/let
    [type
     (.read-type ATOM ch)
@@ -698,7 +685,7 @@
       (clojure.core/* value-len (clojure.core// format 8))
       (clojure.core/fn [] (.read-type void ch))))]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       (.sizeof CARD8)
       (.sizeof ATOM)
@@ -709,23 +696,23 @@
        (.sizeof void)
        (clojure.core/* value-len (clojure.core// format 8))))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1400))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1438))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1400)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1438)
+       size__1103__auto__))))
    (->GetPropertyReply format type bytes-after value-len value))))
 
 (clojure.core/defn
  read-ListPropertiesReply
- [ch len__1401 val__1061__auto__]
+ [ch len__1439 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [atoms-len
     (.read-type CARD16 ch)
@@ -737,96 +724,96 @@
       atoms-len
       (clojure.core/fn [] (.read-type ATOM ch))))]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       1
       (.sizeof CARD16)
       22
       (clojure.core/* (.sizeof ATOM) atoms-len))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1401))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1439))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1401)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1439)
+       size__1103__auto__))))
    (->ListPropertiesReply atoms-len atoms))))
 
 (clojure.core/defn
  read-GetSelectionOwnerReply
- [ch len__1402 val__1061__auto__]
+ [ch len__1440 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [owner (.read-type WINDOW ch)]
    (clojure.core/let
-    [size__1060__auto__ (clojure.core/+ 1 (.sizeof WINDOW))]
+    [size__1103__auto__ (clojure.core/+ 1 (.sizeof WINDOW))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1402))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1440))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1402)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1440)
+       size__1103__auto__))))
    (->GetSelectionOwnerReply owner))))
 
 (clojure.core/defn
  read-GrabPointerReply
- [ch len__1403 val__1061__auto__]
+ [ch len__1441 val__1104__auto__]
  (clojure.core/let
-  [status val__1061__auto__]
+  [status val__1104__auto__]
   (clojure.core/let
    []
    (clojure.core/let
-    [size__1060__auto__ (clojure.core/+ (.sizeof BYTE))]
+    [size__1103__auto__ (clojure.core/+ (.sizeof BYTE))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1403))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1441))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1403)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1441)
+       size__1103__auto__))))
    (->GrabPointerReply status))))
 
 (clojure.core/defn
  read-GrabKeyboardReply
- [ch len__1404 val__1061__auto__]
+ [ch len__1442 val__1104__auto__]
  (clojure.core/let
-  [status val__1061__auto__]
+  [status val__1104__auto__]
   (clojure.core/let
    []
    (clojure.core/let
-    [size__1060__auto__ (clojure.core/+ (.sizeof BYTE))]
+    [size__1103__auto__ (clojure.core/+ (.sizeof BYTE))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1404))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1442))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1404)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1442)
+       size__1103__auto__))))
    (->GrabKeyboardReply status))))
 
 (clojure.core/defn
  read-QueryPointerReply
- [ch len__1405 val__1061__auto__]
+ [ch len__1443 val__1104__auto__]
  (clojure.core/let
-  [same-screen val__1061__auto__]
+  [same-screen val__1104__auto__]
   (clojure.core/let
    [root
     (.read-type WINDOW ch)
@@ -845,9 +832,9 @@
     _
     (xcljb.gen-common/read-pad ch 2)]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
-      (.sizeof BOOL)
+      1
       (.sizeof WINDOW)
       (.sizeof WINDOW)
       (.sizeof INT16)
@@ -857,16 +844,16 @@
       (.sizeof CARD16)
       2)]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1405))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1443))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1405)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1443)
+       size__1103__auto__))))
    (->QueryPointerReply
     same-screen
     root
@@ -879,9 +866,9 @@
 
 (clojure.core/defn
  read-GetMotionEventsReply
- [ch len__1406 val__1061__auto__]
+ [ch len__1444 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [events-len
     (.read-type CARD32 ch)
@@ -893,35 +880,35 @@
       events-len
       (clojure.core/fn [] (read-TIMECOORD ch))))]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       1
       (.sizeof CARD32)
       20
       (clojure.core/reduce
        (clojure.core/fn
-        [x__860__auto__ y__861__auto__]
-        (clojure.core/+ x__860__auto__ (.sizeof y__861__auto__)))
+        [x__903__auto__ y__904__auto__]
+        (clojure.core/+ x__903__auto__ (.sizeof y__904__auto__)))
        0
        events))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1406))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1444))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1406)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1444)
+       size__1103__auto__))))
    (->GetMotionEventsReply events-len events))))
 
 (clojure.core/defn
  read-TranslateCoordinatesReply
- [ch len__1407 val__1061__auto__]
+ [ch len__1445 val__1104__auto__]
  (clojure.core/let
-  [same-screen val__1061__auto__]
+  [same-screen val__1104__auto__]
   (clojure.core/let
    [child
     (.read-type WINDOW ch)
@@ -930,53 +917,53 @@
     dst-y
     (.read-type INT16 ch)]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
-      (.sizeof BOOL)
+      1
       (.sizeof WINDOW)
       (.sizeof INT16)
       (.sizeof INT16))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1407))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1445))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1407)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1445)
+       size__1103__auto__))))
    (->TranslateCoordinatesReply same-screen child dst-x dst-y))))
 
 (clojure.core/defn
  read-GetInputFocusReply
- [ch len__1408 val__1061__auto__]
+ [ch len__1446 val__1104__auto__]
  (clojure.core/let
-  [revert-to val__1061__auto__]
+  [revert-to val__1104__auto__]
   (clojure.core/let
    [focus (.read-type WINDOW ch)]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+ (.sizeof CARD8) (.sizeof WINDOW))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1408))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1446))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1408)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1446)
+       size__1103__auto__))))
    (->GetInputFocusReply revert-to focus))))
 
 (clojure.core/defn
  read-QueryKeymapReply
- [ch len__1409 val__1061__auto__]
+ [ch len__1447 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [keys
     (clojure.core/doall
@@ -984,26 +971,26 @@
       32
       (clojure.core/fn [] (.read-type CARD8 ch))))]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+ 1 (clojure.core/* (.sizeof CARD8) 32))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1409))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1447))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1409)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1447)
+       size__1103__auto__))))
    (->QueryKeymapReply keys))))
 
 (clojure.core/defn
  read-QueryFontReply
- [ch len__1410 val__1061__auto__]
+ [ch len__1448 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [min-bounds
     (read-CHARINFO ch)
@@ -1028,7 +1015,10 @@
     max-byte1
     (.read-type CARD8 ch)
     all-chars-exist
-    (.read-type BOOL ch)
+    (if
+     (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+     true
+     false)
     font-ascent
     (.read-type INT16 ch)
     font-descent
@@ -1046,7 +1036,7 @@
       char-infos-len
       (clojure.core/fn [] (read-CHARINFO ch))))]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       1
       (.sizeof min-bounds)
@@ -1060,33 +1050,33 @@
       (.sizeof BYTE)
       (.sizeof CARD8)
       (.sizeof CARD8)
-      (.sizeof BOOL)
+      1
       (.sizeof INT16)
       (.sizeof INT16)
       (.sizeof CARD32)
       (clojure.core/reduce
        (clojure.core/fn
-        [x__860__auto__ y__861__auto__]
-        (clojure.core/+ x__860__auto__ (.sizeof y__861__auto__)))
+        [x__903__auto__ y__904__auto__]
+        (clojure.core/+ x__903__auto__ (.sizeof y__904__auto__)))
        0
        properties)
       (clojure.core/reduce
        (clojure.core/fn
-        [x__860__auto__ y__861__auto__]
-        (clojure.core/+ x__860__auto__ (.sizeof y__861__auto__)))
+        [x__903__auto__ y__904__auto__]
+        (clojure.core/+ x__903__auto__ (.sizeof y__904__auto__)))
        0
        char-infos))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1410))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1448))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1410)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1448)
+       size__1103__auto__))))
    (->QueryFontReply
     min-bounds
     max-bounds
@@ -1106,9 +1096,9 @@
 
 (clojure.core/defn
  read-ListFontsReply
- [ch len__1411 val__1061__auto__]
+ [ch len__1449 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [names-len
     (.read-type CARD16 ch)
@@ -1120,35 +1110,35 @@
       names-len
       (clojure.core/fn [] (read-STR ch))))]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       1
       (.sizeof CARD16)
       22
       (clojure.core/reduce
        (clojure.core/fn
-        [x__860__auto__ y__861__auto__]
-        (clojure.core/+ x__860__auto__ (.sizeof y__861__auto__)))
+        [x__903__auto__ y__904__auto__]
+        (clojure.core/+ x__903__auto__ (.sizeof y__904__auto__)))
        0
        names))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1411))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1449))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1411)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1449)
+       size__1103__auto__))))
    (->ListFontsReply names-len names))))
 
 (clojure.core/defn
  read-ListFontsWithInfoReply
- [ch len__1412 val__1061__auto__]
+ [ch len__1450 val__1104__auto__]
  (clojure.core/let
-  [name-len val__1061__auto__]
+  [name-len val__1104__auto__]
   (clojure.core/let
    [min-bounds
     (read-CHARINFO ch)
@@ -1173,7 +1163,10 @@
     max-byte1
     (.read-type CARD8 ch)
     all-chars-exist
-    (.read-type BOOL ch)
+    (if
+     (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+     true
+     false)
     font-ascent
     (.read-type INT16 ch)
     font-descent
@@ -1186,12 +1179,9 @@
       properties-len
       (clojure.core/fn [] (read-FONTPROP ch))))
     name
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      name-len
-      (clojure.core/fn [] (.read-type char ch))))]
+    (xcljb.gen-common/read-string ch name-len)]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       (.sizeof CARD8)
       (.sizeof min-bounds)
@@ -1205,28 +1195,28 @@
       (.sizeof BYTE)
       (.sizeof CARD8)
       (.sizeof CARD8)
-      (.sizeof BOOL)
+      1
       (.sizeof INT16)
       (.sizeof INT16)
       (.sizeof CARD32)
       (clojure.core/reduce
        (clojure.core/fn
-        [x__860__auto__ y__861__auto__]
-        (clojure.core/+ x__860__auto__ (.sizeof y__861__auto__)))
+        [x__903__auto__ y__904__auto__]
+        (clojure.core/+ x__903__auto__ (.sizeof y__904__auto__)))
        0
        properties)
-      (clojure.core/* (.sizeof char) name-len))]
+      name-len)]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1412))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1450))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1412)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1450)
+       size__1103__auto__))))
    (->ListFontsWithInfoReply
     name-len
     min-bounds
@@ -1247,9 +1237,9 @@
 
 (clojure.core/defn
  read-GetFontPathReply
- [ch len__1413 val__1061__auto__]
+ [ch len__1451 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [path-len
     (.read-type CARD16 ch)
@@ -1261,35 +1251,35 @@
       path-len
       (clojure.core/fn [] (read-STR ch))))]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       1
       (.sizeof CARD16)
       22
       (clojure.core/reduce
        (clojure.core/fn
-        [x__860__auto__ y__861__auto__]
-        (clojure.core/+ x__860__auto__ (.sizeof y__861__auto__)))
+        [x__903__auto__ y__904__auto__]
+        (clojure.core/+ x__903__auto__ (.sizeof y__904__auto__)))
        0
        path))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1413))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1451))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1413)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1451)
+       size__1103__auto__))))
    (->GetFontPathReply path-len path))))
 
 (clojure.core/defn
  read-ListInstalledColormapsReply
- [ch len__1414 val__1061__auto__]
+ [ch len__1452 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [cmaps-len
     (.read-type CARD16 ch)
@@ -1301,30 +1291,30 @@
       cmaps-len
       (clojure.core/fn [] (.read-type COLORMAP ch))))]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       1
       (.sizeof CARD16)
       22
       (clojure.core/* (.sizeof COLORMAP) cmaps-len))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1414))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1452))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1414)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1452)
+       size__1103__auto__))))
    (->ListInstalledColormapsReply cmaps-len cmaps))))
 
 (clojure.core/defn
  read-AllocColorReply
- [ch len__1415 val__1061__auto__]
+ [ch len__1453 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [red
     (.read-type CARD16 ch)
@@ -1337,7 +1327,7 @@
     pixel
     (.read-type CARD32 ch)]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       1
       (.sizeof CARD16)
@@ -1346,23 +1336,23 @@
       2
       (.sizeof CARD32))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1415))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1453))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1415)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1453)
+       size__1103__auto__))))
    (->AllocColorReply red green blue pixel))))
 
 (clojure.core/defn
  read-AllocNamedColorReply
- [ch len__1416 val__1061__auto__]
+ [ch len__1454 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [pixel
     (.read-type CARD32 ch)
@@ -1379,7 +1369,7 @@
     visual-blue
     (.read-type CARD16 ch)]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       1
       (.sizeof CARD32)
@@ -1390,16 +1380,16 @@
       (.sizeof CARD16)
       (.sizeof CARD16))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1416))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1454))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1416)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1454)
+       size__1103__auto__))))
    (->AllocNamedColorReply
     pixel
     exact-red
@@ -1411,9 +1401,9 @@
 
 (clojure.core/defn
  read-AllocColorCellsReply
- [ch len__1417 val__1061__auto__]
+ [ch len__1455 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [pixels-len
     (.read-type CARD16 ch)
@@ -1432,7 +1422,7 @@
       masks-len
       (clojure.core/fn [] (.read-type CARD32 ch))))]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       1
       (.sizeof CARD16)
@@ -1441,23 +1431,23 @@
       (clojure.core/* (.sizeof CARD32) pixels-len)
       (clojure.core/* (.sizeof CARD32) masks-len))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1417))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1455))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1417)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1455)
+       size__1103__auto__))))
    (->AllocColorCellsReply pixels-len masks-len pixels masks))))
 
 (clojure.core/defn
  read-AllocColorPlanesReply
- [ch len__1418 val__1061__auto__]
+ [ch len__1456 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [pixels-len
     (.read-type CARD16 ch)
@@ -1477,7 +1467,7 @@
       pixels-len
       (clojure.core/fn [] (.read-type CARD32 ch))))]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       1
       (.sizeof CARD16)
@@ -1488,16 +1478,16 @@
       8
       (clojure.core/* (.sizeof CARD32) pixels-len))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1418))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1456))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1418)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1456)
+       size__1103__auto__))))
    (->AllocColorPlanesReply
     pixels-len
     red-mask
@@ -1507,9 +1497,9 @@
 
 (clojure.core/defn
  read-QueryColorsReply
- [ch len__1419 val__1061__auto__]
+ [ch len__1457 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [colors-len
     (.read-type CARD16 ch)
@@ -1521,35 +1511,35 @@
       colors-len
       (clojure.core/fn [] (read-RGB ch))))]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       1
       (.sizeof CARD16)
       22
       (clojure.core/reduce
        (clojure.core/fn
-        [x__860__auto__ y__861__auto__]
-        (clojure.core/+ x__860__auto__ (.sizeof y__861__auto__)))
+        [x__903__auto__ y__904__auto__]
+        (clojure.core/+ x__903__auto__ (.sizeof y__904__auto__)))
        0
        colors))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1419))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1457))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1419)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1457)
+       size__1103__auto__))))
    (->QueryColorsReply colors-len colors))))
 
 (clojure.core/defn
  read-LookupColorReply
- [ch len__1420 val__1061__auto__]
+ [ch len__1458 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [exact-red
     (.read-type CARD16 ch)
@@ -1564,7 +1554,7 @@
     visual-blue
     (.read-type CARD16 ch)]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       1
       (.sizeof CARD16)
@@ -1574,16 +1564,16 @@
       (.sizeof CARD16)
       (.sizeof CARD16))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1420))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1458))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1420)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1458)
+       size__1103__auto__))))
    (->LookupColorReply
     exact-red
     exact-green
@@ -1594,35 +1584,38 @@
 
 (clojure.core/defn
  read-QueryBestSizeReply
- [ch len__1421 val__1061__auto__]
+ [ch len__1459 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [width (.read-type CARD16 ch) height (.read-type CARD16 ch)]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+ 1 (.sizeof CARD16) (.sizeof CARD16))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1421))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1459))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1421)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1459)
+       size__1103__auto__))))
    (->QueryBestSizeReply width height))))
 
 (clojure.core/defn
  read-QueryExtensionReply
- [ch len__1422 val__1061__auto__]
+ [ch len__1460 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [present
-    (.read-type BOOL ch)
+    (if
+     (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+     true
+     false)
     major-opcode
     (.read-type CARD8 ch)
     first-event
@@ -1630,24 +1623,24 @@
     first-error
     (.read-type CARD8 ch)]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       1
-      (.sizeof BOOL)
+      1
       (.sizeof CARD8)
       (.sizeof CARD8)
       (.sizeof CARD8))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1422))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1460))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1422)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1460)
+       size__1103__auto__))))
    (->QueryExtensionReply
     present
     major-opcode
@@ -1656,9 +1649,9 @@
 
 (clojure.core/defn
  read-ListExtensionsReply
- [ch len__1423 val__1061__auto__]
+ [ch len__1461 val__1104__auto__]
  (clojure.core/let
-  [names-len val__1061__auto__]
+  [names-len val__1104__auto__]
   (clojure.core/let
    [_
     (xcljb.gen-common/read-pad ch 24)
@@ -1668,34 +1661,34 @@
       names-len
       (clojure.core/fn [] (read-STR ch))))]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       (.sizeof CARD8)
       24
       (clojure.core/reduce
        (clojure.core/fn
-        [x__860__auto__ y__861__auto__]
-        (clojure.core/+ x__860__auto__ (.sizeof y__861__auto__)))
+        [x__903__auto__ y__904__auto__]
+        (clojure.core/+ x__903__auto__ (.sizeof y__904__auto__)))
        0
        names))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1423))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1461))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1423)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1461)
+       size__1103__auto__))))
    (->ListExtensionsReply names-len names))))
 
 (clojure.core/defn
  read-GetKeyboardControlReply
- [ch len__1424 val__1061__auto__]
+ [ch len__1462 val__1104__auto__]
  (clojure.core/let
-  [global-auto-repeat val__1061__auto__]
+  [global-auto-repeat val__1104__auto__]
   (clojure.core/let
    [led-mask
     (.read-type CARD32 ch)
@@ -1715,7 +1708,7 @@
       32
       (clojure.core/fn [] (.read-type CARD8 ch))))]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       (.sizeof BYTE)
       (.sizeof CARD32)
@@ -1726,16 +1719,16 @@
       2
       (clojure.core/* (.sizeof CARD8) 32))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1424))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1462))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1424)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1462)
+       size__1103__auto__))))
    (->GetKeyboardControlReply
     global-auto-repeat
     led-mask
@@ -1747,9 +1740,9 @@
 
 (clojure.core/defn
  read-GetPointerControlReply
- [ch len__1425 val__1061__auto__]
+ [ch len__1463 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [acceleration-numerator
     (.read-type CARD16 ch)
@@ -1760,7 +1753,7 @@
     _
     (xcljb.gen-common/read-pad ch 18)]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       1
       (.sizeof CARD16)
@@ -1768,16 +1761,16 @@
       (.sizeof CARD16)
       18)]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1425))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1463))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1425)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1463)
+       size__1103__auto__))))
    (->GetPointerControlReply
     acceleration-numerator
     acceleration-denominator
@@ -1785,9 +1778,9 @@
 
 (clojure.core/defn
  read-GetScreenSaverReply
- [ch len__1426 val__1061__auto__]
+ [ch len__1464 val__1104__auto__]
  (clojure.core/let
-  [_ val__1061__auto__]
+  [_ val__1104__auto__]
   (clojure.core/let
    [timeout
     (.read-type CARD16 ch)
@@ -1800,7 +1793,7 @@
     _
     (xcljb.gen-common/read-pad ch 18)]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       1
       (.sizeof CARD16)
@@ -1809,16 +1802,16 @@
       (.sizeof BYTE)
       18)]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1426))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1464))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1426)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1464)
+       size__1103__auto__))))
    (->GetScreenSaverReply
     timeout
     interval
@@ -1827,9 +1820,9 @@
 
 (clojure.core/defn
  read-ListHostsReply
- [ch len__1427 val__1061__auto__]
+ [ch len__1465 val__1104__auto__]
  (clojure.core/let
-  [mode val__1061__auto__]
+  [mode val__1104__auto__]
   (clojure.core/let
    [hosts-len
     (.read-type CARD16 ch)
@@ -1841,57 +1834,57 @@
       hosts-len
       (clojure.core/fn [] (read-HOST ch))))]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       (.sizeof BYTE)
       (.sizeof CARD16)
       22
       (clojure.core/reduce
        (clojure.core/fn
-        [x__860__auto__ y__861__auto__]
-        (clojure.core/+ x__860__auto__ (.sizeof y__861__auto__)))
+        [x__903__auto__ y__904__auto__]
+        (clojure.core/+ x__903__auto__ (.sizeof y__904__auto__)))
        0
        hosts))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1427))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1465))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1427)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1465)
+       size__1103__auto__))))
    (->ListHostsReply mode hosts-len hosts))))
 
 (clojure.core/defn
  read-SetPointerMappingReply
- [ch len__1428 val__1061__auto__]
+ [ch len__1466 val__1104__auto__]
  (clojure.core/let
-  [status val__1061__auto__]
+  [status val__1104__auto__]
   (clojure.core/let
    []
    (clojure.core/let
-    [size__1060__auto__ (clojure.core/+ (.sizeof BYTE))]
+    [size__1103__auto__ (clojure.core/+ (.sizeof BYTE))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1428))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1466))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1428)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1466)
+       size__1103__auto__))))
    (->SetPointerMappingReply status))))
 
 (clojure.core/defn
  read-GetPointerMappingReply
- [ch len__1429 val__1061__auto__]
+ [ch len__1467 val__1104__auto__]
  (clojure.core/let
-  [map-len val__1061__auto__]
+  [map-len val__1104__auto__]
   (clojure.core/let
    [_
     (xcljb.gen-common/read-pad ch 24)
@@ -1901,51 +1894,51 @@
       map-len
       (clojure.core/fn [] (.read-type CARD8 ch))))]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       (.sizeof CARD8)
       24
       (clojure.core/* (.sizeof CARD8) map-len))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1429))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1467))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1429)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1467)
+       size__1103__auto__))))
    (->GetPointerMappingReply map-len map))))
 
 (clojure.core/defn
  read-SetModifierMappingReply
- [ch len__1430 val__1061__auto__]
+ [ch len__1468 val__1104__auto__]
  (clojure.core/let
-  [status val__1061__auto__]
+  [status val__1104__auto__]
   (clojure.core/let
    []
    (clojure.core/let
-    [size__1060__auto__ (clojure.core/+ (.sizeof BYTE))]
+    [size__1103__auto__ (clojure.core/+ (.sizeof BYTE))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1430))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1468))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1430)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1468)
+       size__1103__auto__))))
    (->SetModifierMappingReply status))))
 
 (clojure.core/defn
  read-GetModifierMappingReply
- [ch len__1431 val__1061__auto__]
+ [ch len__1469 val__1104__auto__]
  (clojure.core/let
-  [keycodes-per-modifier val__1061__auto__]
+  [keycodes-per-modifier val__1104__auto__]
   (clojure.core/let
    [_
     (xcljb.gen-common/read-pad ch 24)
@@ -1955,7 +1948,7 @@
       (clojure.core/* keycodes-per-modifier 8)
       (clojure.core/fn [] (.read-type KEYCODE ch))))]
    (clojure.core/let
-    [size__1060__auto__
+    [size__1103__auto__
      (clojure.core/+
       (.sizeof CARD8)
       24
@@ -1963,16 +1956,16 @@
        (.sizeof KEYCODE)
        (clojure.core/* keycodes-per-modifier 8)))]
     (clojure.core/cond
-     (clojure.core/< size__1060__auto__ 25)
+     (clojure.core/< size__1103__auto__ 25)
      (xcljb.gen-common/read-pad
       ch
-      (clojure.core/- 25 size__1060__auto__))
-     (clojure.core/< size__1060__auto__ (clojure.core/+ 25 len__1431))
+      (clojure.core/- 25 size__1103__auto__))
+     (clojure.core/< size__1103__auto__ (clojure.core/+ 25 len__1469))
      (xcljb.gen-common/read-pad
       ch
       (clojure.core/-
-       (clojure.core/+ 25 len__1431)
-       size__1060__auto__))))
+       (clojure.core/+ 25 len__1469)
+       size__1103__auto__))))
    (->GetModifierMappingReply keycodes-per-modifier keycodes))))
 
 (clojure.core/defn
@@ -2002,11 +1995,14 @@
    state
    (.read-type CARD16 ch)
    same-screen
-   (.read-type BOOL ch)
+   (if
+    (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+    true
+    false)
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      (.sizeof KEYCODE)
@@ -2019,13 +2015,13 @@
      (.sizeof INT16)
      (.sizeof INT16)
      (.sizeof CARD16)
-     (.sizeof BOOL)
+     1
      1)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event
    (->KeyPressEvent
@@ -2068,11 +2064,14 @@
    state
    (.read-type CARD16 ch)
    same-screen
-   (.read-type BOOL ch)
+   (if
+    (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+    true
+    false)
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      (.sizeof KEYCODE)
@@ -2085,13 +2084,13 @@
      (.sizeof INT16)
      (.sizeof INT16)
      (.sizeof CARD16)
-     (.sizeof BOOL)
+     1
      1)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event
    (->KeyReleaseEvent
@@ -2134,11 +2133,14 @@
    state
    (.read-type CARD16 ch)
    same-screen
-   (.read-type BOOL ch)
+   (if
+    (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+    true
+    false)
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      (.sizeof BUTTON)
@@ -2151,13 +2153,13 @@
      (.sizeof INT16)
      (.sizeof INT16)
      (.sizeof CARD16)
-     (.sizeof BOOL)
+     1
      1)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event
    (->ButtonPressEvent
@@ -2200,11 +2202,14 @@
    state
    (.read-type CARD16 ch)
    same-screen
-   (.read-type BOOL ch)
+   (if
+    (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+    true
+    false)
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      (.sizeof BUTTON)
@@ -2217,13 +2222,13 @@
      (.sizeof INT16)
      (.sizeof INT16)
      (.sizeof CARD16)
-     (.sizeof BOOL)
+     1
      1)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event
    (->ButtonReleaseEvent
@@ -2266,11 +2271,14 @@
    state
    (.read-type CARD16 ch)
    same-screen
-   (.read-type BOOL ch)
+   (if
+    (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+    true
+    false)
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      (.sizeof BYTE)
@@ -2283,13 +2291,13 @@
      (.sizeof INT16)
      (.sizeof INT16)
      (.sizeof CARD16)
-     (.sizeof BOOL)
+     1
      1)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event
    (->MotionNotifyEvent
@@ -2336,7 +2344,7 @@
    same-screen-focus
    (.read-type BYTE ch)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      (.sizeof BYTE)
@@ -2352,10 +2360,10 @@
      (.sizeof BYTE)
      (.sizeof BYTE))]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event
    (->EnterNotifyEvent
@@ -2403,7 +2411,7 @@
    same-screen-focus
    (.read-type BYTE ch)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      (.sizeof BYTE)
@@ -2419,10 +2427,10 @@
      (.sizeof BYTE)
      (.sizeof BYTE))]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event
    (->LeaveNotifyEvent
@@ -2454,7 +2462,7 @@
    _
    (xcljb.gen-common/read-pad ch 3)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      (.sizeof BYTE)
@@ -2462,10 +2470,10 @@
      (.sizeof BYTE)
      3)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num, :event (->FocusInEvent detail event mode)}))
 
 (clojure.core/defn
@@ -2483,7 +2491,7 @@
    _
    (xcljb.gen-common/read-pad ch 3)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      (.sizeof BYTE)
@@ -2491,10 +2499,10 @@
      (.sizeof BYTE)
      3)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num, :event (->FocusOutEvent detail event mode)}))
 
 (clojure.core/defn
@@ -2507,13 +2515,13 @@
      31
      (clojure.core/fn [] (.read-type CARD8 ch))))]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+ (clojure.core/* (.sizeof CARD8) 31))]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num nil, :event (->KeymapNotifyEvent keys)}))
 
 (clojure.core/defn
@@ -2539,7 +2547,7 @@
    _
    (xcljb.gen-common/read-pad ch 2)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      1
@@ -2551,10 +2559,10 @@
      (.sizeof CARD16)
      2)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event (->ExposeEvent window x y width height count)}))
 
@@ -2585,7 +2593,7 @@
    _
    (xcljb.gen-common/read-pad ch 3)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      1
@@ -2599,10 +2607,10 @@
      (.sizeof CARD8)
      3)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event
    (->GraphicsExposureEvent
@@ -2632,7 +2640,7 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      1
@@ -2641,10 +2649,10 @@
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event (->NoExposureEvent drawable minor-opcode major-opcode)}))
 
@@ -2663,13 +2671,13 @@
    _
    (xcljb.gen-common/read-pad ch 3)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+ 2 1 (.sizeof WINDOW) (.sizeof BYTE) 3)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num, :event (->VisibilityNotifyEvent window state)}))
 
 (clojure.core/defn
@@ -2695,11 +2703,14 @@
    border-width
    (.read-type CARD16 ch)
    override-redirect
-   (.read-type BOOL ch)
+   (if
+    (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+    true
+    false)
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      1
@@ -2710,13 +2721,13 @@
      (.sizeof CARD16)
      (.sizeof CARD16)
      (.sizeof CARD16)
-     (.sizeof BOOL)
+     1
      1)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event
    (->CreateNotifyEvent
@@ -2742,13 +2753,13 @@
    window
    (.read-type WINDOW ch)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+ 2 1 (.sizeof WINDOW) (.sizeof WINDOW))]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num, :event (->DestroyNotifyEvent event window)}))
 
 (clojure.core/defn
@@ -2764,23 +2775,20 @@
    window
    (.read-type WINDOW ch)
    from-configure
-   (.read-type BOOL ch)
+   (if
+    (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+    true
+    false)
    _
    (xcljb.gen-common/read-pad ch 3)]
   (clojure.core/let
-   [size__1090__auto__
-    (clojure.core/+
-     2
-     1
-     (.sizeof WINDOW)
-     (.sizeof WINDOW)
-     (.sizeof BOOL)
-     3)]
+   [size__1133__auto__
+    (clojure.core/+ 2 1 (.sizeof WINDOW) (.sizeof WINDOW) 1 3)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event (->UnmapNotifyEvent event window from-configure)}))
 
@@ -2797,23 +2805,20 @@
    window
    (.read-type WINDOW ch)
    override-redirect
-   (.read-type BOOL ch)
+   (if
+    (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+    true
+    false)
    _
    (xcljb.gen-common/read-pad ch 3)]
   (clojure.core/let
-   [size__1090__auto__
-    (clojure.core/+
-     2
-     1
-     (.sizeof WINDOW)
-     (.sizeof WINDOW)
-     (.sizeof BOOL)
-     3)]
+   [size__1133__auto__
+    (clojure.core/+ 2 1 (.sizeof WINDOW) (.sizeof WINDOW) 1 3)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event (->MapNotifyEvent event window override-redirect)}))
 
@@ -2830,13 +2835,13 @@
    window
    (.read-type WINDOW ch)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+ 2 1 (.sizeof WINDOW) (.sizeof WINDOW))]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num, :event (->MapRequestEvent parent window)}))
 
 (clojure.core/defn
@@ -2858,11 +2863,14 @@
    y
    (.read-type INT16 ch)
    override-redirect
-   (.read-type BOOL ch)
+   (if
+    (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+    true
+    false)
    _
    (xcljb.gen-common/read-pad ch 3)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      1
@@ -2871,13 +2879,13 @@
      (.sizeof WINDOW)
      (.sizeof INT16)
      (.sizeof INT16)
-     (.sizeof BOOL)
+     1
      3)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event
    (->ReparentNotifyEvent event window parent x y override-redirect)}))
@@ -2907,11 +2915,14 @@
    border-width
    (.read-type CARD16 ch)
    override-redirect
-   (.read-type BOOL ch)
+   (if
+    (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+    true
+    false)
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      1
@@ -2923,13 +2934,13 @@
      (.sizeof CARD16)
      (.sizeof CARD16)
      (.sizeof CARD16)
-     (.sizeof BOOL)
+     1
      1)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event
    (->ConfigureNotifyEvent
@@ -2970,7 +2981,7 @@
    value-mask
    (.read-type CARD16 ch)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      (.sizeof BYTE)
@@ -2984,10 +2995,10 @@
      (.sizeof CARD16)
      (.sizeof CARD16))]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event
    (->ConfigureRequestEvent
@@ -3019,7 +3030,7 @@
    y
    (.read-type INT16 ch)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      1
@@ -3028,10 +3039,10 @@
      (.sizeof INT16)
      (.sizeof INT16))]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num, :event (->GravityNotifyEvent event window x y)}))
 
 (clojure.core/defn
@@ -3049,7 +3060,7 @@
    height
    (.read-type CARD16 ch)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      1
@@ -3057,10 +3068,10 @@
      (.sizeof CARD16)
      (.sizeof CARD16))]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event (->ResizeRequestEvent window width height)}))
 
@@ -3083,7 +3094,7 @@
    _
    (xcljb.gen-common/read-pad ch 3)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      1
@@ -3093,10 +3104,10 @@
      (.sizeof BYTE)
      3)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event (->CirculateNotifyEvent event window place)}))
 
@@ -3119,7 +3130,7 @@
    _
    (xcljb.gen-common/read-pad ch 3)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      1
@@ -3129,10 +3140,10 @@
      (.sizeof BYTE)
      3)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event (->CirculateRequestEvent event window place)}))
 
@@ -3155,7 +3166,7 @@
    _
    (xcljb.gen-common/read-pad ch 3)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      1
@@ -3165,10 +3176,10 @@
      (.sizeof BYTE)
      3)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event (->PropertyNotifyEvent window atom time state)}))
 
@@ -3187,7 +3198,7 @@
    selection
    (.read-type ATOM ch)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      1
@@ -3195,10 +3206,10 @@
      (.sizeof WINDOW)
      (.sizeof ATOM))]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event (->SelectionClearEvent time owner selection)}))
 
@@ -3223,7 +3234,7 @@
    property
    (.read-type ATOM ch)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      1
@@ -3234,10 +3245,10 @@
      (.sizeof ATOM)
      (.sizeof ATOM))]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event
    (->SelectionRequestEvent
@@ -3267,7 +3278,7 @@
    property
    (.read-type ATOM ch)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      1
@@ -3277,10 +3288,10 @@
      (.sizeof ATOM)
      (.sizeof ATOM))]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event
    (->SelectionNotifyEvent time requestor selection target property)}))
@@ -3298,26 +3309,29 @@
    colormap
    (.read-type COLORMAP ch)
    new
-   (.read-type BOOL ch)
+   (if
+    (clojure.core/= (xcljb.gen-common/read-bytes ch 1) 1)
+    true
+    false)
    state
    (.read-type BYTE ch)
    _
    (xcljb.gen-common/read-pad ch 2)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      1
      (.sizeof WINDOW)
      (.sizeof COLORMAP)
-     (.sizeof BOOL)
+     1
      (.sizeof BYTE)
      2)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event (->ColormapNotifyEvent window colormap new state)}))
 
@@ -3338,7 +3352,7 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1090__auto__
+   [size__1133__auto__
     (clojure.core/+
      2
      1
@@ -3347,10 +3361,10 @@
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1090__auto__ 31)
+    (clojure.core/< size__1133__auto__ 31)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 31 size__1090__auto__))))
+     (clojure.core/- 31 size__1133__auto__))))
   {:seq-num seq-num,
    :event (->MappingNotifyEvent request first-keycode count)}))
 
@@ -3367,17 +3381,17 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1123__auto__
+   [size__1166__auto__
     (clojure.core/+
      (.sizeof CARD32)
      (.sizeof CARD16)
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1123__auto__ 28)
+    (clojure.core/< size__1166__auto__ 28)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 28 size__1123__auto__))))
+     (clojure.core/- 28 size__1166__auto__))))
   (->RequestError bad-value minor-opcode major-opcode)))
 
 (clojure.core/defn
@@ -3393,17 +3407,17 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1123__auto__
+   [size__1166__auto__
     (clojure.core/+
      (.sizeof CARD32)
      (.sizeof CARD16)
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1123__auto__ 28)
+    (clojure.core/< size__1166__auto__ 28)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 28 size__1123__auto__))))
+     (clojure.core/- 28 size__1166__auto__))))
   (->ValueError bad-value minor-opcode major-opcode)))
 
 (clojure.core/defn
@@ -3419,17 +3433,17 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1123__auto__
+   [size__1166__auto__
     (clojure.core/+
      (.sizeof CARD32)
      (.sizeof CARD16)
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1123__auto__ 28)
+    (clojure.core/< size__1166__auto__ 28)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 28 size__1123__auto__))))
+     (clojure.core/- 28 size__1166__auto__))))
   (->WindowError bad-value minor-opcode major-opcode)))
 
 (clojure.core/defn
@@ -3445,17 +3459,17 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1123__auto__
+   [size__1166__auto__
     (clojure.core/+
      (.sizeof CARD32)
      (.sizeof CARD16)
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1123__auto__ 28)
+    (clojure.core/< size__1166__auto__ 28)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 28 size__1123__auto__))))
+     (clojure.core/- 28 size__1166__auto__))))
   (->PixmapError bad-value minor-opcode major-opcode)))
 
 (clojure.core/defn
@@ -3471,17 +3485,17 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1123__auto__
+   [size__1166__auto__
     (clojure.core/+
      (.sizeof CARD32)
      (.sizeof CARD16)
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1123__auto__ 28)
+    (clojure.core/< size__1166__auto__ 28)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 28 size__1123__auto__))))
+     (clojure.core/- 28 size__1166__auto__))))
   (->AtomError bad-value minor-opcode major-opcode)))
 
 (clojure.core/defn
@@ -3497,17 +3511,17 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1123__auto__
+   [size__1166__auto__
     (clojure.core/+
      (.sizeof CARD32)
      (.sizeof CARD16)
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1123__auto__ 28)
+    (clojure.core/< size__1166__auto__ 28)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 28 size__1123__auto__))))
+     (clojure.core/- 28 size__1166__auto__))))
   (->CursorError bad-value minor-opcode major-opcode)))
 
 (clojure.core/defn
@@ -3523,17 +3537,17 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1123__auto__
+   [size__1166__auto__
     (clojure.core/+
      (.sizeof CARD32)
      (.sizeof CARD16)
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1123__auto__ 28)
+    (clojure.core/< size__1166__auto__ 28)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 28 size__1123__auto__))))
+     (clojure.core/- 28 size__1166__auto__))))
   (->FontError bad-value minor-opcode major-opcode)))
 
 (clojure.core/defn
@@ -3549,17 +3563,17 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1123__auto__
+   [size__1166__auto__
     (clojure.core/+
      (.sizeof CARD32)
      (.sizeof CARD16)
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1123__auto__ 28)
+    (clojure.core/< size__1166__auto__ 28)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 28 size__1123__auto__))))
+     (clojure.core/- 28 size__1166__auto__))))
   (->MatchError bad-value minor-opcode major-opcode)))
 
 (clojure.core/defn
@@ -3575,17 +3589,17 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1123__auto__
+   [size__1166__auto__
     (clojure.core/+
      (.sizeof CARD32)
      (.sizeof CARD16)
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1123__auto__ 28)
+    (clojure.core/< size__1166__auto__ 28)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 28 size__1123__auto__))))
+     (clojure.core/- 28 size__1166__auto__))))
   (->DrawableError bad-value minor-opcode major-opcode)))
 
 (clojure.core/defn
@@ -3601,17 +3615,17 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1123__auto__
+   [size__1166__auto__
     (clojure.core/+
      (.sizeof CARD32)
      (.sizeof CARD16)
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1123__auto__ 28)
+    (clojure.core/< size__1166__auto__ 28)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 28 size__1123__auto__))))
+     (clojure.core/- 28 size__1166__auto__))))
   (->AccessError bad-value minor-opcode major-opcode)))
 
 (clojure.core/defn
@@ -3627,17 +3641,17 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1123__auto__
+   [size__1166__auto__
     (clojure.core/+
      (.sizeof CARD32)
      (.sizeof CARD16)
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1123__auto__ 28)
+    (clojure.core/< size__1166__auto__ 28)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 28 size__1123__auto__))))
+     (clojure.core/- 28 size__1166__auto__))))
   (->AllocError bad-value minor-opcode major-opcode)))
 
 (clojure.core/defn
@@ -3653,17 +3667,17 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1123__auto__
+   [size__1166__auto__
     (clojure.core/+
      (.sizeof CARD32)
      (.sizeof CARD16)
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1123__auto__ 28)
+    (clojure.core/< size__1166__auto__ 28)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 28 size__1123__auto__))))
+     (clojure.core/- 28 size__1166__auto__))))
   (->ColormapError bad-value minor-opcode major-opcode)))
 
 (clojure.core/defn
@@ -3679,17 +3693,17 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1123__auto__
+   [size__1166__auto__
     (clojure.core/+
      (.sizeof CARD32)
      (.sizeof CARD16)
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1123__auto__ 28)
+    (clojure.core/< size__1166__auto__ 28)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 28 size__1123__auto__))))
+     (clojure.core/- 28 size__1166__auto__))))
   (->GContextError bad-value minor-opcode major-opcode)))
 
 (clojure.core/defn
@@ -3705,17 +3719,17 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1123__auto__
+   [size__1166__auto__
     (clojure.core/+
      (.sizeof CARD32)
      (.sizeof CARD16)
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1123__auto__ 28)
+    (clojure.core/< size__1166__auto__ 28)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 28 size__1123__auto__))))
+     (clojure.core/- 28 size__1166__auto__))))
   (->IDChoiceError bad-value minor-opcode major-opcode)))
 
 (clojure.core/defn
@@ -3731,17 +3745,17 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1123__auto__
+   [size__1166__auto__
     (clojure.core/+
      (.sizeof CARD32)
      (.sizeof CARD16)
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1123__auto__ 28)
+    (clojure.core/< size__1166__auto__ 28)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 28 size__1123__auto__))))
+     (clojure.core/- 28 size__1166__auto__))))
   (->NameError bad-value minor-opcode major-opcode)))
 
 (clojure.core/defn
@@ -3757,17 +3771,17 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1123__auto__
+   [size__1166__auto__
     (clojure.core/+
      (.sizeof CARD32)
      (.sizeof CARD16)
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1123__auto__ 28)
+    (clojure.core/< size__1166__auto__ 28)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 28 size__1123__auto__))))
+     (clojure.core/- 28 size__1166__auto__))))
   (->LengthError bad-value minor-opcode major-opcode)))
 
 (clojure.core/defn
@@ -3783,24 +3797,24 @@
    _
    (xcljb.gen-common/read-pad ch 1)]
   (clojure.core/let
-   [size__1123__auto__
+   [size__1166__auto__
     (clojure.core/+
      (.sizeof CARD32)
      (.sizeof CARD16)
      (.sizeof CARD8)
      1)]
    (clojure.core/when
-    (clojure.core/< size__1123__auto__ 28)
+    (clojure.core/< size__1166__auto__ 28)
     (xcljb.gen-common/read-pad
      ch
-     (clojure.core/- 28 size__1123__auto__))))
+     (clojure.core/- 28 size__1166__auto__))))
   (->ImplementationError bad-value minor-opcode major-opcode)))
 
 (clojure.core/defn
  read-reply
- [expr__1278__auto__]
+ [expr__1322__auto__]
  (clojure.core/case
-  expr__1278__auto__
+  expr__1322__auto__
   3
   read-GetWindowAttributesReply
   14
@@ -3878,9 +3892,9 @@
 
 (clojure.core/defn
  read-event
- [expr__1278__auto__]
+ [expr__1322__auto__]
  (clojure.core/case
-  expr__1278__auto__
+  expr__1322__auto__
   2
   read-KeyPressEvent
   3
@@ -3948,9 +3962,9 @@
 
 (clojure.core/defn
  read-error
- [expr__1278__auto__]
+ [expr__1322__auto__]
  (clojure.core/case
-  expr__1278__auto__
+  expr__1322__auto__
   1
   read-RequestError
   2
