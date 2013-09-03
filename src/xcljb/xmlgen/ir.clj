@@ -20,11 +20,20 @@
     :read-type (str "read-" name)
     :->type (str "->" name)))
 
+(defrecord QualifiedType [ns name])
+
 (defn- parse-type [type]
-  (let [[_ ns name] (re-matches #"^([^:]+):([^:]+)$" type)]
-    (if ns
-      (symbol (str "xcljb.gen." ns "-internal") name)
-      (symbol type))))
+  (let [{:keys [ns name]} type]
+    (symbol (str "xcljb.gen." ns "-types") name)))
+
+(defn- type->read-type [type]
+  (let [{:keys [ns name]} type]
+    (symbol (str "xcljb.gen." ns "-internal")
+            (beautify name :read-type))))
+
+(defn- name->->type [header name]
+  (symbol (str "xcljb.gen." header "-types")
+          (beautify name :->type)))
 
 (defn- gen-read-fields [fields & body]
   `(let ~(reduce #(conj %1 (.gen-read-type-name %2) (.gen-read-type %2))
@@ -226,7 +235,7 @@
   ReadableType
   (gen-read-type [this]
     (let [s-ch (symbol "ch")
-          s-read-type (-> this (:type) (beautify :read-type) (symbol))]
+          s-read-type (-> this (:type) (type->read-type))]
       `(~s-read-type ~s-ch)))
   (gen-read-type-name [this]
     (-> this (:name) (beautify :arg) (symbol))))
@@ -297,7 +306,7 @@
   (gen-read-type [this]
     (assert (:expr this))
     (let [s-ch (symbol "ch")
-          s-read-type (-> this (:type) (beautify :read-type) (symbol))
+          s-read-type (-> this (:type) (type->read-type))
           len (-> this (:expr) (.gen-eval))]
       `(doall (repeatedly ~len (fn [] (~s-read-type ~s-ch))))))
   (gen-read-type-name [this]
@@ -323,7 +332,7 @@
     (let [s-this (symbol "this")
           k-name (-> this (:name) (beautify :arg) (keyword))
           ;; Mask type is always a primitive type.
-          s-mask-type (-> this (:mask-type) (symbol))]
+          s-mask-type (-> this (:mask-type) (parse-type))]
       `[(.to-frame ~s-mask-type)
         (repeat (count (.to-list (~k-name ~s-this)))
                 :uint32)]))
@@ -362,7 +371,7 @@
 
 ;; Struct.
 
-(defrecord Struct [name content]
+(defrecord Struct [header name content]
   Measurable
   (gen-sizeof [this]
     `(+ ~@(map #(.gen-sizeof %) (:content this))))
@@ -396,7 +405,7 @@
     (let [s-ch (symbol "ch")
           s-name (-> this (:name) (beautify :read-type) (symbol))
           s-args (->> this (:content) (gen-args) (map symbol))
-          s-struct (-> this (:name) (beautify :->type) (symbol))]
+          s-struct (name->->type (:header this) (:name this))]
       `(defn ~s-name [~s-ch]
          ~(gen-read-fields
            (:content this)
@@ -404,7 +413,7 @@
 
 ;; Request, Reply, Event, Error.
 
-(defrecord Request [name opcode combine-adjacent content]
+(defrecord Request [header name opcode combine-adjacent content]
   Measurable
   (gen-sizeof [this]
     `(+ 3
@@ -416,7 +425,8 @@
   (gen-request-fn [this]
     (let [s-name (-> this (:name) (beautify :fn-name) (symbol))
           s-args (->> this (:content) (gen-args) (map symbol))
-          s-struct (-> this (:name) (beautify :request) (beautify :->type) (symbol))
+          s-struct (name->->type (:header this)
+                                 (-> this (:name) (beautify :request)))
           opcode (:opcode this)]
       `(defn ~s-name [conn# ~@s-args]
          (let [request-struct# (~s-struct ~opcode ~@s-args)]
@@ -477,7 +487,7 @@
   (gen-read-type-name [_]
     (symbol "seq-num")))
 
-(defrecord Reply [name request-opcode content]
+(defrecord Reply [header name request-opcode content]
   Measurable
   (gen-sizeof [this]
     (throw (Exception.)))
@@ -495,7 +505,8 @@
     (let [s-ch (symbol "ch")
           name (-> this (:name) (beautify :reply))
           s-name (-> name (beautify :read-type) (symbol))
-          s-reply (-> name (beautify :->type) (symbol))
+          s-reply (name->->type (:header this)
+                                (-> this (:name) (beautify :reply)))
           s-read-pad (symbol "xcljb.gen-common" "read-pad")
           s-args (->> this (:content) (gen-args) (map symbol))
           s-len (gensym "len__")]
@@ -511,7 +522,7 @@
                                                       (- (+ 25 ~s-len) size#))))
              `(~s-reply ~@s-args)))))))
 
-(defrecord Event [name number no-seq-number content]
+(defrecord Event [header name number no-seq-number content]
   Measurable
   (gen-sizeof [this]
     (throw (Exception.)))
@@ -532,7 +543,8 @@
     (let [s-ch (symbol "ch")
           name (-> this (:name) (beautify :event))
           s-name (-> name (beautify :read-type) (symbol))
-          s-event (-> name (beautify :->type) (symbol))
+          s-event (name->->type (:header this)
+                                (-> this (:name) (beautify :event)))
           seq-num (->SequenceNumber)
           content (:content this)
           fields (if (:no-seq-number this)
@@ -556,7 +568,7 @@
              :event (~s-event ~@s-args)})))))
 
 ;; Avoid naming conflict with java.lang.Error.
-(defrecord -Error [name number content]
+(defrecord -Error [header name number content]
   Measurable
   (gen-sizeof [this]
     (throw (Exception.)))
@@ -574,7 +586,8 @@
     (let [s-ch (symbol "ch")
           name (-> this (:name) (beautify :error))
           s-name (-> name (beautify :read-type) (symbol))
-          s-error (-> name (beautify :->type) (symbol))
+          s-error (name->->type (:header this)
+                                (-> this (:name) (beautify :error)))
           s-read-pad (symbol "xcljb.gen-common" "read-pad")
           s-args (->> this (:content) (gen-args) (map symbol))]
       `(defn ~s-name [~s-ch]

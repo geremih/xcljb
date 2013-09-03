@@ -61,8 +61,8 @@
 (defn- gen-header [xcb]
   (let [header (:header xcb)]
     `(ns ~(symbol (str "xcljb.gen." header))
-       (:use [~@(map symbol ["xcljb.gen" (str header "-types")])])
-       (:require [~@(map symbol ["xcljb" "conn" "gen-common"])]))))
+       (:require [~@(map symbol ["xcljb" "conn" "gen-common"])]
+                 [~@(map symbol ["xcljb.gen" (str header "-types")])]))))
 
 (defn -main [& args]
   (let [root (xml/parse (java.io.BufferedReader. *in*))
@@ -123,8 +123,8 @@
     (with-open [wrtr (clojure.java.io/writer (str file-prefix "_internal.clj"))]
       (pp/pprint
        `(ns ~(symbol (str "xcljb.gen." (:header xcb) "-internal"))
-          (:use [~@(map symbol ["xcljb.gen" (str (:header xcb) "-types")])])
-          (:require [~@(map symbol ["xcljb" "gen-common"])]))
+          (:require [~@(map symbol ["xcljb" "gen-common"])]
+                    [~@(map symbol ["xcljb.gen" (str (:header xcb) "-types")])]))
        wrtr)
 
       (doseq [type comp-types]
