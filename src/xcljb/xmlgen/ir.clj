@@ -8,8 +8,13 @@
              (string/replace #"([a-z])([A-Z])" "$1-$2")
              ;(string/replace #"([A-Z])([A-Z][a-z])" "$1-$2")
              (string/lower-case))
-    :enum name
-    :enum-item name
+    :enum (-> name
+              (string/replace #"([a-z])([A-Z])" "$1-$2")
+              (string/upper-case))
+    :enum-item (-> name
+                   (string/replace #"_" "-")
+                   (string/replace #"([a-z])([A-Z])" "$1-$2")
+                   (string/lower-case))
     :fn-name (-> name
                  (string/replace #"([a-z])([A-Z])" "$1-$2")
                  (string/lower-case))
