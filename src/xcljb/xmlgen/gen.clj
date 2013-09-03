@@ -48,7 +48,7 @@
 
 (defn- gen-primitive [[name type]]
   `(def ~(symbol name)
-     (~(symbol "xcljb.gen-common/->PrimitiveType") ~type)))
+     (xcljb.gen-common/->PrimitiveType ~type)))
 
 (defn- gen-xcb [xcb]
   `(def ~(symbol "-XCB") {:header ~(:header xcb)
