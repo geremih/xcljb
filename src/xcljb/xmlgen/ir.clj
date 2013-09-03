@@ -6,7 +6,6 @@
     :arg (-> name
              (string/replace #"_" "-")
              (string/replace #"([a-z])([A-Z])" "$1-$2")
-             ;(string/replace #"([A-Z])([A-Z][a-z])" "$1-$2")
              (string/lower-case))
     :enum (-> name
               (string/replace #"([a-z])([A-Z])" "$1-$2")
