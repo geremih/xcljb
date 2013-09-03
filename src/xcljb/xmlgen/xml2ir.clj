@@ -7,8 +7,7 @@
                                :request #{"ConfigureWindow"
                                           "QueryTextExtents"
                                           "GetImage"
-                                          "GetKeyboardMapping"
-                                          "ImageText16"}
+                                          "GetKeyboardMapping"}
                                :event #{"ClientMessage"}}
                      "randr" {:union #{"NotifyData"}
                               :event #{"Notify"}}})
