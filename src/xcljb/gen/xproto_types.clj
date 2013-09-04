@@ -748,7 +748,7 @@
    (clojure.core/+
     (.sizeof xcljb.gen.xproto-types/CARD32)
     (clojure.core/*
-     (clojure.core/-> this (:value) (:list) (clojure.core/count))
+     (clojure.core/-> this (:value) (clojure.core/count))
      4))))
  xcljb.gen-common/Serializable
  (to-frame
@@ -767,7 +767,7 @@
    (.to-frame xcljb.gen.xproto-types/VISUALID)
    [(.to-frame xcljb.gen.xproto-types/CARD32)
     (clojure.core/repeat
-     (clojure.core/count (.to-list (:value this)))
+     (clojure.core/-> this (:value) (clojure.core/count))
      :uint32)]
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -787,7 +787,7 @@
    (:border-width this)
    (:class this)
    (:visual this)
-   [(.to-mask (:value this)) (.to-list (:value this))]
+   (xcljb.gen-common/valueparam->value (:value this))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
 
 (clojure.core/defrecord
@@ -803,7 +803,7 @@
    (clojure.core/+
     (.sizeof xcljb.gen.xproto-types/CARD32)
     (clojure.core/*
-     (clojure.core/-> this (:value) (:list) (clojure.core/count))
+     (clojure.core/-> this (:value) (clojure.core/count))
      4))))
  xcljb.gen-common/Serializable
  (to-frame
@@ -814,7 +814,7 @@
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    [(.to-frame xcljb.gen.xproto-types/CARD32)
     (clojure.core/repeat
-     (clojure.core/count (.to-list (:value this)))
+     (clojure.core/-> this (:value) (clojure.core/count))
      :uint32)]
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -826,7 +826,7 @@
    (clojure.core/int
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
    (:window this)
-   [(.to-mask (:value this)) (.to-list (:value this))]
+   (xcljb.gen-common/valueparam->value (:value this))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
 
 (clojure.core/defrecord
@@ -2485,7 +2485,7 @@
    (clojure.core/+
     (.sizeof xcljb.gen.xproto-types/CARD32)
     (clojure.core/*
-     (clojure.core/-> this (:value) (:list) (clojure.core/count))
+     (clojure.core/-> this (:value) (clojure.core/count))
      4))))
  xcljb.gen-common/Serializable
  (to-frame
@@ -2497,7 +2497,7 @@
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    [(.to-frame xcljb.gen.xproto-types/CARD32)
     (clojure.core/repeat
-     (clojure.core/count (.to-list (:value this)))
+     (clojure.core/-> this (:value) (clojure.core/count))
      :uint32)]
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -2510,7 +2510,7 @@
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
    (:cid this)
    (:drawable this)
-   [(.to-mask (:value this)) (.to-list (:value this))]
+   (xcljb.gen-common/valueparam->value (:value this))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
 
 (clojure.core/defrecord
@@ -2526,7 +2526,7 @@
    (clojure.core/+
     (.sizeof xcljb.gen.xproto-types/CARD32)
     (clojure.core/*
-     (clojure.core/-> this (:value) (:list) (clojure.core/count))
+     (clojure.core/-> this (:value) (clojure.core/count))
      4))))
  xcljb.gen-common/Serializable
  (to-frame
@@ -2537,7 +2537,7 @@
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    [(.to-frame xcljb.gen.xproto-types/CARD32)
     (clojure.core/repeat
-     (clojure.core/count (.to-list (:value this)))
+     (clojure.core/-> this (:value) (clojure.core/count))
      :uint32)]
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -2549,7 +2549,7 @@
    (clojure.core/int
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
    (:gc this)
-   [(.to-mask (:value this)) (.to-list (:value this))]
+   (xcljb.gen-common/valueparam->value (:value this))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
 
 (clojure.core/defrecord
@@ -4370,7 +4370,7 @@
    (clojure.core/+
     (.sizeof xcljb.gen.xproto-types/CARD32)
     (clojure.core/*
-     (clojure.core/-> this (:value) (:list) (clojure.core/count))
+     (clojure.core/-> this (:value) (clojure.core/count))
      4))))
  xcljb.gen-common/Serializable
  (to-frame
@@ -4380,7 +4380,7 @@
    :uint16
    [(.to-frame xcljb.gen.xproto-types/CARD32)
     (clojure.core/repeat
-     (clojure.core/count (.to-list (:value this)))
+     (clojure.core/-> this (:value) (clojure.core/count))
      :uint32)]
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -4391,7 +4391,7 @@
    (clojure.core/repeat 1 0)
    (clojure.core/int
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   [(.to-mask (:value this)) (.to-list (:value this))]
+   (xcljb.gen-common/valueparam->value (:value this))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
 
 (clojure.core/defrecord
