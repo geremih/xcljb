@@ -10,13 +10,13 @@
         screen (-> c (core/get-setup) (:roots) (first))
         win (core/gen-res-id c)]
     (xproto/create-window c
-                          (:CopyFromParent xproto/WindowClass)
+                          (:copy-from-parent xproto/WINDOW-CLASS)
                           win
                           (:root screen)
                           0 0
                           150 150
                           10
-                          (:InputOutput xproto/WindowClass)
+                          (:input-output xproto/WINDOW-CLASS)
                           (:root-visual screen)
                           (core/->Valueparam [] []))
     (xproto/map-window c win)))

@@ -34,23 +34,23 @@
     (xproto/create-gc c
                       foreground
                       (:root screen)
-                      (core/->Valueparam [(:Foreground xproto/GC)
-                                          (:GraphicsExposures xproto/GC)]
+                      (core/->Valueparam [(:foreground xproto/GC)
+                                          (:graphics-exposures xproto/GC)]
                                          [(:black-pixel screen) 0]))
     ;; Create the window.
     (xproto/create-window c
-                          (:CopyFromParent xproto/WindowClass)
+                          (:copy-from-parent xproto/WINDOW-CLASS)
                           win
                           (:root screen)
                           0 0
                           150 150
                           10
-                          (:InputOutput xproto/WindowClass)
+                          (:input-output xproto/WINDOW-CLASS)
                           (:root-visual screen)
-                          (core/->Valueparam [(:BackPixel xproto/CW)
-                                              (:EventMask xproto/CW)]
+                          (core/->Valueparam [(:back-pixel xproto/CW)
+                                              (:event-mask xproto/CW)]
                                              [(:white-pixel screen)
-                                              (:Exposure xproto/EventMask)]))
+                                              (:exposure xproto/EVENT-MASK)]))
     ;; Map the window on the screen.
     (xproto/map-window c win)
     (while true
@@ -60,13 +60,13 @@
           (do
             ;; We draw the points.
             (xproto/poly-point c
-                               (:Origin xproto/CoordMode)
+                               (:origin xproto/COORD-MODE)
                                win
                                foreground
                                points)
             ;; We draw the polygonal line.
             (xproto/poly-line c
-                              (:Previous xproto/CoordMode)
+                              (:previous xproto/COORD-MODE)
                               win
                               foreground
                               polyline)

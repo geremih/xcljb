@@ -18,16 +18,16 @@
                           0 0
                           250 150
                           10
-                          (:InputOutput xproto/WindowClass)
+                          (:input-output xproto/WINDOW-CLASS)
                           (:root-visual screen)
                           (core/->Valueparam [] []))
     ;; Set the title of the window.
-    (xproto/change-property c (:Replace xproto/PropMode) win
-                            (:WM_NAME xproto/Atom) (:STRING xproto/Atom) 8
+    (xproto/change-property c (:replace xproto/PROP-MODE) win
+                            (:wm-name xproto/ATOM) (:string xproto/ATOM) 8
                             (count title) (map int title))
     ;; Set the title of the window icon.
-    (xproto/change-property c (:Replace xproto/PropMode) win
-                            (:WM_ICON_NAME xproto/Atom) (:STRING xproto/Atom) 8
+    (xproto/change-property c (:replace xproto/PROP-MODE) win
+                            (:wm-icon-name xproto/ATOM) (:string xproto/ATOM) 8
                             (count title-icon) (map int title-icon))
     ;; Map the window on the screen.
     (xproto/map-window c win)))
