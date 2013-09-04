@@ -15,12 +15,9 @@
         gc (core/gen-res-id c)]
     (xproto/open-font c font (count font-name) font-name)
     (xproto/create-gc c gc window
-                      (core/->Valueparam [(:foreground xproto/GC)
-                                          (:background xproto/GC)
-                                          (:font xproto/GC)]
-                                         [(:black-pixel screen)
-                                          (:white-pixel screen)
-                                          font]))
+                      {(:foreground xproto/GC) (:black-pixel screen)
+                       (:background xproto/GC) (:white-pixel screen)
+                       (:font xproto/GC) font})
     (xproto/close-font c font)
     gc))
 
@@ -40,16 +37,14 @@
                           20 200 WIDTH HEIGHT
                           0 (:input-output xproto/WINDOW-CLASS)
                           (:root-visual screen)
-                          (core/->Valueparam [(:back-pixel xproto/CW)
-                                              (:event-mask xproto/CW)]
-                                             [(:white-pixel screen)
-                                              (apply bit-or
-                                                     ((juxt
-                                                       :key-release
-                                                       :button-press
-                                                       :exposure
-                                                       :pointer-motion)
-                                                      xproto/EVENT-MASK))]))
+                          {(:back-pixel xproto/CW) (:white-pixel screen)
+                           (:event-mask xproto/CW) (apply bit-or
+                                                          ((juxt
+                                                            :key-release
+                                                            :button-press
+                                                            :exposure
+                                                            :pointer-motion)
+                                                           xproto/EVENT-MASK))})
     (xproto/map-window c window)
     (while true
       (let [e (core/wait-event c)]

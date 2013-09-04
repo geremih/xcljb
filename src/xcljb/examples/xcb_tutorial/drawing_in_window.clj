@@ -35,9 +35,8 @@
     (xproto/create-gc c
                       foreground
                       (:root screen)
-                      (core/->Valueparam [(:foreground xproto/GC)
-                                          (:graphics-exposures xproto/GC)]
-                                         [(:black-pixel screen) 0]))
+                      {(:foreground xproto/GC) (:black-pixel screen)
+                       (:graphics-exposures xproto/GC) 0})
     ;; Create the window.
     (xproto/create-window c
                           (:copy-from-parent xproto/WINDOW-CLASS)
@@ -48,10 +47,8 @@
                           10
                           (:input-output xproto/WINDOW-CLASS)
                           (:root-visual screen)
-                          (core/->Valueparam [(:back-pixel xproto/CW)
-                                              (:event-mask xproto/CW)]
-                                             [(:white-pixel screen)
-                                              (:exposure xproto/EVENT-MASK)]))
+                          {(:back-pixel xproto/CW) (:white-pixel screen)
+                           (:event-mask xproto/CW) (:exposure xproto/EVENT-MASK)})
     ;; Map the window on the screen.
     (xproto/map-window c win)
     (while true

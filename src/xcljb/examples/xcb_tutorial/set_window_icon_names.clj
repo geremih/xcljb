@@ -20,7 +20,7 @@
                           10
                           (:input-output xproto/WINDOW-CLASS)
                           (:root-visual screen)
-                          (core/->Valueparam [] []))
+                          {})
     ;; Set the title of the window.
     (xproto/change-property c (:replace xproto/PROP-MODE) win
                             (:wm-name xproto/ATOM) (:string xproto/ATOM) 8

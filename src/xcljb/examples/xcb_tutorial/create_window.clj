@@ -18,5 +18,5 @@
                           10
                           (:input-output xproto/WINDOW-CLASS)
                           (:root-visual screen)
-                          (core/->Valueparam [] []))
+                          {})
     (xproto/map-window c win)))

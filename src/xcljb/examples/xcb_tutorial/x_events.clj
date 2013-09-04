@@ -16,24 +16,26 @@
   (let [c (conn/connect)
         screen (-> c (core/get-setup) (:roots) (first))
         win (core/gen-res-id c)]
-    (xproto/create-window
-     c
-     0
-     win
-     (:root screen)
-     0 0
-     150 150
-     10
-     (:input-output xproto/WINDOW-CLASS)
-     (:root-visual screen)
-     (core/->Valueparam
-      [(:back-pixel xproto/CW)
-       (:event-mask xproto/CW)]
-      [(:white-pixel screen)
-       (apply bit-or
-              ((juxt :exposure :button-press :button-release :pointer-motion
-                     :enter-window :leave-window :key-press :key-release)
-               xproto/EVENT-MASK))]))
+    (xproto/create-window c
+                          0
+                          win
+                          (:root screen)
+                          0 0
+                          150 150
+                          10
+                          (:input-output xproto/WINDOW-CLASS)
+                          (:root-visual screen)
+                          {(:back-pixel xproto/CW) (:white-pixel screen)
+                           (:event-mask xproto/CW) (apply bit-or
+                                                          ((juxt :exposure
+                                                                 :button-press
+                                                                 :button-release
+                                                                 :pointer-motion
+                                                                 :enter-window
+                                                                 :leave-window
+                                                                 :key-press
+                                                                 :key-release)
+                                                           xproto/EVENT-MASK))})
     (xproto/map-window c win)
     (while true
       (let [e (core/wait-event c)]
