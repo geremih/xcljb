@@ -98,8 +98,8 @@
         max-keycode (.read-type xproto-types/KEYCODE ch)
         _ (gen-common/read-pad ch 4)
         vendor (gen-common/read-string ch vendor-len)
-        pixmap-formats (doall (repeatedly pixmap-formats-len #(xproto-internal/read-FORMAT ch)))
-        roots (doall (repeatedly roots-len #(xproto-internal/read-SCREEN ch)))]
+        pixmap-formats (doall (repeatedly pixmap-formats-len #(xproto-internal/read-Format ch)))
+        roots (doall (repeatedly roots-len #(xproto-internal/read-Screen ch)))]
     {:protocol-major-version protocol-major-version
      :protocol-minor-version protocol-minor-version
      :release-number release-number
