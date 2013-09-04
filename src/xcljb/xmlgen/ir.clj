@@ -21,6 +21,9 @@
     :reply (str name "Reply")
     :event (str name"Event")
     :error (str name "Error")
+    :type (if (= name (string/upper-case name))
+            (string/capitalize name)
+            name)
     :read-type (str "read-" name)
     :->type (str "->" name)))
 
@@ -33,11 +36,11 @@
 (defn- type->read-type [type]
   (let [{:keys [ns name]} type]
     (symbol (str "xcljb.gen." ns "-internal")
-            (beautify name :read-type))))
+            (-> name (beautify :type) (beautify :read-type)))))
 
 (defn- name->->type [header name]
   (symbol (str "xcljb.gen." header "-types")
-          (beautify name :->type)))
+          (-> name (beautify :type) (beautify :->type))))
 
 (defn- gen-read-fields [fields & body]
   `(let ~(reduce #(conj %1 (.gen-read-type-name %2) (.gen-read-type %2))
@@ -398,7 +401,7 @@
 
   Type
   (gen-type [this]
-    (let [s-name (-> this (:name) (symbol))
+    (let [s-name (-> this (:name) (beautify :type) (symbol))
           s-args (->> this (:content) (gen-args) (map symbol))]
       `(defrecord ~s-name [~@s-args]
          xcljb.gen-common/Measurable
@@ -414,7 +417,7 @@
   ReadableFn
   (gen-read-fn [this]
     (let [s-ch (symbol "ch")
-          s-name (-> this (:name) (beautify :read-type) (symbol))
+          s-name (-> this (:name) (beautify :type) (beautify :read-type) (symbol))
           s-args (->> this (:content) (gen-args) (map symbol))
           s-struct (name->->type (:header this) (:name this))]
       `(defn ~s-name [~s-ch]
