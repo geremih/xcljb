@@ -100,7 +100,7 @@
   Evalable
   (gen-eval [this]
     (let [v (.gen-eval (:expr this))]
-      `(.bitCount (BigInteger/valueOf ~v)))))
+      `(xcljb.gen-common/bit-count ~v))))
 
 (defrecord Sumof [ref]
   Evalable

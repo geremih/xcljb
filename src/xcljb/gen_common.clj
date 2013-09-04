@@ -46,6 +46,9 @@
   (rem (- 4 (rem n 4))
        4))
 
+(defn bit-count [n]
+  (.bitCount (BigInteger/valueOf n)))
+
 (defrecord PrimitiveType [type]
   Measurable
   (sizeof [this]
