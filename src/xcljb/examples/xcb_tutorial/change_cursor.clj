@@ -33,7 +33,7 @@
                             [(+ x1 width) (- y1 height)]
                             [x1 (- y1 height)]
                             [x1 y1]]]
-                 (xproto-types/->POINT x y))]
+                 (xproto-types/->Point x y))]
     (xproto/poly-line c
                       (:origin xproto/COORD-MODE)
                       window

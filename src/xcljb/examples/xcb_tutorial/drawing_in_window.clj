@@ -16,22 +16,22 @@
                             [10 20]
                             [20 10]
                             [20 20]]]
-                 (xproto-types/->POINT x y))
+                 (xproto-types/->Point x y))
         polyline (for [[x y] [[50 10
                                5 20     ; rest of points are relative
                                25 -20
                                10 10]]]
-                   (xproto-types/->POINT x y))
+                   (xproto-types/->Point x y))
         segments (for [[x1 y1 x2 y2] [[100 10 140 30]
                                       [110 25 130 60]]]
-                   (xproto-types/->SEGMENT x1 y1 x2 y2))
+                   (xproto-types/->Segment x1 y1 x2 y2))
         rectangles (for [[x y width height] [[10 50 40 20]
                                              [80 50 10 40]]]
-                     (xproto-types/->RECTANGLE x y width height))
+                     (xproto-types/->Rectangle x y width height))
         arcs (for [[x y width height angle1 angle2]
                    [[10 100 60 40 0 (bit-shift-left 90 6)]
                     [90 100 55 40 0 (bit-shift-left 270 6)]]]
-               (xproto-types/->ARC x y width height angle1 angle2))]
+               (xproto-types/->Arc x y width height angle1 angle2))]
     (xproto/create-gc c
                       foreground
                       (:root screen)
