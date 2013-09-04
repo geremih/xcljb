@@ -25,7 +25,7 @@
 (def DRAWABLE (xcljb.gen-common/->PrimitiveType :uint32))
 
 (clojure.core/defrecord
- CHAR2B
+ Char2b
  [byte1 byte2]
  xcljb.gen-common/Measurable
  (sizeof
@@ -41,7 +41,7 @@
  (to-value [this] [(:byte1 this) (:byte2 this)]))
 
 (clojure.core/defrecord
- POINT
+ Point
  [x y]
  xcljb.gen-common/Measurable
  (sizeof
@@ -57,7 +57,7 @@
  (to-value [this] [(:x this) (:y this)]))
 
 (clojure.core/defrecord
- RECTANGLE
+ Rectangle
  [x y width height]
  xcljb.gen-common/Measurable
  (sizeof
@@ -77,7 +77,7 @@
  (to-value [this] [(:x this) (:y this) (:width this) (:height this)]))
 
 (clojure.core/defrecord
- ARC
+ Arc
  [x y width height angle1 angle2]
  xcljb.gen-common/Measurable
  (sizeof
@@ -108,7 +108,7 @@
    (:angle2 this)]))
 
 (clojure.core/defrecord
- FORMAT
+ Format
  [depth bits-per-pixel scanline-pad]
  xcljb.gen-common/Measurable
  (sizeof
@@ -133,7 +133,7 @@
    (clojure.core/repeat 5 0)]))
 
 (clojure.core/defrecord
- VISUALTYPE
+ Visualtype
  [visual-id
   class
   bits-per-rgb-value
@@ -176,7 +176,7 @@
    (clojure.core/repeat 4 0)]))
 
 (clojure.core/defrecord
- DEPTH
+ Depth
  [depth visuals-len visuals]
  xcljb.gen-common/Measurable
  (sizeof
@@ -213,7 +213,7 @@
     (:visuals this))]))
 
 (clojure.core/defrecord
- SCREEN
+ Screen
  [root
   default-colormap
   white-pixel
@@ -529,7 +529,7 @@
     (:roots this))]))
 
 (clojure.core/defrecord
- TIMECOORD
+ Timecoord
  [time x y]
  xcljb.gen-common/Measurable
  (sizeof
@@ -547,7 +547,7 @@
  (to-value [this] [(:time this) (:x this) (:y this)]))
 
 (clojure.core/defrecord
- FONTPROP
+ Fontprop
  [name value]
  xcljb.gen-common/Measurable
  (sizeof
@@ -563,7 +563,7 @@
  (to-value [this] [(:name this) (:value this)]))
 
 (clojure.core/defrecord
- CHARINFO
+ Charinfo
  [left-side-bearing
   right-side-bearing
   character-width
@@ -599,7 +599,7 @@
    (:attributes this)]))
 
 (clojure.core/defrecord
- STR
+ Str
  [name-len name]
  xcljb.gen-common/Measurable
  (sizeof
@@ -615,7 +615,7 @@
  (to-value [this] [(:name-len this) (:name this)]))
 
 (clojure.core/defrecord
- SEGMENT
+ Segment
  [x1 y1 x2 y2]
  xcljb.gen-common/Measurable
  (sizeof
@@ -635,7 +635,7 @@
  (to-value [this] [(:x1 this) (:y1 this) (:x2 this) (:y2 this)]))
 
 (clojure.core/defrecord
- COLORITEM
+ Coloritem
  [pixel red green blue flags]
  xcljb.gen-common/Measurable
  (sizeof
@@ -666,7 +666,7 @@
    (clojure.core/repeat 1 0)]))
 
 (clojure.core/defrecord
- RGB
+ Rgb
  [red green blue]
  xcljb.gen-common/Measurable
  (sizeof
@@ -688,7 +688,7 @@
   [(:red this) (:green this) (:blue this) (clojure.core/repeat 2 0)]))
 
 (clojure.core/defrecord
- HOST
+ Host
  [family address-len address]
  xcljb.gen-common/Measurable
  (sizeof

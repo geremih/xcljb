@@ -3,27 +3,27 @@
  (:require [xcljb gen-common] [xcljb.gen xproto-types]))
 
 (clojure.core/defn
- read-CHAR2B
+ read-Char2b
  [ch]
  (clojure.core/let
   [byte1
    (.read-type xcljb.gen.xproto-types/CARD8 ch)
    byte2
    (.read-type xcljb.gen.xproto-types/CARD8 ch)]
-  (xcljb.gen.xproto-types/->CHAR2B byte1 byte2)))
+  (xcljb.gen.xproto-types/->Char2b byte1 byte2)))
 
 (clojure.core/defn
- read-POINT
+ read-Point
  [ch]
  (clojure.core/let
   [x
    (.read-type xcljb.gen.xproto-types/INT16 ch)
    y
    (.read-type xcljb.gen.xproto-types/INT16 ch)]
-  (xcljb.gen.xproto-types/->POINT x y)))
+  (xcljb.gen.xproto-types/->Point x y)))
 
 (clojure.core/defn
- read-RECTANGLE
+ read-Rectangle
  [ch]
  (clojure.core/let
   [x
@@ -34,10 +34,10 @@
    (.read-type xcljb.gen.xproto-types/CARD16 ch)
    height
    (.read-type xcljb.gen.xproto-types/CARD16 ch)]
-  (xcljb.gen.xproto-types/->RECTANGLE x y width height)))
+  (xcljb.gen.xproto-types/->Rectangle x y width height)))
 
 (clojure.core/defn
- read-ARC
+ read-Arc
  [ch]
  (clojure.core/let
   [x
@@ -52,10 +52,10 @@
    (.read-type xcljb.gen.xproto-types/INT16 ch)
    angle2
    (.read-type xcljb.gen.xproto-types/INT16 ch)]
-  (xcljb.gen.xproto-types/->ARC x y width height angle1 angle2)))
+  (xcljb.gen.xproto-types/->Arc x y width height angle1 angle2)))
 
 (clojure.core/defn
- read-FORMAT
+ read-Format
  [ch]
  (clojure.core/let
   [depth
@@ -66,10 +66,10 @@
    (.read-type xcljb.gen.xproto-types/CARD8 ch)
    _
    (xcljb.gen-common/read-pad ch 5)]
-  (xcljb.gen.xproto-types/->FORMAT depth bits-per-pixel scanline-pad)))
+  (xcljb.gen.xproto-types/->Format depth bits-per-pixel scanline-pad)))
 
 (clojure.core/defn
- read-VISUALTYPE
+ read-Visualtype
  [ch]
  (clojure.core/let
   [visual-id
@@ -88,7 +88,7 @@
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
    _
    (xcljb.gen-common/read-pad ch 4)]
-  (xcljb.gen.xproto-types/->VISUALTYPE
+  (xcljb.gen.xproto-types/->Visualtype
    visual-id
    class
    bits-per-rgb-value
@@ -98,7 +98,7 @@
    blue-mask)))
 
 (clojure.core/defn
- read-DEPTH
+ read-Depth
  [ch]
  (clojure.core/let
   [depth
@@ -115,11 +115,11 @@
      visuals-len
      (clojure.core/fn
       []
-      (xcljb.gen.xproto-internal/read-VISUALTYPE ch))))]
-  (xcljb.gen.xproto-types/->DEPTH depth visuals-len visuals)))
+      (xcljb.gen.xproto-internal/read-Visualtype ch))))]
+  (xcljb.gen.xproto-types/->Depth depth visuals-len visuals)))
 
 (clojure.core/defn
- read-SCREEN
+ read-Screen
  [ch]
  (clojure.core/let
   [root
@@ -161,8 +161,8 @@
    (clojure.core/doall
     (clojure.core/repeatedly
      allowed-depths-len
-     (clojure.core/fn [] (xcljb.gen.xproto-internal/read-DEPTH ch))))]
-  (xcljb.gen.xproto-types/->SCREEN
+     (clojure.core/fn [] (xcljb.gen.xproto-internal/read-Depth ch))))]
+  (xcljb.gen.xproto-types/->Screen
    root
    default-colormap
    white-pixel
@@ -300,12 +300,12 @@
    (clojure.core/doall
     (clojure.core/repeatedly
      pixmap-formats-len
-     (clojure.core/fn [] (xcljb.gen.xproto-internal/read-FORMAT ch))))
+     (clojure.core/fn [] (xcljb.gen.xproto-internal/read-Format ch))))
    roots
    (clojure.core/doall
     (clojure.core/repeatedly
      roots-len
-     (clojure.core/fn [] (xcljb.gen.xproto-internal/read-SCREEN ch))))]
+     (clojure.core/fn [] (xcljb.gen.xproto-internal/read-Screen ch))))]
   (xcljb.gen.xproto-types/->Setup
    status
    protocol-major-version
@@ -330,7 +330,7 @@
    roots)))
 
 (clojure.core/defn
- read-TIMECOORD
+ read-Timecoord
  [ch]
  (clojure.core/let
   [time
@@ -339,20 +339,20 @@
    (.read-type xcljb.gen.xproto-types/INT16 ch)
    y
    (.read-type xcljb.gen.xproto-types/INT16 ch)]
-  (xcljb.gen.xproto-types/->TIMECOORD time x y)))
+  (xcljb.gen.xproto-types/->Timecoord time x y)))
 
 (clojure.core/defn
- read-FONTPROP
+ read-Fontprop
  [ch]
  (clojure.core/let
   [name
    (.read-type xcljb.gen.xproto-types/ATOM ch)
    value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)]
-  (xcljb.gen.xproto-types/->FONTPROP name value)))
+  (xcljb.gen.xproto-types/->Fontprop name value)))
 
 (clojure.core/defn
- read-CHARINFO
+ read-Charinfo
  [ch]
  (clojure.core/let
   [left-side-bearing
@@ -367,7 +367,7 @@
    (.read-type xcljb.gen.xproto-types/INT16 ch)
    attributes
    (.read-type xcljb.gen.xproto-types/CARD16 ch)]
-  (xcljb.gen.xproto-types/->CHARINFO
+  (xcljb.gen.xproto-types/->Charinfo
    left-side-bearing
    right-side-bearing
    character-width
@@ -376,17 +376,17 @@
    attributes)))
 
 (clojure.core/defn
- read-STR
+ read-Str
  [ch]
  (clojure.core/let
   [name-len
    (.read-type xcljb.gen.xproto-types/CARD8 ch)
    name
    (xcljb.gen-common/read-string ch name-len)]
-  (xcljb.gen.xproto-types/->STR name-len name)))
+  (xcljb.gen.xproto-types/->Str name-len name)))
 
 (clojure.core/defn
- read-SEGMENT
+ read-Segment
  [ch]
  (clojure.core/let
   [x1
@@ -397,10 +397,10 @@
    (.read-type xcljb.gen.xproto-types/INT16 ch)
    y2
    (.read-type xcljb.gen.xproto-types/INT16 ch)]
-  (xcljb.gen.xproto-types/->SEGMENT x1 y1 x2 y2)))
+  (xcljb.gen.xproto-types/->Segment x1 y1 x2 y2)))
 
 (clojure.core/defn
- read-COLORITEM
+ read-Coloritem
  [ch]
  (clojure.core/let
   [pixel
@@ -415,10 +415,10 @@
    (.read-type xcljb.gen.xproto-types/BYTE ch)
    _
    (xcljb.gen-common/read-pad ch 1)]
-  (xcljb.gen.xproto-types/->COLORITEM pixel red green blue flags)))
+  (xcljb.gen.xproto-types/->Coloritem pixel red green blue flags)))
 
 (clojure.core/defn
- read-RGB
+ read-Rgb
  [ch]
  (clojure.core/let
   [red
@@ -429,10 +429,10 @@
    (.read-type xcljb.gen.xproto-types/CARD16 ch)
    _
    (xcljb.gen-common/read-pad ch 2)]
-  (xcljb.gen.xproto-types/->RGB red green blue)))
+  (xcljb.gen.xproto-types/->Rgb red green blue)))
 
 (clojure.core/defn
- read-HOST
+ read-Host
  [ch]
  (clojure.core/let
   [family
@@ -448,7 +448,7 @@
      (clojure.core/fn
       []
       (.read-type xcljb.gen.xproto-types/BYTE ch))))]
-  (xcljb.gen.xproto-types/->HOST family address-len address)))
+  (xcljb.gen.xproto-types/->Host family address-len address)))
 
 (clojure.core/defn
  read-GetWindowAttributesReply
@@ -926,7 +926,7 @@
       events-len
       (clojure.core/fn
        []
-       (xcljb.gen.xproto-internal/read-TIMECOORD ch))))]
+       (xcljb.gen.xproto-internal/read-Timecoord ch))))]
    (clojure.core/let
     [size__1135__auto__
      (clojure.core/+
@@ -1051,11 +1051,11 @@
   [_ val__1136__auto__]
   (clojure.core/let
    [min-bounds
-    (xcljb.gen.xproto-internal/read-CHARINFO ch)
+    (xcljb.gen.xproto-internal/read-Charinfo ch)
     _
     (xcljb.gen-common/read-pad ch 4)
     max-bounds
-    (xcljb.gen.xproto-internal/read-CHARINFO ch)
+    (xcljb.gen.xproto-internal/read-Charinfo ch)
     _
     (xcljb.gen-common/read-pad ch 4)
     min-char-or-byte2
@@ -1089,14 +1089,14 @@
       properties-len
       (clojure.core/fn
        []
-       (xcljb.gen.xproto-internal/read-FONTPROP ch))))
+       (xcljb.gen.xproto-internal/read-Fontprop ch))))
     char-infos
     (clojure.core/doall
      (clojure.core/repeatedly
       char-infos-len
       (clojure.core/fn
        []
-       (xcljb.gen.xproto-internal/read-CHARINFO ch))))]
+       (xcljb.gen.xproto-internal/read-Charinfo ch))))]
    (clojure.core/let
     [size__1135__auto__
      (clojure.core/+
@@ -1170,7 +1170,7 @@
     (clojure.core/doall
      (clojure.core/repeatedly
       names-len
-      (clojure.core/fn [] (xcljb.gen.xproto-internal/read-STR ch))))]
+      (clojure.core/fn [] (xcljb.gen.xproto-internal/read-Str ch))))]
    (clojure.core/let
     [size__1135__auto__
      (clojure.core/+
@@ -1203,11 +1203,11 @@
   [name-len val__1136__auto__]
   (clojure.core/let
    [min-bounds
-    (xcljb.gen.xproto-internal/read-CHARINFO ch)
+    (xcljb.gen.xproto-internal/read-Charinfo ch)
     _
     (xcljb.gen-common/read-pad ch 4)
     max-bounds
-    (xcljb.gen.xproto-internal/read-CHARINFO ch)
+    (xcljb.gen.xproto-internal/read-Charinfo ch)
     _
     (xcljb.gen-common/read-pad ch 4)
     min-char-or-byte2
@@ -1241,7 +1241,7 @@
       properties-len
       (clojure.core/fn
        []
-       (xcljb.gen.xproto-internal/read-FONTPROP ch))))
+       (xcljb.gen.xproto-internal/read-Fontprop ch))))
     name
     (xcljb.gen-common/read-string ch name-len)]
    (clojure.core/let
@@ -1313,7 +1313,7 @@
     (clojure.core/doall
      (clojure.core/repeatedly
       path-len
-      (clojure.core/fn [] (xcljb.gen.xproto-internal/read-STR ch))))]
+      (clojure.core/fn [] (xcljb.gen.xproto-internal/read-Str ch))))]
    (clojure.core/let
     [size__1135__auto__
      (clojure.core/+
@@ -1595,7 +1595,7 @@
     (clojure.core/doall
      (clojure.core/repeatedly
       colors-len
-      (clojure.core/fn [] (xcljb.gen.xproto-internal/read-RGB ch))))]
+      (clojure.core/fn [] (xcljb.gen.xproto-internal/read-Rgb ch))))]
    (clojure.core/let
     [size__1135__auto__
      (clojure.core/+
@@ -1751,7 +1751,7 @@
     (clojure.core/doall
      (clojure.core/repeatedly
       names-len
-      (clojure.core/fn [] (xcljb.gen.xproto-internal/read-STR ch))))]
+      (clojure.core/fn [] (xcljb.gen.xproto-internal/read-Str ch))))]
    (clojure.core/let
     [size__1135__auto__
      (clojure.core/+
@@ -1926,7 +1926,7 @@
     (clojure.core/doall
      (clojure.core/repeatedly
       hosts-len
-      (clojure.core/fn [] (xcljb.gen.xproto-internal/read-HOST ch))))]
+      (clojure.core/fn [] (xcljb.gen.xproto-internal/read-Host ch))))]
    (clojure.core/let
     [size__1135__auto__
      (clojure.core/+
