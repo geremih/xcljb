@@ -327,8 +327,11 @@
       `(+ (.sizeof ~s-mask-type)
           (* (-> ~s-this (~k-name) (:list) (count))
              4))))
-  ;; TODO
-  (gen-read-sizeof [this])
+  (gen-read-sizeof [this]
+    (let [s-name (-> this (:name) (beautify :arg) (symbol))
+          s-mask-type (-> this (:mask-type (parse-type)))]
+      `(+ (.sizeof ~s-mask-type)
+          (* ~s-name 4))))
 
   ;; FIXME: For valueparam with mask type of "CARD16", the value-mask-name refers to actual, existing field.
   CodeSerializable
@@ -347,8 +350,13 @@
         (.to-list (~k-name ~s-this))]))
 
   ReadableType
-  ;; TODO
-  (gen-read-type [this])
+  (gen-read-type [this]
+    (let [s-ch (symbol "ch")
+          s-mask-type (-> this (:mask-type) (parse-type))]
+      `(let [masks# (xcljb.gen-common/mask->masks (.read-type ~s-mask-type ~s-ch))
+             vs# (doall (repeatedly (count masks#)
+                                    (fn [] (xcljb.gen-common/read-bytes ~s-ch 4))))]
+         (xcljb.core/->Valueparam masks# vs#))))
   (gen-read-type-name [this]
     (-> this (:name) (beautify :arg) (symbol))))
 

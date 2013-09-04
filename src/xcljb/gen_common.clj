@@ -49,6 +49,12 @@
 (defn bit-count [n]
   (.bitCount (BigInteger/valueOf n)))
 
+(defn mask->masks [mask]
+  (for [m (iterate #(bit-shift-left % 1) 1)
+        :while (<= m mask)
+        :when (not (zero? (bit-and mask m)))]
+    m))
+
 (defrecord PrimitiveType [type]
   Measurable
   (sizeof [this]
