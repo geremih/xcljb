@@ -190,6 +190,11 @@
         (log/debug "Channel closed.")))))
 
 (defn connect
+  "Connects to the X server at the given host and port and returns a
+  connection object. Defaults to localhost and port 6000.
+
+  The connection object should be taken as an opaque object, i.e. do
+  not modify or inspect the connection object."
   ([] (connect "localhost" 6000))
   ([host port]
      (let [ch (SocketChannel/open (InetSocketAddress. host port))
@@ -213,7 +218,10 @@
          :events eventq
          :ch-reader ch-reader}))))
 
-(defn disconnect [conn]
+(defn disconnect
+  "Disconnects from the X server. Connection conn will no longer be
+  valid after this function returns."
+  [conn]
   (.close (:ch @conn))
   (swap! conn (constantly nil))
   nil)

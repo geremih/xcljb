@@ -1,12 +1,22 @@
 (ns xcljb.core)
 
-(defn get-setup [conn]
+(defn get-setup
+  "Access the data returned by the server during connection setup. See
+  the X protocol specification for more details."
+  [conn]
   (:setup @conn))
 
-(defn wait-event [conn]
+(defn wait-event
+  "Returns the next event from connection conn. Blocks until an event
+  arrives."
+  [conn]
   (.take (:events @conn)))
 
-(defn poll-event [conn timeout unit]
+(defn poll-event
+  "Returns the next event from connection conn, or nil if no event
+  arrives before timeout. unit is a java.util.concurrent.TimeUnit for
+  the timeout parameter."
+  [conn timeout unit]
   (.poll (:events @conn) timeout unit))
 
 (defn- max-res-id [conn]
@@ -16,7 +26,9 @@
     (bit-shift-right res-mask res-shifts)))
 
 ;;; TODO: Use XC-MISC extension to generate resource ids.
-(defn gen-res-id [conn]
+(defn gen-res-id
+  "Generates a resource ID."
+  [conn]
   (let [res-base (-> conn (get-setup) (:resource-id-base))
         res-mask (-> conn (get-setup) (:resource-id-mask))
         res-shifts (.getLowestSetBit (BigInteger/valueOf res-mask))
