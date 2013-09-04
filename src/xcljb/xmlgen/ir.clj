@@ -325,7 +325,7 @@
           k-name (-> this (:name) (beautify :arg) (keyword))
           s-mask-type (-> this (:mask-type) (parse-type))]
       `(+ (.sizeof ~s-mask-type)
-          (* (-> ~s-this (~k-name) (:list) (count))
+          (* (-> ~s-this (~k-name) (count))
              4))))
   (gen-read-sizeof [this]
     (let [s-name (-> this (:name) (beautify :arg) (symbol))
@@ -341,13 +341,12 @@
           ;; Mask type is always a primitive type.
           s-mask-type (-> this (:mask-type) (parse-type))]
       `[(.to-frame ~s-mask-type)
-        (repeat (count (.to-list (~k-name ~s-this)))
+        (repeat (-> ~s-this (~k-name) (count))
                 :uint32)]))
   (gen-to-value [this]
     (let [s-this (symbol "this")
           k-name (-> this (:name) (beautify :arg) (keyword))]
-      `[(.to-mask (~k-name ~s-this))
-        (.to-list (~k-name ~s-this))]))
+      `(xcljb.gen-common/valueparam->value (~k-name ~s-this))))
 
   ReadableType
   (gen-read-type [this]
@@ -356,7 +355,7 @@
       `(let [masks# (xcljb.gen-common/mask->masks (.read-type ~s-mask-type ~s-ch))
              vs# (doall (repeatedly (count masks#)
                                     (fn [] (xcljb.gen-common/read-bytes ~s-ch 4))))]
-         (xcljb.core/->Valueparam masks# vs#))))
+         (zipmap masks# vs#))))
   (gen-read-type-name [this]
     (-> this (:name) (beautify :arg) (symbol))))
 

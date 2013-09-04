@@ -1,15 +1,5 @@
 (ns xcljb.core)
 
-(defrecord Valueparam [masks list]
-  xcljb.gen-common/Valueparam
-  (to-mask [this]
-    (reduce bit-or 0 (:masks this)))
-  (to-list [this]
-    (let [mask-list (map vector (:masks this) (:list this))
-          sorted-mask-list (sort-by first mask-list)
-          sorted-list (map second sorted-mask-list)]
-      sorted-list)))
-
 (defn get-setup [conn]
   (:setup @conn))
 

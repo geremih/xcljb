@@ -49,6 +49,13 @@
 (defn bit-count [n]
   (.bitCount (BigInteger/valueOf n)))
 
+(defn valueparam->value [vp]
+  (let [mask-list (into [] vp)
+        sorted-mask-list (sort-by first mask-list)
+        sorted-list (map second sorted-mask-list)]
+    [(reduce bit-or 0 (keys vp))
+     sorted-list]))
+
 (defn mask->masks [mask]
   (for [m (iterate #(bit-shift-left % 1) 1)
         :while (<= m mask)
@@ -95,7 +102,3 @@
                (encode (.to-frame request)
                        (.to-value request)))))
     reply-promise))
-
-(defprotocol Valueparam
-  (to-mask [this])
-  (to-list [this]))
