@@ -5,4 +5,5 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/data.xml "0.0.7"]
                  [org.slf4j/slf4j-log4j12 "1.7.5"]
-                 [gloss "0.2.2"]])
+                 [gloss "0.2.2"]]
+  :jvm-opts ["-server"])
