@@ -34,7 +34,7 @@ Add the following to the `project.clj` dependencies:
 
 ## Usage
 
-Since Java does not have access to Unix domain socket, one would have to either make the X server listen on a TCP port, or connect an existing Unix domain socket to a TCP port. There are several ways of achieving the latter, one of which is by using [socat](http://www.dest-unreach.org/socat/). If your display is on screen 0 (by looking at the `DISPLAY` environment variable), you can create a listening TCP socket at localhost on port 6000 by running the following command:
+Since Java does not have access to Unix domain socket, one would have to either make the X server listen on a TCP port, or connect an existing Unix domain socket to a TCP port. There are several ways of achieving the latter, one of which is by using [socat](http://www.dest-unreach.org/socat/). If your X server is running on display 0 (by looking at the `DISPLAY` environment variable, of form "[host]:[display].[screen]"), you can create a listening TCP socket at localhost on port 6000 by running the following command:
 
     socat TCP-LISTEN:6000,fork,bind=localhost UNIX-CONNECT:/tmp/.X11-unix/X0
 
