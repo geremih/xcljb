@@ -1,5 +1,6 @@
 (ns xcljb.xmlgen.xml2ir
-  (:require [clojure.set :as set]
+  (:require [clojure.edn :as edn]
+            [clojure.set :as set]
             [clojure.string :as string]
             [xcljb.xmlgen.ir :as ir]))
 
@@ -247,7 +248,7 @@
 
 (defn- read-typemap! []
   (with-open [r (clojure.java.io/reader "src/xcljb/gen/typemap.clj")]
-    (reset! TYPEMAP (read (java.io.PushbackReader. r)))))
+    (reset! TYPEMAP (edn/read (java.io.PushbackReader. r)))))
 
 (defn- write-typemap! []
   (spit "src/xcljb/gen/typemap.clj"
