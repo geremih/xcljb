@@ -1418,6 +1418,24 @@
    request-struct__1080__auto__)))
 
 (clojure.core/defn
+ get-image
+ [conn__1079__auto__ format drawable x y width height plane-mask]
+ (clojure.core/let
+  [request-struct__1080__auto__
+   (xcljb.gen.xproto-types/->GetImageRequest
+    73
+    format
+    drawable
+    x
+    y
+    width
+    height
+    plane-mask)]
+  (xcljb.gen-common/send
+   conn__1079__auto__
+   request-struct__1080__auto__)))
+
+(clojure.core/defn
  poly-text8
  [conn__1079__auto__ drawable gc x y items]
  (clojure.core/let
@@ -1818,6 +1836,19 @@
     first-keycode
     keysyms-per-keycode
     keysyms)]
+  (xcljb.gen-common/send
+   conn__1079__auto__
+   request-struct__1080__auto__)))
+
+(clojure.core/defn
+ get-keyboard-mapping
+ [conn__1079__auto__ first-keycode count]
+ (clojure.core/let
+  [request-struct__1080__auto__
+   (xcljb.gen.xproto-types/->GetKeyboardMappingRequest
+    101
+    first-keycode
+    count)]
   (xcljb.gen-common/send
    conn__1079__auto__
    request-struct__1080__auto__)))

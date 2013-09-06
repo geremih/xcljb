@@ -1913,7 +1913,7 @@
  (to-frame
   [this]
   [:ubyte
-   nil
+   (clojure.core/repeat 1 :byte)
    :uint16
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -1921,7 +1921,7 @@
  (to-value
   [this]
   [36
-   nil
+   (clojure.core/repeat 1 0)
    (clojure.core/int
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
@@ -1935,7 +1935,7 @@
  (to-frame
   [this]
   [:ubyte
-   nil
+   (clojure.core/repeat 1 :byte)
    :uint16
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -1943,7 +1943,7 @@
  (to-value
   [this]
   [37
-   nil
+   (clojure.core/repeat 1 0)
    (clojure.core/int
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
@@ -2146,7 +2146,7 @@
  (to-frame
   [this]
   [:ubyte
-   nil
+   (clojure.core/repeat 1 :byte)
    :uint16
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -2154,7 +2154,7 @@
  (to-value
   [this]
   [43
-   nil
+   (clojure.core/repeat 1 0)
    (clojure.core/int
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
@@ -2168,7 +2168,7 @@
  (to-frame
   [this]
   [:ubyte
-   nil
+   (clojure.core/repeat 1 :byte)
    :uint16
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -2176,7 +2176,7 @@
  (to-value
   [this]
   [44
-   nil
+   (clojure.core/repeat 1 0)
    (clojure.core/int
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
@@ -2394,7 +2394,7 @@
  (to-frame
   [this]
   [:ubyte
-   nil
+   (clojure.core/repeat 1 :byte)
    :uint16
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -2402,7 +2402,7 @@
  (to-value
   [this]
   [52
-   nil
+   (clojure.core/repeat 1 0)
    (clojure.core/int
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
@@ -3300,6 +3300,50 @@
    (:depth this)
    (clojure.core/repeat 2 0)
    (:data this)
+   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+
+(clojure.core/defrecord
+ GetImageRequest
+ [opcode format drawable x y width height plane-mask]
+ xcljb.gen-common/Measurable
+ (sizeof
+  [this]
+  (clojure.core/+
+   3
+   (.sizeof xcljb.gen.xproto-types/CARD8)
+   (.sizeof xcljb.gen.xproto-types/DRAWABLE)
+   (.sizeof xcljb.gen.xproto-types/INT16)
+   (.sizeof xcljb.gen.xproto-types/INT16)
+   (.sizeof xcljb.gen.xproto-types/CARD16)
+   (.sizeof xcljb.gen.xproto-types/CARD16)
+   (.sizeof xcljb.gen.xproto-types/CARD32)))
+ xcljb.gen-common/Serializable
+ (to-frame
+  [this]
+  [:ubyte
+   (.to-frame xcljb.gen.xproto-types/CARD8)
+   :uint16
+   (.to-frame xcljb.gen.xproto-types/DRAWABLE)
+   (.to-frame xcljb.gen.xproto-types/INT16)
+   (.to-frame xcljb.gen.xproto-types/INT16)
+   (.to-frame xcljb.gen.xproto-types/CARD16)
+   (.to-frame xcljb.gen.xproto-types/CARD16)
+   (.to-frame xcljb.gen.xproto-types/CARD32)
+   (clojure.core/repeat
+    (xcljb.gen-common/padding (.sizeof this))
+    :byte)])
+ (to-value
+  [this]
+  [73
+   (:format this)
+   (clojure.core/int
+    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+   (:drawable this)
+   (:x this)
+   (:y this)
+   (:width this)
+   (:height this)
+   (:plane-mask this)
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
 
 (clojure.core/defrecord
@@ -4303,7 +4347,7 @@
  (to-frame
   [this]
   [:ubyte
-   nil
+   (clojure.core/repeat 1 :byte)
    :uint16
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -4311,7 +4355,7 @@
  (to-value
   [this]
   [99
-   nil
+   (clojure.core/repeat 1 0)
    (clojure.core/int
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
@@ -4359,6 +4403,38 @@
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
 
 (clojure.core/defrecord
+ GetKeyboardMappingRequest
+ [opcode first-keycode count]
+ xcljb.gen-common/Measurable
+ (sizeof
+  [this]
+  (clojure.core/+
+   3
+   1
+   (.sizeof xcljb.gen.xproto-types/KEYCODE)
+   (.sizeof xcljb.gen.xproto-types/CARD8)))
+ xcljb.gen-common/Serializable
+ (to-frame
+  [this]
+  [:ubyte
+   (clojure.core/repeat 1 :byte)
+   :uint16
+   (.to-frame xcljb.gen.xproto-types/KEYCODE)
+   (.to-frame xcljb.gen.xproto-types/CARD8)
+   (clojure.core/repeat
+    (xcljb.gen-common/padding (.sizeof this))
+    :byte)])
+ (to-value
+  [this]
+  [101
+   (clojure.core/repeat 1 0)
+   (clojure.core/int
+    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+   (:first-keycode this)
+   (:count this)
+   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+
+(clojure.core/defrecord
  ChangeKeyboardControlRequest
  [opcode value]
  xcljb.gen-common/Measurable
@@ -4403,7 +4479,7 @@
  (to-frame
   [this]
   [:ubyte
-   nil
+   (clojure.core/repeat 1 :byte)
    :uint16
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -4411,7 +4487,7 @@
  (to-value
   [this]
   [103
-   nil
+   (clojure.core/repeat 1 0)
    (clojure.core/int
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
@@ -4495,7 +4571,7 @@
  (to-frame
   [this]
   [:ubyte
-   nil
+   (clojure.core/repeat 1 :byte)
    :uint16
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -4503,7 +4579,7 @@
  (to-value
   [this]
   [106
-   nil
+   (clojure.core/repeat 1 0)
    (clojure.core/int
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
@@ -4555,7 +4631,7 @@
  (to-frame
   [this]
   [:ubyte
-   nil
+   (clojure.core/repeat 1 :byte)
    :uint16
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -4563,7 +4639,7 @@
  (to-value
   [this]
   [108
-   nil
+   (clojure.core/repeat 1 0)
    (clojure.core/int
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
@@ -4619,7 +4695,7 @@
  (to-frame
   [this]
   [:ubyte
-   nil
+   (clojure.core/repeat 1 :byte)
    :uint16
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -4627,7 +4703,7 @@
  (to-value
   [this]
   [110
-   nil
+   (clojure.core/repeat 1 0)
    (clojure.core/int
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
@@ -4814,7 +4890,7 @@
  (to-frame
   [this]
   [:ubyte
-   nil
+   (clojure.core/repeat 1 :byte)
    :uint16
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -4822,7 +4898,7 @@
  (to-value
   [this]
   [117
-   nil
+   (clojure.core/repeat 1 0)
    (clojure.core/int
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
@@ -4869,7 +4945,7 @@
  (to-frame
   [this]
   [:ubyte
-   nil
+   (clojure.core/repeat 1 :byte)
    :uint16
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -4877,7 +4953,7 @@
  (to-value
   [this]
   [119
-   nil
+   (clojure.core/repeat 1 0)
    (clojure.core/int
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
@@ -4891,7 +4967,7 @@
  (to-frame
   [this]
   [:ubyte
-   nil
+   (clojure.core/repeat 1 :byte)
    :uint16
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -4899,7 +4975,7 @@
  (to-value
   [this]
   [127
-   nil
+   (clojure.core/repeat 1 0)
    (clojure.core/int
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
@@ -5001,6 +5077,8 @@
 
 (clojure.core/defrecord GetFontPathReply [path-len path])
 
+(clojure.core/defrecord GetImageReply [depth visual data])
+
 (clojure.core/defrecord ListInstalledColormapsReply [cmaps-len cmaps])
 
 (clojure.core/defrecord AllocColorReply [red green blue pixel])
@@ -5036,6 +5114,10 @@
  [present major-opcode first-event first-error])
 
 (clojure.core/defrecord ListExtensionsReply [names-len names])
+
+(clojure.core/defrecord
+ GetKeyboardMappingReply
+ [keysyms-per-keycode keysyms])
 
 (clojure.core/defrecord
  GetKeyboardControlReply
