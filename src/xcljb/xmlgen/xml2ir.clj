@@ -6,9 +6,7 @@
 
 (def ^:private SKIP {"xproto" {:union #{"ClientMessageData"}
                                :request #{"ConfigureWindow"
-                                          "QueryTextExtents"
-                                          "GetImage"
-                                          "GetKeyboardMapping"}
+                                          "QueryTextExtents"}
                                :event #{"ClientMessage"}}
                      "randr" {:union #{"NotifyData"}
                               :event #{"Notify"}}})
