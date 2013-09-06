@@ -161,7 +161,7 @@
 (defn- handle-reply [ch replyq]
   (let [val (gen-common/read-bytes ch 1) ; FIXME: What if byte is signed?
         seq-n (gen-common/read-bytes ch 2)
-        len (* (gen-common/read-bytes ch 4) 4)
+        len (gen-common/read-bytes ch 4)
         read-reply (get-read-reply replyq seq-n)
         reply (read-reply ch len val)]
     (log/debug reply)
