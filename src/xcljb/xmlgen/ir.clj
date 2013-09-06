@@ -453,7 +453,10 @@
           content-frame (map #(.gen-to-frame %) (:content this))]
       ;; Has to be a vector, to prevent keyword being interpreted as function.
       `[~@(concat [:ubyte]
-                  [(first content-frame)]
+                  ;; content might be empty, e.g. QueryKeymap.
+                  (if (empty? content-frame)
+                    [(.gen-to-frame (->Pad 1))]
+                    [(first content-frame)])
                   [:uint16]
                   (rest content-frame)
                   [`(repeat (xcljb.gen-common/padding (.sizeof ~s-this))
@@ -462,7 +465,9 @@
     (let [s-this (symbol "this")
           content-value (map #(.gen-to-value %) (:content this))]
       `[~@(concat [(:opcode this)]
-                  [(first content-value)]
+                  (if (empty? content-value)
+                    [(.gen-to-value (->Pad 1))]
+                    [(first content-value)])
                   [`(int (Math/ceil (/ (.sizeof ~s-this)
                                        4)))]
                   (rest content-value)
