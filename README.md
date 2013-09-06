@@ -71,7 +71,7 @@ Examples are listed under the `src/xcljb/examples/` directory.
 
 * Core protocol, as yet unimplemented
 
-  * Request: ConfigureWindow, QueryTextExtents, GetImage, GetKeyboardMapping
+  * Request: ConfigureWindow, QueryTextExtents
   * Event: ClientMessage
   * Union: ClientMessageData
 
