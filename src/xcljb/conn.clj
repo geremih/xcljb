@@ -187,7 +187,8 @@
           (handle-event ch type-or-event replyq eventq)))
 
       (catch java.nio.channels.AsynchronousCloseException e
-        (log/debug "Channel closed.")))))
+        ;; Channel closed; do nothing.
+        ))))
 
 (defn connect
   "Connects to the X server at the given host and port and returns a
@@ -207,6 +208,7 @@
            ch-reader (Thread. #(read-channel ch replyq eventq))]
        ;; Wait for setup-reply to finish.
        @setup-reply
+       (log/debug "Connection setup finished.")
        (.start ch-reader)
        (atom
         {:conn-lock (Object.)
@@ -224,4 +226,5 @@
   [conn]
   (.close (:ch @conn))
   (swap! conn (constantly nil))
+  (log/debug "Disconnected.")
   nil)
