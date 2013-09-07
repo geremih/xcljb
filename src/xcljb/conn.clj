@@ -144,12 +144,12 @@
     (.take replyq)
     (deliver r reply)))
 
-(defn- get-read-reply [replyq seq-num]
+(defn- get-reply-opcode [replyq seq-num]
   (clear-old-replies replyq seq-num)
   (let [{seqn :seq-num, opcode :opcode, :as r} (.peek replyq)]
     (assert r "Sequence number corresponds to no request.")
     (assert (= seqn seq-num) "Sequence number greater than all requests.")
-    (xproto-internal/read-reply opcode)))
+    opcode))
 
 (defn- handle-error [ch replyq]
   (let [code (gen-common/read-bytes ch 1)
@@ -162,8 +162,8 @@
   (let [val (gen-common/read-bytes ch 1) ; always unsigned for xproto-1.8
         seq-n (gen-common/read-bytes ch 2)
         len (gen-common/read-bytes ch 4)
-        read-reply (get-read-reply replyq seq-n)
-        reply (read-reply ch len val)]
+        reply-opcode (get-reply-opcode replyq seq-n)
+        reply (gen-common/read-reply reply-opcode ch len val)]
     (log/debug reply)
     (deliver-reply reply seq-n replyq)))
 

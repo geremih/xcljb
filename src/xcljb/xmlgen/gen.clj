@@ -19,15 +19,6 @@
                  []
                  coll))))
 
-(defn- gen-read-reply [replies]
-  (gen-read-table "read-reply"
-                  :request-opcode
-                  #(-> %
-                       (:name)
-                       (ir/beautify :reply)
-                       (ir/beautify :read-type))
-                  replies))
-
 (defn- gen-read-event [events]
   (gen-read-table "read-event"
                   :number
@@ -143,9 +134,6 @@
       (doseq [error errors]
         (.write wrtr "\n")
         (pp/pprint (.gen-read-fn error) wrtr))
-
-      (.write wrtr "\n")
-      (pp/pprint (gen-read-reply replies) wrtr)
 
       (.write wrtr "\n")
       (pp/pprint (gen-read-event events) wrtr)

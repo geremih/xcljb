@@ -522,14 +522,14 @@
   ReadableFn
   (gen-read-fn [this]
     (let [s-ch (symbol "ch")
+          s-_ (symbol "_")
           ;; Has to be named "length", since e.g. GetKeyboardMapping requires it.
           s-len (symbol "length")
-          name (-> this (:name) (beautify :reply))
-          s-name (-> name (beautify :read-type) (symbol))
+          opcode (:request-opcode this)
           s-reply (name->->type (:header this)
                                 (-> this (:name) (beautify :reply)))
           s-args (->> this (:content) (gen-args) (map symbol))]
-      `(defn ~s-name [~s-ch ~s-len val#]
+      `(defmethod xcljb.gen-common/read-reply ~opcode [~s-_ ~s-ch ~s-len val#]
          (let [~(.gen-read-type-name (first (:content this))) val#]
            ~(gen-read-fields
              (rest (:content this))
