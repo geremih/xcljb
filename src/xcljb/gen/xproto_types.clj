@@ -5470,7 +5470,7 @@
     (:window this)
     (clojure.core/first vp__1303__auto__)
     0
-    (clojure.core/rest vp__1303__auto__)])))
+    (clojure.core/second vp__1303__auto__)])))
 
 (clojure.core/defrecord
  QueryTextExtentsReply
