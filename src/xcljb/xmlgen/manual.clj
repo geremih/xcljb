@@ -55,7 +55,7 @@
            (~k-window ~s-this)
            (first vp#)
            0
-           (rest vp#)])))))
+           (second vp#)])))))
 
 ;;; QueryTextExtents
 
