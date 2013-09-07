@@ -50,11 +50,8 @@
   (.bitCount (BigInteger/valueOf n)))
 
 (defn valueparam->value [vp]
-  (let [mask-list (into [] vp)
-        sorted-mask-list (sort-by first mask-list)
-        sorted-list (map second sorted-mask-list)]
-    [(reduce bit-or 0 (keys vp))
-     sorted-list]))
+  [(reduce bit-or 0 (keys vp))
+   (->> vp (sort-by key) (map second))])
 
 (defn mask->masks [mask]
   (for [m (iterate #(bit-shift-left % 1) 1)
