@@ -2,6 +2,7 @@
   (:require [clojure.pprint :as pp]
             [clojure.data.xml :as xml]
             [xcljb.xmlgen.ir :as ir]
+            [xcljb.xmlgen.manual :as manual]
             [xcljb.xmlgen.xml2ir :as xml2ir])
   (:import [xcljb.xmlgen.ir Struct]))
 
@@ -55,6 +56,9 @@
        (:require [~@(map symbol ["xcljb" "conn" "gen-common"])]
                  [~@(map symbol ["xcljb.gen" (str header "-types")])]))))
 
+(defn- write-manual-comment [writer]
+  (.write writer "\n;;; Manually written.\n"))
+
 (defn -main [& args]
   (let [root (xml/parse (java.io.BufferedReader. *in*))
         [xcb
@@ -78,7 +82,13 @@
 
       (doseq [request requests]
         (.write wrtr "\n")
-        (pp/pprint (.gen-request-fn request) wrtr)))
+        (pp/pprint (.gen-request-fn request) wrtr))
+
+      ;; Manually written requests.
+      (write-manual-comment wrtr)
+      (doseq [request (get-in manual/MANUAL [(:header xcb) :request])]
+        (.write wrtr "\n")
+        (pp/pprint (manual/gen-request-fn request) wrtr)))
 
     (with-open [wrtr (clojure.java.io/writer (str file-prefix "_types.clj"))]
       (pp/pprint
@@ -109,7 +119,16 @@
 
       (doseq [error errors]
         (.write wrtr "\n")
-        (pp/pprint (.gen-type error) wrtr)))
+        (pp/pprint (.gen-type error) wrtr))
+
+      ;; Manually written types.
+      (write-manual-comment wrtr)
+      (doseq [request (get-in manual/MANUAL [(:header xcb) :request])]
+        (.write wrtr "\n")
+        (pp/pprint (manual/gen-request-type request) wrtr))
+      (doseq [reply (get-in manual/MANUAL [(:header xcb) :reply])]
+        (.write wrtr "\n")
+        (pp/pprint (manual/gen-reply-type reply) wrtr)))
 
     (with-open [wrtr (clojure.java.io/writer (str file-prefix "_internal.clj"))]
       (pp/pprint
@@ -139,4 +158,10 @@
       (pp/pprint (gen-read-event events) wrtr)
 
       (.write wrtr "\n")
-      (pp/pprint (gen-read-error errors) wrtr))))
+      (pp/pprint (gen-read-error errors) wrtr)
+
+      ;; Manually written read functions.
+      (write-manual-comment wrtr)
+      (doseq [reply (get-in manual/MANUAL [(:header xcb) :reply])]
+        (.write wrtr "\n")
+        (pp/pprint (manual/gen-reply-fn reply) wrtr)))))
