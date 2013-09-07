@@ -332,7 +332,7 @@
              4))))
   (gen-read-sizeof [this]
     (let [s-name (-> this (:name) (beautify :arg) (symbol))
-          s-mask-type (-> this (:mask-type (parse-type)))]
+          s-mask-type (-> this (:mask-type) (parse-type))]
       `(+ (.sizeof ~s-mask-type)
           (* ~s-name 4))))
 
