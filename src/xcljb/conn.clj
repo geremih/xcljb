@@ -196,29 +196,29 @@
 
   The connection object should be taken as an opaque object, i.e. do
   not modify or inspect the connection object."
-  ([] (connect "localhost" 6000))
-  ([host port]
-     (let [ch (SocketChannel/open (InetSocketAddress. host port))
-           ;; Disable Nagle's algorithm.
-           _ (-> ch (.socket) (.setTcpNoDelay true))
-           _ (.finishConnect ch)
-           setup-reply (future (setup ch))
-           replyq (LinkedBlockingQueue.)
-           eventq (LinkedBlockingQueue.)
-           ch-reader (Thread. #(read-channel ch replyq eventq))]
-       ;; Wait for setup-reply to finish.
-       @setup-reply
-       (log/debug "Connection setup finished.")
-       (.start ch-reader)
-       (atom
-        {:conn-lock (Object.)
-         :ch ch
-         :setup @setup-reply
-         :seq-num 0
-         :res-id 0
-         :replies replyq
-         :events eventq
-         :ch-reader ch-reader}))))
+  [& {:keys [host port]
+      :or {host "localhost" port 6000}}]
+  (let [ch (SocketChannel/open (InetSocketAddress. host port))
+        ;; Disable Nagle's algorithm.
+        _ (-> ch (.socket) (.setTcpNoDelay true))
+        _ (.finishConnect ch)
+        setup-reply (future (setup ch))
+        replyq (LinkedBlockingQueue.)
+        eventq (LinkedBlockingQueue.)
+        ch-reader (Thread. #(read-channel ch replyq eventq))]
+    ;; Wait for setup-reply to finish.
+    @setup-reply
+    (log/debug "Connection setup finished.")
+    (.start ch-reader)
+    (atom
+     {:conn-lock (Object.)
+      :ch ch
+      :setup @setup-reply
+      :seq-num 0
+      :res-id 0
+      :replies replyq
+      :events eventq
+      :ch-reader ch-reader})))
 
 (defn disconnect
   "Disconnects from the X server. Connection conn will no longer be
