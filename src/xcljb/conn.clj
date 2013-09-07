@@ -159,7 +159,7 @@
     (deliver-reply err seq-n replyq)))
 
 (defn- handle-reply [ch replyq]
-  (let [val (gen-common/read-bytes ch 1) ; FIXME: What if byte is signed?
+  (let [val (gen-common/read-bytes ch 1) ; always unsigned for xproto-1.8
         seq-n (gen-common/read-bytes ch 2)
         len (gen-common/read-bytes ch 4)
         read-reply (get-read-reply replyq seq-n)
