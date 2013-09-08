@@ -65,6 +65,8 @@ Since Java does not have access to Unix domain socket, one would have to either 
 
 Examples are listed under the `src/xcljb/examples/` directory.
 
+[TinyCLJWM](https://github.com/noodlewiz/tinycljwm) is [TinyWM](http://incise.org/tinywm.html) in Clojure.
+
 ## Todo
 
 * Extensions
