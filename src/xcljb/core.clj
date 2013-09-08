@@ -26,8 +26,8 @@
     (bit-shift-right res-mask res-shifts)))
 
 ;;; TODO: Use XC-MISC extension to generate resource ids.
-(defn gen-res-id
-  "Generates a resource ID."
+(defn gen-xid
+  "Allocates an XID for a new object."
   [conn]
   (let [res-base (-> conn (get-setup) (:resource-id-base))
         res-mask (-> conn (get-setup) (:resource-id-mask))
