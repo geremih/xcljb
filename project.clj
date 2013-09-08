@@ -1,4 +1,4 @@
-(defproject xcljb "0.1.0-SNAPSHOT"
+(defproject xcljb "0.1.0"
   :description "X protocol Clojure-language Binding"
   :url "https://github.com/noodlewiz/xcljb"
   :license {:name "The MIT License (MIT)"}
