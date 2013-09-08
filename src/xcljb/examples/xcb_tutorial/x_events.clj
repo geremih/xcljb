@@ -15,7 +15,7 @@
 (defn -main [& args]
   (let [c (conn/connect)
         screen (-> c (core/get-setup) (:roots) (first))
-        win (core/gen-res-id c)]
+        win (core/gen-xid c)]
     (xproto/create-window c
                           0
                           win

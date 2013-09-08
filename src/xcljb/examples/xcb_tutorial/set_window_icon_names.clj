@@ -8,7 +8,7 @@
 (defn -main [& args]
   (let [c (conn/connect)
         screen (-> c (core/get-setup) (:roots) (first))
-        win (core/gen-res-id c)
+        win (core/gen-xid c)
         title "Hello World !"
         title-icon "Hello World ! (iconified)"]
     (xproto/create-window c

@@ -11,8 +11,8 @@
 (def ^:private HEIGHT 150)
 
 (defn- gc-font-get [c screen window font-name]
-  (let [font (core/gen-res-id c)
-        gc (core/gen-res-id c)]
+  (let [font (core/gen-xid c)
+        gc (core/gen-xid c)]
     (xproto/open-font c font (count font-name) font-name)
     (xproto/create-gc c gc window
                       {(:foreground xproto/GC) (:black-pixel screen)
@@ -56,9 +56,9 @@
     nil))
 
 (defn- cursor-set [c screen window cursor-id]
-  (let [font (core/gen-res-id c)
-        cursor (core/gen-res-id c)
-        gc (core/gen-res-id c)]
+  (let [font (core/gen-xid c)
+        cursor (core/gen-xid c)
+        gc (core/gen-xid c)]
     (xproto/open-font c font (count "cursor") "cursor")
     (xproto/create-glyph-cursor c cursor font font cursor-id (inc cursor-id)
                                 0 0 0
@@ -77,7 +77,7 @@
   (let [c (conn/connect)
         setup (core/get-setup c)
         screen (-> setup (:roots) (first))
-        window (core/gen-res-id c)
+        window (core/gen-xid c)
         hand? (atom false)]
     (xproto/create-window c
                           (:root-depth screen)

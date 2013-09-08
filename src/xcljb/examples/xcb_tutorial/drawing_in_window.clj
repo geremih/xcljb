@@ -10,8 +10,8 @@
 (defn -main [& args]
   (let [c (conn/connect)
         screen (-> c (core/get-setup) (:roots) (first))
-        win (core/gen-res-id c)
-        foreground (core/gen-res-id c)
+        win (core/gen-xid c)
+        foreground (core/gen-xid c)
         points (for [[x y] [[10 10]
                             [10 20]
                             [20 10]
