@@ -26,10 +26,6 @@
                0
                (Integer/parseInt screen))}))
 
-(defn- padding [n]
-  (rem (- 4 (rem n 4))
-       4))
-
 (defn- setup-request-codec [auth-name auth-data]
   (let [name-len (count auth-name)
         data-len (count auth-data)]
@@ -38,9 +34,9 @@
       :uint16 :uint16
       :uint16 :uint16 :int16
       (gcore/string :ascii :length name-len)
-      (repeat (padding name-len) :byte)
+      (repeat (gen-common/padding name-len) :byte)
       (repeat data-len :ubyte)
-      (repeat (padding data-len) :byte)])))
+      (repeat (gen-common/padding data-len) :byte)])))
 
 (defn- make-setup-request [auth-name auth-data]
   (let [name-len (count auth-name)
@@ -52,9 +48,9 @@
                   PROTOCOL-MAJOR-VERSION PROTOCOL-MINOR-VERSION
                   name-len data-len 0
                   auth-name
-                  (repeat (padding name-len) 0)
+                  (repeat (gen-common/padding name-len) 0)
                   auth-data
-                  (repeat (padding data-len) 0)]))))
+                  (repeat (gen-common/padding data-len) 0)]))))
 
 (defn- handle-setup-failed-reply [ch]
   (let [reason-len (gen-common/read-bytes ch 1)
