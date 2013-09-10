@@ -1,6 +1,6 @@
 # XCLJB
 
-XCLJB (X protocol Clojure-language Binding) is a Clojure language binding for the X Window System.
+XCLJB (X protocol Clojure-language Binding) is a Clojure language binding for the X Window System, similar to the [XCB](http://xcb.freedesktop.org/) (the X protocol C-language Binding). It allows programmers to communicate with and write GUIs for an X server in Clojure, without having to drop down into C.
 
 ## Motivation
 
