@@ -2078,20 +2078,20 @@
 
 (clojure.core/defn
  query-text-extents
- [conn__1324__auto__ font__1325__auto__ string__1326__auto__]
+ [conn__1325__auto__ font__1326__auto__ string__1327__auto__]
  (xcljb.gen-common/send
-  conn__1324__auto__
+  conn__1325__auto__
   (xcljb.gen.xproto-types/->QueryTextExtentsRequest
    48
-   font__1325__auto__
-   string__1326__auto__)))
+   font__1326__auto__
+   string__1327__auto__)))
 
 (clojure.core/defn
  configure-window
- [conn__1303__auto__ window__1304__auto__ value__1305__auto__]
+ [conn__1304__auto__ window__1305__auto__ value__1306__auto__]
  (xcljb.gen-common/send
-  conn__1303__auto__
+  conn__1304__auto__
   (xcljb.gen.xproto-types/->ConfigureWindowRequest
    12
-   window__1304__auto__
-   value__1305__auto__)))
+   window__1305__auto__
+   value__1306__auto__)))

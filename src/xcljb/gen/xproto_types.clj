@@ -5419,7 +5419,7 @@
    :uint16
    (.to-frame xcljb.gen.xproto-types/FONTABLE)
    (clojure.core/map
-    (fn* [p1__1333__1335__auto__] (.to-frame p1__1333__1335__auto__))
+    (fn* [p1__1334__1336__auto__] (.to-frame p1__1334__1336__auto__))
     (:string this))
    (clojure.core/repeat
     (xcljb.gen-common/padding (.sizeof this))
@@ -5432,7 +5432,7 @@
     (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
    (:font this)
    (clojure.core/map
-    (fn* [p1__1334__1336__auto__] (.to-value p1__1334__1336__auto__))
+    (fn* [p1__1335__1337__auto__] (.to-value p1__1335__1337__auto__))
     (:string this))
    (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
 
@@ -5462,15 +5462,15 @@
  (to-value
   [this]
   (clojure.core/let
-   [vp__1312__auto__
+   [vp__1313__auto__
     (xcljb.gen-common/valueparam->value (:value this))]
    [(:opcode this)
     0
     (clojure.core/+ 3 (clojure.core/count (:value this)))
     (:window this)
-    (clojure.core/first vp__1312__auto__)
+    (clojure.core/first vp__1313__auto__)
     0
-    (clojure.core/second vp__1312__auto__)])))
+    (clojure.core/second vp__1313__auto__)])))
 
 (clojure.core/defrecord
  QueryTextExtentsReply

@@ -3557,9 +3557,10 @@
     first-keycode
     count)}))
 
-(clojure.core/defn
- read-RequestError
- [ch]
+(clojure.core/defmethod
+ xcljb.gen-common/read-error
+ 1
+ [_ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3572,23 +3573,24 @@
   (clojure.core/let
    [size__1206__auto__
     (clojure.core/+
-     (.sizeof xcljb.gen.xproto-types/CARD32)
-     (.sizeof xcljb.gen.xproto-types/CARD16)
-     (.sizeof xcljb.gen.xproto-types/CARD8)
-     1)]
-   (clojure.core/when
-    (clojure.core/< size__1206__auto__ 28)
-    (xcljb.gen-common/read-pad
-     ch
-     (clojure.core/- 28 size__1206__auto__))))
+     4
+     (clojure.core/+
+      (.sizeof xcljb.gen.xproto-types/CARD32)
+      (.sizeof xcljb.gen.xproto-types/CARD16)
+      (.sizeof xcljb.gen.xproto-types/CARD8)
+      1))
+    pads__1207__auto__
+    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
+   (xcljb.gen-common/read-pad ch pads__1207__auto__))
   (xcljb.gen.xproto-types/->RequestError
    bad-value
    minor-opcode
    major-opcode)))
 
-(clojure.core/defn
- read-ValueError
- [ch]
+(clojure.core/defmethod
+ xcljb.gen-common/read-error
+ 2
+ [_ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3601,23 +3603,24 @@
   (clojure.core/let
    [size__1206__auto__
     (clojure.core/+
-     (.sizeof xcljb.gen.xproto-types/CARD32)
-     (.sizeof xcljb.gen.xproto-types/CARD16)
-     (.sizeof xcljb.gen.xproto-types/CARD8)
-     1)]
-   (clojure.core/when
-    (clojure.core/< size__1206__auto__ 28)
-    (xcljb.gen-common/read-pad
-     ch
-     (clojure.core/- 28 size__1206__auto__))))
+     4
+     (clojure.core/+
+      (.sizeof xcljb.gen.xproto-types/CARD32)
+      (.sizeof xcljb.gen.xproto-types/CARD16)
+      (.sizeof xcljb.gen.xproto-types/CARD8)
+      1))
+    pads__1207__auto__
+    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
+   (xcljb.gen-common/read-pad ch pads__1207__auto__))
   (xcljb.gen.xproto-types/->ValueError
    bad-value
    minor-opcode
    major-opcode)))
 
-(clojure.core/defn
- read-WindowError
- [ch]
+(clojure.core/defmethod
+ xcljb.gen-common/read-error
+ 3
+ [_ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3630,23 +3633,24 @@
   (clojure.core/let
    [size__1206__auto__
     (clojure.core/+
-     (.sizeof xcljb.gen.xproto-types/CARD32)
-     (.sizeof xcljb.gen.xproto-types/CARD16)
-     (.sizeof xcljb.gen.xproto-types/CARD8)
-     1)]
-   (clojure.core/when
-    (clojure.core/< size__1206__auto__ 28)
-    (xcljb.gen-common/read-pad
-     ch
-     (clojure.core/- 28 size__1206__auto__))))
+     4
+     (clojure.core/+
+      (.sizeof xcljb.gen.xproto-types/CARD32)
+      (.sizeof xcljb.gen.xproto-types/CARD16)
+      (.sizeof xcljb.gen.xproto-types/CARD8)
+      1))
+    pads__1207__auto__
+    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
+   (xcljb.gen-common/read-pad ch pads__1207__auto__))
   (xcljb.gen.xproto-types/->WindowError
    bad-value
    minor-opcode
    major-opcode)))
 
-(clojure.core/defn
- read-PixmapError
- [ch]
+(clojure.core/defmethod
+ xcljb.gen-common/read-error
+ 4
+ [_ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3659,23 +3663,24 @@
   (clojure.core/let
    [size__1206__auto__
     (clojure.core/+
-     (.sizeof xcljb.gen.xproto-types/CARD32)
-     (.sizeof xcljb.gen.xproto-types/CARD16)
-     (.sizeof xcljb.gen.xproto-types/CARD8)
-     1)]
-   (clojure.core/when
-    (clojure.core/< size__1206__auto__ 28)
-    (xcljb.gen-common/read-pad
-     ch
-     (clojure.core/- 28 size__1206__auto__))))
+     4
+     (clojure.core/+
+      (.sizeof xcljb.gen.xproto-types/CARD32)
+      (.sizeof xcljb.gen.xproto-types/CARD16)
+      (.sizeof xcljb.gen.xproto-types/CARD8)
+      1))
+    pads__1207__auto__
+    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
+   (xcljb.gen-common/read-pad ch pads__1207__auto__))
   (xcljb.gen.xproto-types/->PixmapError
    bad-value
    minor-opcode
    major-opcode)))
 
-(clojure.core/defn
- read-AtomError
- [ch]
+(clojure.core/defmethod
+ xcljb.gen-common/read-error
+ 5
+ [_ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3688,23 +3693,24 @@
   (clojure.core/let
    [size__1206__auto__
     (clojure.core/+
-     (.sizeof xcljb.gen.xproto-types/CARD32)
-     (.sizeof xcljb.gen.xproto-types/CARD16)
-     (.sizeof xcljb.gen.xproto-types/CARD8)
-     1)]
-   (clojure.core/when
-    (clojure.core/< size__1206__auto__ 28)
-    (xcljb.gen-common/read-pad
-     ch
-     (clojure.core/- 28 size__1206__auto__))))
+     4
+     (clojure.core/+
+      (.sizeof xcljb.gen.xproto-types/CARD32)
+      (.sizeof xcljb.gen.xproto-types/CARD16)
+      (.sizeof xcljb.gen.xproto-types/CARD8)
+      1))
+    pads__1207__auto__
+    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
+   (xcljb.gen-common/read-pad ch pads__1207__auto__))
   (xcljb.gen.xproto-types/->AtomError
    bad-value
    minor-opcode
    major-opcode)))
 
-(clojure.core/defn
- read-CursorError
- [ch]
+(clojure.core/defmethod
+ xcljb.gen-common/read-error
+ 6
+ [_ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3717,23 +3723,24 @@
   (clojure.core/let
    [size__1206__auto__
     (clojure.core/+
-     (.sizeof xcljb.gen.xproto-types/CARD32)
-     (.sizeof xcljb.gen.xproto-types/CARD16)
-     (.sizeof xcljb.gen.xproto-types/CARD8)
-     1)]
-   (clojure.core/when
-    (clojure.core/< size__1206__auto__ 28)
-    (xcljb.gen-common/read-pad
-     ch
-     (clojure.core/- 28 size__1206__auto__))))
+     4
+     (clojure.core/+
+      (.sizeof xcljb.gen.xproto-types/CARD32)
+      (.sizeof xcljb.gen.xproto-types/CARD16)
+      (.sizeof xcljb.gen.xproto-types/CARD8)
+      1))
+    pads__1207__auto__
+    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
+   (xcljb.gen-common/read-pad ch pads__1207__auto__))
   (xcljb.gen.xproto-types/->CursorError
    bad-value
    minor-opcode
    major-opcode)))
 
-(clojure.core/defn
- read-FontError
- [ch]
+(clojure.core/defmethod
+ xcljb.gen-common/read-error
+ 7
+ [_ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3746,23 +3753,24 @@
   (clojure.core/let
    [size__1206__auto__
     (clojure.core/+
-     (.sizeof xcljb.gen.xproto-types/CARD32)
-     (.sizeof xcljb.gen.xproto-types/CARD16)
-     (.sizeof xcljb.gen.xproto-types/CARD8)
-     1)]
-   (clojure.core/when
-    (clojure.core/< size__1206__auto__ 28)
-    (xcljb.gen-common/read-pad
-     ch
-     (clojure.core/- 28 size__1206__auto__))))
+     4
+     (clojure.core/+
+      (.sizeof xcljb.gen.xproto-types/CARD32)
+      (.sizeof xcljb.gen.xproto-types/CARD16)
+      (.sizeof xcljb.gen.xproto-types/CARD8)
+      1))
+    pads__1207__auto__
+    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
+   (xcljb.gen-common/read-pad ch pads__1207__auto__))
   (xcljb.gen.xproto-types/->FontError
    bad-value
    minor-opcode
    major-opcode)))
 
-(clojure.core/defn
- read-MatchError
- [ch]
+(clojure.core/defmethod
+ xcljb.gen-common/read-error
+ 8
+ [_ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3775,23 +3783,24 @@
   (clojure.core/let
    [size__1206__auto__
     (clojure.core/+
-     (.sizeof xcljb.gen.xproto-types/CARD32)
-     (.sizeof xcljb.gen.xproto-types/CARD16)
-     (.sizeof xcljb.gen.xproto-types/CARD8)
-     1)]
-   (clojure.core/when
-    (clojure.core/< size__1206__auto__ 28)
-    (xcljb.gen-common/read-pad
-     ch
-     (clojure.core/- 28 size__1206__auto__))))
+     4
+     (clojure.core/+
+      (.sizeof xcljb.gen.xproto-types/CARD32)
+      (.sizeof xcljb.gen.xproto-types/CARD16)
+      (.sizeof xcljb.gen.xproto-types/CARD8)
+      1))
+    pads__1207__auto__
+    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
+   (xcljb.gen-common/read-pad ch pads__1207__auto__))
   (xcljb.gen.xproto-types/->MatchError
    bad-value
    minor-opcode
    major-opcode)))
 
-(clojure.core/defn
- read-DrawableError
- [ch]
+(clojure.core/defmethod
+ xcljb.gen-common/read-error
+ 9
+ [_ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3804,23 +3813,24 @@
   (clojure.core/let
    [size__1206__auto__
     (clojure.core/+
-     (.sizeof xcljb.gen.xproto-types/CARD32)
-     (.sizeof xcljb.gen.xproto-types/CARD16)
-     (.sizeof xcljb.gen.xproto-types/CARD8)
-     1)]
-   (clojure.core/when
-    (clojure.core/< size__1206__auto__ 28)
-    (xcljb.gen-common/read-pad
-     ch
-     (clojure.core/- 28 size__1206__auto__))))
+     4
+     (clojure.core/+
+      (.sizeof xcljb.gen.xproto-types/CARD32)
+      (.sizeof xcljb.gen.xproto-types/CARD16)
+      (.sizeof xcljb.gen.xproto-types/CARD8)
+      1))
+    pads__1207__auto__
+    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
+   (xcljb.gen-common/read-pad ch pads__1207__auto__))
   (xcljb.gen.xproto-types/->DrawableError
    bad-value
    minor-opcode
    major-opcode)))
 
-(clojure.core/defn
- read-AccessError
- [ch]
+(clojure.core/defmethod
+ xcljb.gen-common/read-error
+ 10
+ [_ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3833,23 +3843,24 @@
   (clojure.core/let
    [size__1206__auto__
     (clojure.core/+
-     (.sizeof xcljb.gen.xproto-types/CARD32)
-     (.sizeof xcljb.gen.xproto-types/CARD16)
-     (.sizeof xcljb.gen.xproto-types/CARD8)
-     1)]
-   (clojure.core/when
-    (clojure.core/< size__1206__auto__ 28)
-    (xcljb.gen-common/read-pad
-     ch
-     (clojure.core/- 28 size__1206__auto__))))
+     4
+     (clojure.core/+
+      (.sizeof xcljb.gen.xproto-types/CARD32)
+      (.sizeof xcljb.gen.xproto-types/CARD16)
+      (.sizeof xcljb.gen.xproto-types/CARD8)
+      1))
+    pads__1207__auto__
+    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
+   (xcljb.gen-common/read-pad ch pads__1207__auto__))
   (xcljb.gen.xproto-types/->AccessError
    bad-value
    minor-opcode
    major-opcode)))
 
-(clojure.core/defn
- read-AllocError
- [ch]
+(clojure.core/defmethod
+ xcljb.gen-common/read-error
+ 11
+ [_ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3862,23 +3873,24 @@
   (clojure.core/let
    [size__1206__auto__
     (clojure.core/+
-     (.sizeof xcljb.gen.xproto-types/CARD32)
-     (.sizeof xcljb.gen.xproto-types/CARD16)
-     (.sizeof xcljb.gen.xproto-types/CARD8)
-     1)]
-   (clojure.core/when
-    (clojure.core/< size__1206__auto__ 28)
-    (xcljb.gen-common/read-pad
-     ch
-     (clojure.core/- 28 size__1206__auto__))))
+     4
+     (clojure.core/+
+      (.sizeof xcljb.gen.xproto-types/CARD32)
+      (.sizeof xcljb.gen.xproto-types/CARD16)
+      (.sizeof xcljb.gen.xproto-types/CARD8)
+      1))
+    pads__1207__auto__
+    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
+   (xcljb.gen-common/read-pad ch pads__1207__auto__))
   (xcljb.gen.xproto-types/->AllocError
    bad-value
    minor-opcode
    major-opcode)))
 
-(clojure.core/defn
- read-ColormapError
- [ch]
+(clojure.core/defmethod
+ xcljb.gen-common/read-error
+ 12
+ [_ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3891,23 +3903,24 @@
   (clojure.core/let
    [size__1206__auto__
     (clojure.core/+
-     (.sizeof xcljb.gen.xproto-types/CARD32)
-     (.sizeof xcljb.gen.xproto-types/CARD16)
-     (.sizeof xcljb.gen.xproto-types/CARD8)
-     1)]
-   (clojure.core/when
-    (clojure.core/< size__1206__auto__ 28)
-    (xcljb.gen-common/read-pad
-     ch
-     (clojure.core/- 28 size__1206__auto__))))
+     4
+     (clojure.core/+
+      (.sizeof xcljb.gen.xproto-types/CARD32)
+      (.sizeof xcljb.gen.xproto-types/CARD16)
+      (.sizeof xcljb.gen.xproto-types/CARD8)
+      1))
+    pads__1207__auto__
+    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
+   (xcljb.gen-common/read-pad ch pads__1207__auto__))
   (xcljb.gen.xproto-types/->ColormapError
    bad-value
    minor-opcode
    major-opcode)))
 
-(clojure.core/defn
- read-GContextError
- [ch]
+(clojure.core/defmethod
+ xcljb.gen-common/read-error
+ 13
+ [_ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3920,23 +3933,24 @@
   (clojure.core/let
    [size__1206__auto__
     (clojure.core/+
-     (.sizeof xcljb.gen.xproto-types/CARD32)
-     (.sizeof xcljb.gen.xproto-types/CARD16)
-     (.sizeof xcljb.gen.xproto-types/CARD8)
-     1)]
-   (clojure.core/when
-    (clojure.core/< size__1206__auto__ 28)
-    (xcljb.gen-common/read-pad
-     ch
-     (clojure.core/- 28 size__1206__auto__))))
+     4
+     (clojure.core/+
+      (.sizeof xcljb.gen.xproto-types/CARD32)
+      (.sizeof xcljb.gen.xproto-types/CARD16)
+      (.sizeof xcljb.gen.xproto-types/CARD8)
+      1))
+    pads__1207__auto__
+    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
+   (xcljb.gen-common/read-pad ch pads__1207__auto__))
   (xcljb.gen.xproto-types/->GContextError
    bad-value
    minor-opcode
    major-opcode)))
 
-(clojure.core/defn
- read-IDChoiceError
- [ch]
+(clojure.core/defmethod
+ xcljb.gen-common/read-error
+ 14
+ [_ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3949,23 +3963,24 @@
   (clojure.core/let
    [size__1206__auto__
     (clojure.core/+
-     (.sizeof xcljb.gen.xproto-types/CARD32)
-     (.sizeof xcljb.gen.xproto-types/CARD16)
-     (.sizeof xcljb.gen.xproto-types/CARD8)
-     1)]
-   (clojure.core/when
-    (clojure.core/< size__1206__auto__ 28)
-    (xcljb.gen-common/read-pad
-     ch
-     (clojure.core/- 28 size__1206__auto__))))
+     4
+     (clojure.core/+
+      (.sizeof xcljb.gen.xproto-types/CARD32)
+      (.sizeof xcljb.gen.xproto-types/CARD16)
+      (.sizeof xcljb.gen.xproto-types/CARD8)
+      1))
+    pads__1207__auto__
+    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
+   (xcljb.gen-common/read-pad ch pads__1207__auto__))
   (xcljb.gen.xproto-types/->IDChoiceError
    bad-value
    minor-opcode
    major-opcode)))
 
-(clojure.core/defn
- read-NameError
- [ch]
+(clojure.core/defmethod
+ xcljb.gen-common/read-error
+ 15
+ [_ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3978,23 +3993,24 @@
   (clojure.core/let
    [size__1206__auto__
     (clojure.core/+
-     (.sizeof xcljb.gen.xproto-types/CARD32)
-     (.sizeof xcljb.gen.xproto-types/CARD16)
-     (.sizeof xcljb.gen.xproto-types/CARD8)
-     1)]
-   (clojure.core/when
-    (clojure.core/< size__1206__auto__ 28)
-    (xcljb.gen-common/read-pad
-     ch
-     (clojure.core/- 28 size__1206__auto__))))
+     4
+     (clojure.core/+
+      (.sizeof xcljb.gen.xproto-types/CARD32)
+      (.sizeof xcljb.gen.xproto-types/CARD16)
+      (.sizeof xcljb.gen.xproto-types/CARD8)
+      1))
+    pads__1207__auto__
+    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
+   (xcljb.gen-common/read-pad ch pads__1207__auto__))
   (xcljb.gen.xproto-types/->NameError
    bad-value
    minor-opcode
    major-opcode)))
 
-(clojure.core/defn
- read-LengthError
- [ch]
+(clojure.core/defmethod
+ xcljb.gen-common/read-error
+ 16
+ [_ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -4007,23 +4023,24 @@
   (clojure.core/let
    [size__1206__auto__
     (clojure.core/+
-     (.sizeof xcljb.gen.xproto-types/CARD32)
-     (.sizeof xcljb.gen.xproto-types/CARD16)
-     (.sizeof xcljb.gen.xproto-types/CARD8)
-     1)]
-   (clojure.core/when
-    (clojure.core/< size__1206__auto__ 28)
-    (xcljb.gen-common/read-pad
-     ch
-     (clojure.core/- 28 size__1206__auto__))))
+     4
+     (clojure.core/+
+      (.sizeof xcljb.gen.xproto-types/CARD32)
+      (.sizeof xcljb.gen.xproto-types/CARD16)
+      (.sizeof xcljb.gen.xproto-types/CARD8)
+      1))
+    pads__1207__auto__
+    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
+   (xcljb.gen-common/read-pad ch pads__1207__auto__))
   (xcljb.gen.xproto-types/->LengthError
    bad-value
    minor-opcode
    major-opcode)))
 
-(clojure.core/defn
- read-ImplementationError
- [ch]
+(clojure.core/defmethod
+ xcljb.gen-common/read-error
+ 17
+ [_ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -4036,134 +4053,94 @@
   (clojure.core/let
    [size__1206__auto__
     (clojure.core/+
-     (.sizeof xcljb.gen.xproto-types/CARD32)
-     (.sizeof xcljb.gen.xproto-types/CARD16)
-     (.sizeof xcljb.gen.xproto-types/CARD8)
-     1)]
-   (clojure.core/when
-    (clojure.core/< size__1206__auto__ 28)
-    (xcljb.gen-common/read-pad
-     ch
-     (clojure.core/- 28 size__1206__auto__))))
+     4
+     (clojure.core/+
+      (.sizeof xcljb.gen.xproto-types/CARD32)
+      (.sizeof xcljb.gen.xproto-types/CARD16)
+      (.sizeof xcljb.gen.xproto-types/CARD8)
+      1))
+    pads__1207__auto__
+    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
+   (xcljb.gen-common/read-pad ch pads__1207__auto__))
   (xcljb.gen.xproto-types/->ImplementationError
    bad-value
    minor-opcode
    major-opcode)))
-
-(clojure.core/defn
- read-error
- [expr__1485__auto__]
- (clojure.core/case
-  expr__1485__auto__
-  1
-  read-RequestError
-  2
-  read-ValueError
-  3
-  read-WindowError
-  4
-  read-PixmapError
-  5
-  read-AtomError
-  6
-  read-CursorError
-  7
-  read-FontError
-  8
-  read-MatchError
-  9
-  read-DrawableError
-  10
-  read-AccessError
-  11
-  read-AllocError
-  12
-  read-ColormapError
-  13
-  read-GContextError
-  14
-  read-IDChoiceError
-  15
-  read-NameError
-  16
-  read-LengthError
-  17
-  read-ImplementationError))
 
 ;;; Manually written.
 
 (clojure.core/defmethod
  xcljb.gen-common/read-reply
  48
- [_ ch__1348__auto__ _ draw-direction__1349__auto__]
+ [_ ch__1349__auto__ _ draw-direction__1350__auto__]
  (clojure.core/let
-  [font-ascent__1350__auto__
-   (.read-type xcljb.gen.xproto-types/INT16 ch__1348__auto__)
-   font-descent__1351__auto__
-   (.read-type xcljb.gen.xproto-types/INT16 ch__1348__auto__)
-   overall-ascent__1352__auto__
-   (.read-type xcljb.gen.xproto-types/INT16 ch__1348__auto__)
-   overall-descent__1353__auto__
-   (.read-type xcljb.gen.xproto-types/INT16 ch__1348__auto__)
-   overall-width__1354__auto__
-   (.read-type xcljb.gen.xproto-types/INT32 ch__1348__auto__)
-   overall-left__1355__auto__
-   (.read-type xcljb.gen.xproto-types/INT32 ch__1348__auto__)
-   overall-right__1356__auto__
-   (.read-type xcljb.gen.xproto-types/INT32 ch__1348__auto__)
+  [font-ascent__1351__auto__
+   (.read-type xcljb.gen.xproto-types/INT16 ch__1349__auto__)
+   font-descent__1352__auto__
+   (.read-type xcljb.gen.xproto-types/INT16 ch__1349__auto__)
+   overall-ascent__1353__auto__
+   (.read-type xcljb.gen.xproto-types/INT16 ch__1349__auto__)
+   overall-descent__1354__auto__
+   (.read-type xcljb.gen.xproto-types/INT16 ch__1349__auto__)
+   overall-width__1355__auto__
+   (.read-type xcljb.gen.xproto-types/INT32 ch__1349__auto__)
+   overall-left__1356__auto__
+   (.read-type xcljb.gen.xproto-types/INT32 ch__1349__auto__)
+   overall-right__1357__auto__
+   (.read-type xcljb.gen.xproto-types/INT32 ch__1349__auto__)
    _
-   (xcljb.gen-common/read-pad ch__1348__auto__ 4)]
+   (xcljb.gen-common/read-pad ch__1349__auto__ 4)]
   (xcljb.gen.xproto-types/->QueryTextExtentsReply
-   draw-direction__1349__auto__
-   font-ascent__1350__auto__
-   font-descent__1351__auto__
-   overall-ascent__1352__auto__
-   overall-descent__1353__auto__
-   overall-width__1354__auto__
-   overall-left__1355__auto__
-   overall-right__1356__auto__)))
+   draw-direction__1350__auto__
+   font-ascent__1351__auto__
+   font-descent__1352__auto__
+   overall-ascent__1353__auto__
+   overall-descent__1354__auto__
+   overall-width__1355__auto__
+   overall-left__1356__auto__
+   overall-right__1357__auto__)))
 
 (clojure.core/defmethod
  xcljb.gen-common/read-event
  33
- [_ ch__1365__auto__]
+ [_ ch__1366__auto__]
  (clojure.core/let
-  [format__1366__auto__
-   (.read-type xcljb.gen.xproto-types/CARD8 ch__1365__auto__)
-   seq-num__1367__auto__
-   (xcljb.gen-common/read-bytes ch__1365__auto__ 2)
-   window__1368__auto__
-   (.read-type xcljb.gen.xproto-types/WINDOW ch__1365__auto__)
-   type__1369__auto__
-   (.read-type xcljb.gen.xproto-types/ATOM ch__1365__auto__)
-   data__1370__auto__
+  [format__1367__auto__
+   (.read-type xcljb.gen.xproto-types/CARD8 ch__1366__auto__)
+   seq-num__1368__auto__
+   (xcljb.gen-common/read-bytes ch__1366__auto__ 2)
+   window__1369__auto__
+   (.read-type xcljb.gen.xproto-types/WINDOW ch__1366__auto__)
+   type__1370__auto__
+   (.read-type xcljb.gen.xproto-types/ATOM ch__1366__auto__)
+   data__1371__auto__
    (clojure.core/case
-    format__1366__auto__
+    format__1367__auto__
     8
     (clojure.core/doall
      (clojure.core/repeatedly
       20
       (fn*
        []
-       (.read-type xcljb.gen.xproto-types/CARD8 ch__1365__auto__))))
+       (.read-type xcljb.gen.xproto-types/CARD8 ch__1366__auto__))))
     16
     (clojure.core/doall
      (clojure.core/repeatedly
       10
       (fn*
        []
-       (.read-type xcljb.gen.xproto-types/CARD16 ch__1365__auto__))))
+       (.read-type xcljb.gen.xproto-types/CARD16 ch__1366__auto__))))
     32
     (clojure.core/doall
      (clojure.core/repeatedly
       5
       (fn*
        []
-       (.read-type xcljb.gen.xproto-types/CARD32 ch__1365__auto__)))))]
-  {:seq-num seq-num__1367__auto__,
+       (.read-type xcljb.gen.xproto-types/CARD32 ch__1366__auto__)))))]
+  {:seq-num seq-num__1368__auto__,
    :event
    (xcljb.gen.xproto-types/->ClientMessageEvent
-    format__1366__auto__
-    window__1368__auto__
-    type__1369__auto__
-    data__1370__auto__)}))
+    format__1367__auto__
+    window__1369__auto__
+    type__1370__auto__
+    data__1371__auto__)}))
