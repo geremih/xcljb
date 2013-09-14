@@ -164,7 +164,7 @@
     (deliver-reply reply seq-n replyq)))
 
 (defn- handle-event [ch event-num replyq eventq]
-  (let [{:keys [seq-num event]} ((xproto-internal/read-event event-num) ch)]
+  (let [{:keys [seq-num event]} (gen-common/read-event event-num ch)]
     (log/debug event)
     (when seq-num                       ; not KeymapNotify
       (clear-old-replies replyq seq-num))

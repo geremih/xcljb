@@ -558,10 +558,10 @@
   ReadableFn
   (gen-read-fn [this]
     (let [s-ch (symbol "ch")
-          name (-> this (:name) (beautify :event))
-          s-name (-> name (beautify :read-type) (symbol))
+          s-_ (symbol "_")
           s-event (name->->type (:header this)
                                 (-> this (:name) (beautify :event)))
+          number (:number this)
           seq-num (->SequenceNumber)
           content (:content this)
           fields (if (:no-seq-number this)
@@ -570,15 +570,13 @@
                           [(first content)]
                           seq-num
                           (rest content)))
-          s-read-pad (symbol "xcljb.gen-common" "read-pad")
           s-args (map symbol (gen-args fields))]
-      `(defn ~s-name [~s-ch]
+      `(defmethod xcljb.gen-common/read-event ~number [~s-_ ~s-ch]
          ~(gen-read-fields
            fields
-           `(let [size# ~(.gen-read-sizeof this)]
-              (when (< size# 31)
-                (~s-read-pad ~s-ch
-                             (- 31 size#))))
+           `(let [size# (+ 1 ~(.gen-read-sizeof this))
+                  pads# (max 0 (- 32 size#))]
+              (xcljb.gen-common/read-pad ~s-ch pads#))
            `{:seq-num ~(if (:no-seq-number this)
                          nil
                          (.gen-read-type-name seq-num))

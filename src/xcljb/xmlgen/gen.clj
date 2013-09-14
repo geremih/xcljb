@@ -20,15 +20,6 @@
                  []
                  coll))))
 
-(defn- gen-read-event [events]
-  (gen-read-table "read-event"
-                  :number
-                  #(-> %
-                       (:name)
-                       (ir/beautify :event)
-                       (ir/beautify :read-type))
-                  events))
-
 (defn- gen-read-error [errors]
   (gen-read-table "read-error"
                   :number
@@ -165,9 +156,6 @@
       (doseq [error errors]
         (.write wrtr "\n")
         (pp/pprint (.gen-read-fn error) wrtr))
-
-      (.write wrtr "\n")
-      (pp/pprint (gen-read-event events) wrtr)
 
       (.write wrtr "\n")
       (pp/pprint (gen-read-error errors) wrtr)
