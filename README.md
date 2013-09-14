@@ -71,11 +71,6 @@ Examples are listed under the `src/xcljb/examples/` directory.
 
 * Extensions
 
-* Core protocol, as yet unimplemented
-
-  * Event: ClientMessage
-  * Union: ClientMessageData
-
 ## Credits
 
 * The Clojure community, for a great language.
