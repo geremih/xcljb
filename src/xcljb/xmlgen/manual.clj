@@ -3,13 +3,16 @@
 (ns xcljb.xmlgen.manual)
 
 (def MANUAL {"xproto" {:request #{"ConfigureWindow" "QueryTextExtents"}
-                       :reply #{"QueryTextExtents"}}})
+                       :reply #{"QueryTextExtents"}
+                       :event #{"ClientMessage"}}})
 
 (defmulti gen-request-fn identity)
 (defmulti gen-reply-fn identity)
+(defmulti gen-event-fn identity)
 
 (defmulti gen-request-type identity)
 (defmulti gen-reply-type identity)
+(defmulti gen-event-type identity)
 
 ;;; xproto
 
@@ -114,3 +117,24 @@
        [~@(map symbol ["draw-direction" "font-ascent" "font-descent"
                        "overall-ascent" "overall-descent" "overall-width"
                        "overall-left" "overall-right"])]))
+
+;;; ClientMessage
+
+(defmethod gen-event-fn "ClientMessage" [_]
+  (let [s-_ (symbol "_")]
+    `(defmethod xcljb.gen-common/read-event 33 [~s-_ ch#]
+       (let [format# (.read-type xcljb.gen.xproto-types/CARD8 ch#)
+             seq-num# (xcljb.gen-common/read-bytes ch# 2)
+             window# (.read-type xcljb.gen.xproto-types/WINDOW ch#)
+             type# (.read-type xcljb.gen.xproto-types/ATOM ch#)
+             data# (case format#
+                     8 (doall (repeatedly 20 #(.read-type xcljb.gen.xproto-types/CARD8 ch#)))
+                     16 (doall (repeatedly 10 #(.read-type xcljb.gen.xproto-types/CARD16 ch#)))
+                     32 (doall (repeatedly 5 #(.read-type xcljb.gen.xproto-types/CARD32 ch#))))]
+         {:seq-num seq-num#
+          :event (xcljb.gen.xproto-types/->ClientMessageEvent
+                  format# window# type# data#)}))))
+
+(defmethod gen-event-type "ClientMessage" [_]
+  `(defrecord ~(symbol "ClientMessageEvent")
+       [~@(map symbol ["format" "window" "type" "data"])]))

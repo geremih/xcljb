@@ -128,7 +128,10 @@
         (pp/pprint (manual/gen-request-type request) wrtr))
       (doseq [reply (get-in manual/MANUAL [(:header xcb) :reply])]
         (.write wrtr "\n")
-        (pp/pprint (manual/gen-reply-type reply) wrtr)))
+        (pp/pprint (manual/gen-reply-type reply) wrtr))
+      (doseq [event (get-in manual/MANUAL [(:header xcb) :event])]
+        (.write wrtr "\n")
+        (pp/pprint (manual/gen-event-type event) wrtr)))
 
     (with-open [wrtr (clojure.java.io/writer (str file-prefix "_internal.clj"))]
       (write-header-comment wrtr)
@@ -164,4 +167,7 @@
       (write-manual-comment wrtr)
       (doseq [reply (get-in manual/MANUAL [(:header xcb) :reply])]
         (.write wrtr "\n")
-        (pp/pprint (manual/gen-reply-fn reply) wrtr)))))
+        (pp/pprint (manual/gen-reply-fn reply) wrtr))
+      (doseq [event (get-in manual/MANUAL [(:header xcb) :event])]
+        (.write wrtr "\n")
+        (pp/pprint (manual/gen-event-fn event) wrtr)))))
