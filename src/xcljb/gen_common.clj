@@ -18,6 +18,8 @@
 
 (defmulti read-event (fn [n & _] n))
 
+(defmulti read-error (fn [n & _] n))
+
 (def ^:private BUFFER (ByteBuffer/allocateDirect 2048))
 
 (defn read-bytes [ch bytes & {:keys [signed]

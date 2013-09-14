@@ -13,22 +13,6 @@
                    (:value item)])]
     `(def ~s-name ~(reduce conj {} content))))
 
-(defn- gen-read-table [name key-fn val-fn coll]
-  `(defn ~(symbol name) [expr#]
-     (case expr#
-       ~@(reduce #(conj %1 (key-fn %2) (-> %2 (val-fn) (symbol)))
-                 []
-                 coll))))
-
-(defn- gen-read-error [errors]
-  (gen-read-table "read-error"
-                  :number
-                  #(-> %
-                       (:name)
-                       (ir/beautify :error)
-                       (ir/beautify :read-type))
-                  errors))
-
 (defn- gen-primitive [[name type]]
   `(def ~(symbol name)
      (xcljb.gen-common/->PrimitiveType ~type)))
@@ -159,9 +143,6 @@
       (doseq [error errors]
         (.write wrtr "\n")
         (pp/pprint (.gen-read-fn error) wrtr))
-
-      (.write wrtr "\n")
-      (pp/pprint (gen-read-error errors) wrtr)
 
       ;; Manually written read functions.
       (write-manual-comment wrtr)

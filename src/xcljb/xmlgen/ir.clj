@@ -599,19 +599,16 @@
   ReadableFn
   (gen-read-fn [this]
     (let [s-ch (symbol "ch")
-          name (-> this (:name) (beautify :error))
-          s-name (-> name (beautify :read-type) (symbol))
+          s-_ (symbol "_")
           s-error (name->->type (:header this)
                                 (-> this (:name) (beautify :error)))
-          s-read-pad (symbol "xcljb.gen-common" "read-pad")
           s-args (->> this (:content) (gen-args) (map symbol))]
-      `(defn ~s-name [~s-ch]
+      `(defmethod xcljb.gen-common/read-error ~number [~s-_ ~s-ch]
          ~(gen-read-fields
            (:content this)
-           `(let [size# ~(.gen-read-sizeof this)]
-              (when (< size# 28)
-                (~s-read-pad ~s-ch
-                             (- 28 size#))))
+           `(let [size# (+ 4 ~(.gen-read-sizeof this))
+                  pads# (max 0 (- 32 size#))]
+              (xcljb.gen-common/read-pad ~s-ch pads#))
            `(~s-error ~@s-args))))))
 
 ;; Xcb.

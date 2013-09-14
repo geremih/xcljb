@@ -150,7 +150,7 @@
 (defn- handle-error [ch replyq]
   (let [code (gen-common/read-bytes ch 1)
         seq-n (gen-common/read-bytes ch 2)
-        err ((xproto-internal/read-error code) ch)]
+        err (gen-common/read-error code ch)]
     (log/error err)
     (deliver-reply err seq-n replyq)))
 
