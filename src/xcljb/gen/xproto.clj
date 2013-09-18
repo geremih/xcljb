@@ -2,7 +2,7 @@
 
 (clojure.core/ns
  xcljb.gen.xproto
- (:require [xcljb conn gen-common] [xcljb.gen xproto-types]))
+ (:require xcljb.gen-common xcljb.gen.xproto-types))
 
 (def
  -XCB
