@@ -14,10 +14,9 @@
 
 (defn poll-event
   "Returns the next event from connection conn, or nil if no event
-  arrives before timeout. unit is a java.util.concurrent.TimeUnit for
-  the timeout parameter."
-  [conn timeout unit]
-  (.poll (:events @conn) timeout unit))
+  arrives before timeout (in milliseconds)."
+  [conn timeout]
+  (.poll (:events @conn) timeout java.util.concurrent.TimeUnit/MILLISECONDS))
 
 (defn- max-res-id [conn]
   (let [res-mask (-> conn (get-setup) (:resource-id-mask))
