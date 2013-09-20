@@ -186,6 +186,14 @@
         ;; Channel closed; do nothing.
         ))))
 
+(defn- setup->xids [setup]
+  (let [base (:resource-id-base setup)
+        mask (:resource-id-mask setup)
+        shifts (.getLowestSetBit (BigInteger/valueOf mask))]
+    (assert (not (neg? shifts)))
+    (map #(bit-or (bit-shift-left % shifts) base)
+         (range (inc (bit-shift-right mask shifts))))))
+
 (defn connect
   "Connects to the X server at the given host and port and returns a
   connection object. Defaults to localhost and port 6000.
@@ -211,7 +219,7 @@
       :ch ch
       :setup @setup-reply
       :seq-nums (atom (cycle (range 1 0x10000)))
-      :res-id 0
+      :xids (ref (setup->xids @setup-reply))
       :replies replyq
       :events eventq
       :ch-reader ch-reader})))
