@@ -30,18 +30,19 @@
                     0))))
 
 (defn send [conn request]
-  (let [next-seq-n (-> @conn (:seq-num) (inc) (bit-and 0xFFFF))
-        reply-promise (promise)
-        reply {:seq-num next-seq-n
-               :opcode (:opcode request)
-               :reply reply-promise}]
-    (log/debug "REQUEST Opcode:" (:opcode request)
-               "Sequence Number:" next-seq-n)
-    (locking (:conn-lock @conn)
-      (.put (:replies @conn) reply)
-      (swap! conn assoc :seq-num next-seq-n)
+  (locking (:conn-lock @conn)
+    (let [next-seq-n (first @(:seq-nums @conn))
+          reply-promise (promise)
+          resp {:seq-num next-seq-n
+                :opcode (:opcode request)
+                :reply reply-promise}]
+      (log/debug "REQUEST Opcode:" (:opcode request)
+                 "Sequence Number:" next-seq-n)
+
+      (swap! (:seq-nums @conn) rest)
+      (.put (:replies @conn) resp)
       (.write (:ch @conn)
               (gio/contiguous
                (gio/encode (request->frame request)
-                           (request->value request)))))
-    reply-promise))
+                           (request->value request))))
+      reply-promise)))

@@ -210,7 +210,7 @@
      {:conn-lock (Object.)
       :ch ch
       :setup @setup-reply
-      :seq-num 0
+      :seq-nums (atom (cycle (range 1 0x10000)))
       :res-id 0
       :replies replyq
       :events eventq
