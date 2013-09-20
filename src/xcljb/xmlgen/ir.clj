@@ -440,10 +440,9 @@
     (let [s-name (-> this (:name) (beautify :fn-name) (symbol))
           s-args (->> this (:content) (gen-args) (map symbol))
           s-struct (name->->type (:header this)
-                                 (-> this (:name) (beautify :request)))
-          opcode (:opcode this)]
+                                 (-> this (:name) (beautify :request)))]
       `(defn ~s-name [conn# ~@s-args]
-         (let [request-struct# (~s-struct ~opcode ~@s-args)]
+         (let [request-struct# (~s-struct ~@s-args)]
            (xcljb.conn-internal/send conn#
                                      request-struct#)))))
 
@@ -455,10 +454,9 @@
 
   Type
   (gen-type [this]
-    (let [s-opcode (symbol "opcode")
-          s-name (-> this (:name) (beautify :request) (symbol))
+    (let [s-name (-> this (:name) (beautify :request) (symbol))
           s-args (->> this (:content) (gen-args) (map symbol))]
-      `(defrecord ~s-name [~s-opcode ~@s-args]
+      `(defrecord ~s-name [~@s-args]
          xcljb.common/Measurable
          (~(symbol "sizeof") [~(symbol "this")]
           ~(.gen-sizeof this))
@@ -467,7 +465,11 @@
          (~(symbol "to-frame") [~(symbol "this")]
           ~(.gen-to-frame this))
          (~(symbol "to-value") [~(symbol "this")]
-          ~(.gen-to-value this))))))
+          ~(.gen-to-value this))
+
+         xcljb.common/Request
+         (~(symbol "opcode") [~(symbol "_")]
+          ~(:opcode this))))))
 
 (defrecord SequenceNumber []
   Measurable

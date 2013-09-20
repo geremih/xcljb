@@ -20,7 +20,7 @@
 (defn- request->value [request]
   (let [raw-value (.to-value request)
         size (.sizeof request)]
-    (concat [(:opcode request)]
+    (concat [(.opcode request)]
             (if (empty? raw-value)
               [0]
               [(first raw-value)])
@@ -34,9 +34,9 @@
     (let [next-seq-n (first @(:seq-nums conn))
           reply-promise (promise)
           resp {:seq-num next-seq-n
-                :opcode (:opcode request)
+                :opcode (.opcode request)
                 :reply reply-promise}]
-      (log/debug "REQUEST Opcode:" (:opcode request)
+      (log/debug "REQUEST Opcode:" (.opcode request)
                  "Sequence Number:" next-seq-n)
 
       (swap! (:seq-nums conn) rest)

@@ -10,6 +10,9 @@
 (defprotocol Measurable
   (sizeof [this]))
 
+(defprotocol Request
+  (opcode [this]))
+
 (defprotocol ReadableType
   (read-type [this ch]))
 
