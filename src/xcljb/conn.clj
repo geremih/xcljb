@@ -214,21 +214,19 @@
     @setup-reply
     (log/debug "Connection setup finished.")
     (.start ch-reader)
-    (atom
-     {:conn-lock (Object.)
-      :ch ch
-      :setup @setup-reply
-      :seq-nums (atom (cycle (range 1 0x10000)))
-      :xids (ref (setup->xids @setup-reply))
-      :replies replyq
-      :events eventq
-      :ch-reader ch-reader})))
+    {:conn-lock (Object.)
+     :ch ch
+     :setup @setup-reply
+     :seq-nums (atom (cycle (range 1 0x10000)))
+     :xids (ref (setup->xids @setup-reply))
+     :replies replyq
+     :events eventq
+     :ch-reader ch-reader}))
 
 (defn disconnect
   "Disconnects from the X server. Connection conn will no longer be
   valid after this function returns."
   [conn]
-  (.close (:ch @conn))
-  (swap! conn (constantly nil))
+  (.close (:ch conn))
   (log/debug "Disconnected.")
   nil)
