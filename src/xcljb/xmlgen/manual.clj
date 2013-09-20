@@ -20,9 +20,9 @@
 
 (defmethod gen-request-fn "ConfigureWindow" [_]
   `(defn ~(symbol "configure-window") [conn# window# value#]
-     (xcljb.gen-common/send conn#
-                            (xcljb.gen.xproto-types/->ConfigureWindowRequest
-                             12 window# value#))))
+     (xcljb.conn-internal/send conn#
+                               (xcljb.gen.xproto-types/->ConfigureWindowRequest
+                                12 window# value#))))
 
 (defmethod gen-request-type "ConfigureWindow" [_]
   (let [s-this (symbol "this")
@@ -64,9 +64,9 @@
 
 (defmethod gen-request-fn "QueryTextExtents" [_]
   `(defn ~(symbol "query-text-extents") [conn# font# string#]
-     (xcljb.gen-common/send conn#
-                            (xcljb.gen.xproto-types/->QueryTextExtentsRequest
-                             48 font# string#))))
+     (xcljb.conn-internal/send conn#
+                               (xcljb.gen.xproto-types/->QueryTextExtentsRequest
+                                48 font# string#))))
 
 (defmethod gen-request-type "QueryTextExtents" [_]
   (let [s-this (symbol "this")

@@ -1,7 +1,6 @@
 (ns xcljb.gen-common
   (:use [gloss io])
-  (:require [clojure.tools.logging :as log]
-            [gloss.core :as glcore])
+  (:require [gloss.core :as glcore])
   (:import [java.nio ByteBuffer]))
 
 (defprotocol Serializable
@@ -88,20 +87,3 @@
       :byte (read-bytes ch 1 :signed true)
       :int16 (read-bytes ch 2 :signed true)
       :int32 (read-bytes ch 4 :signed true))))
-
-(defn send [conn request]
-  (let [next-seq-n (-> @conn (:seq-num) (inc) (bit-and 0xFFFF))
-        reply-promise (promise)
-        reply {:seq-num next-seq-n
-               :opcode (:opcode request)
-               :reply reply-promise}]
-    (log/debug "REQUEST Opcode:" (:opcode request)
-               "Sequence Number:" next-seq-n)
-    (locking (:conn-lock @conn)
-      (.put (:replies @conn) reply)
-      (swap! conn assoc :seq-num next-seq-n)
-      (.write (:ch @conn)
-              (contiguous
-               (encode (.to-frame request)
-                       (.to-value request)))))
-    reply-promise))

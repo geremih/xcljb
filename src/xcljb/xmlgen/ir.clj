@@ -444,35 +444,14 @@
           opcode (:opcode this)]
       `(defn ~s-name [conn# ~@s-args]
          (let [request-struct# (~s-struct ~opcode ~@s-args)]
-           (xcljb.gen-common/send conn#
-                                  request-struct#)))))
+           (xcljb.conn-internal/send conn#
+                                     request-struct#)))))
 
   CodeSerializable
   (gen-to-frame [this]
-    (let [s-this (symbol "this")
-          content-frame (map #(.gen-to-frame %) (:content this))]
-      ;; Has to be a vector, to prevent keyword being interpreted as function.
-      `[~@(concat [:ubyte]
-                  ;; content might be empty, e.g. QueryKeymap.
-                  (if (empty? content-frame)
-                    [(.gen-to-frame (->Pad 1))]
-                    [(first content-frame)])
-                  [:uint16]
-                  (rest content-frame)
-                  [`(repeat (xcljb.gen-common/padding (.sizeof ~s-this))
-                            :byte)])]))
+    `[~@(map #(.gen-to-frame %) (:content this))])
   (gen-to-value [this]
-    (let [s-this (symbol "this")
-          content-value (map #(.gen-to-value %) (:content this))]
-      `[~@(concat [(:opcode this)]
-                  (if (empty? content-value)
-                    [(.gen-to-value (->Pad 1))]
-                    [(first content-value)])
-                  [`(int (Math/ceil (/ (.sizeof ~s-this)
-                                       4)))]
-                  (rest content-value)
-                  [`(repeat (xcljb.gen-common/padding (.sizeof ~s-this))
-                            0)])]))
+    `[~@(map #(.gen-to-value %) (:content this))])
 
   Type
   (gen-type [this]
