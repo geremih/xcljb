@@ -720,18 +720,7 @@
 
 (clojure.core/defrecord
  CreateWindowRequest
- [opcode
-  depth
-  wid
-  parent
-  x
-  y
-  width
-  height
-  border-width
-  class
-  visual
-  value]
+ [depth wid parent x y width height border-width class visual value]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -781,11 +770,13 @@
    (:border-width this)
    (:class this)
    (:visual this)
-   (xcljb.common/valueparam->value (:value this))]))
+   (xcljb.common/valueparam->value (:value this))])
+ xcljb.common/Request
+ (opcode [_] 1))
 
 (clojure.core/defrecord
  ChangeWindowAttributesRequest
- [opcode window value]
+ [window value]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -811,11 +802,13 @@
   [this]
   [(clojure.core/repeat 1 0)
    (:window this)
-   (xcljb.common/valueparam->value (:value this))]))
+   (xcljb.common/valueparam->value (:value this))])
+ xcljb.common/Request
+ (opcode [_] 2))
 
 (clojure.core/defrecord
  GetWindowAttributesRequest
- [opcode window]
+ [window]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -825,11 +818,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)])
- (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)])
+ xcljb.common/Request
+ (opcode [_] 3))
 
 (clojure.core/defrecord
  DestroyWindowRequest
- [opcode window]
+ [window]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -839,11 +834,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)])
- (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)])
+ xcljb.common/Request
+ (opcode [_] 4))
 
 (clojure.core/defrecord
  DestroySubwindowsRequest
- [opcode window]
+ [window]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -853,11 +850,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)])
- (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)])
+ xcljb.common/Request
+ (opcode [_] 5))
 
 (clojure.core/defrecord
  ChangeSaveSetRequest
- [opcode mode window]
+ [mode window]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -870,11 +869,13 @@
   [this]
   [(.to-frame xcljb.gen.xproto-types/BYTE)
    (.to-frame xcljb.gen.xproto-types/WINDOW)])
- (to-value [this] [(:mode this) (:window this)]))
+ (to-value [this] [(:mode this) (:window this)])
+ xcljb.common/Request
+ (opcode [_] 6))
 
 (clojure.core/defrecord
  ReparentWindowRequest
- [opcode window parent x y]
+ [window parent x y]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -899,11 +900,13 @@
    (:window this)
    (:parent this)
    (:x this)
-   (:y this)]))
+   (:y this)])
+ xcljb.common/Request
+ (opcode [_] 7))
 
 (clojure.core/defrecord
  MapWindowRequest
- [opcode window]
+ [window]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -913,11 +916,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)])
- (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)])
+ xcljb.common/Request
+ (opcode [_] 8))
 
 (clojure.core/defrecord
  MapSubwindowsRequest
- [opcode window]
+ [window]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -927,11 +932,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)])
- (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)])
+ xcljb.common/Request
+ (opcode [_] 9))
 
 (clojure.core/defrecord
  UnmapWindowRequest
- [opcode window]
+ [window]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -941,11 +948,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)])
- (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)])
+ xcljb.common/Request
+ (opcode [_] 10))
 
 (clojure.core/defrecord
  UnmapSubwindowsRequest
- [opcode window]
+ [window]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -955,11 +964,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)])
- (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)])
+ xcljb.common/Request
+ (opcode [_] 11))
 
 (clojure.core/defrecord
  CirculateWindowRequest
- [opcode direction window]
+ [direction window]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -972,11 +983,13 @@
   [this]
   [(.to-frame xcljb.gen.xproto-types/CARD8)
    (.to-frame xcljb.gen.xproto-types/WINDOW)])
- (to-value [this] [(:direction this) (:window this)]))
+ (to-value [this] [(:direction this) (:window this)])
+ xcljb.common/Request
+ (opcode [_] 13))
 
 (clojure.core/defrecord
  GetGeometryRequest
- [opcode drawable]
+ [drawable]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -986,11 +999,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)])
- (to-value [this] [(clojure.core/repeat 1 0) (:drawable this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:drawable this)])
+ xcljb.common/Request
+ (opcode [_] 14))
 
 (clojure.core/defrecord
  QueryTreeRequest
- [opcode window]
+ [window]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1000,11 +1015,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)])
- (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)])
+ xcljb.common/Request
+ (opcode [_] 15))
 
 (clojure.core/defrecord
  InternAtomRequest
- [opcode only-if-exists name-len name]
+ [only-if-exists name-len name]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1026,11 +1043,13 @@
   [(if (:only-if-exists this) 1 0)
    (:name-len this)
    (clojure.core/repeat 2 0)
-   (:name this)]))
+   (:name this)])
+ xcljb.common/Request
+ (opcode [_] 16))
 
 (clojure.core/defrecord
  GetAtomNameRequest
- [opcode atom]
+ [atom]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1040,11 +1059,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/ATOM)])
- (to-value [this] [(clojure.core/repeat 1 0) (:atom this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:atom this)])
+ xcljb.common/Request
+ (opcode [_] 17))
 
 (clojure.core/defrecord
  ChangePropertyRequest
- [opcode mode window property type format data-len data]
+ [mode window property type format data-len data]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1082,11 +1103,13 @@
    (:format this)
    (clojure.core/repeat 3 0)
    (:data-len this)
-   (:data this)]))
+   (:data this)])
+ xcljb.common/Request
+ (opcode [_] 18))
 
 (clojure.core/defrecord
  DeletePropertyRequest
- [opcode window property]
+ [window property]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1103,11 +1126,13 @@
    (.to-frame xcljb.gen.xproto-types/ATOM)])
  (to-value
   [this]
-  [(clojure.core/repeat 1 0) (:window this) (:property this)]))
+  [(clojure.core/repeat 1 0) (:window this) (:property this)])
+ xcljb.common/Request
+ (opcode [_] 19))
 
 (clojure.core/defrecord
  GetPropertyRequest
- [opcode delete window property type long-offset long-length]
+ [delete window property type long-offset long-length]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1135,11 +1160,13 @@
    (:property this)
    (:type this)
    (:long-offset this)
-   (:long-length this)]))
+   (:long-length this)])
+ xcljb.common/Request
+ (opcode [_] 20))
 
 (clojure.core/defrecord
  ListPropertiesRequest
- [opcode window]
+ [window]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1149,11 +1176,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)])
- (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)])
+ xcljb.common/Request
+ (opcode [_] 21))
 
 (clojure.core/defrecord
  SetSelectionOwnerRequest
- [opcode owner selection time]
+ [owner selection time]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1175,11 +1204,13 @@
   [(clojure.core/repeat 1 0)
    (:owner this)
    (:selection this)
-   (:time this)]))
+   (:time this)])
+ xcljb.common/Request
+ (opcode [_] 22))
 
 (clojure.core/defrecord
  GetSelectionOwnerRequest
- [opcode selection]
+ [selection]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1189,11 +1220,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/ATOM)])
- (to-value [this] [(clojure.core/repeat 1 0) (:selection this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:selection this)])
+ xcljb.common/Request
+ (opcode [_] 23))
 
 (clojure.core/defrecord
  ConvertSelectionRequest
- [opcode requestor selection target property time]
+ [requestor selection target property time]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1221,11 +1254,13 @@
    (:selection this)
    (:target this)
    (:property this)
-   (:time this)]))
+   (:time this)])
+ xcljb.common/Request
+ (opcode [_] 24))
 
 (clojure.core/defrecord
  SendEventRequest
- [opcode propagate destination event-mask event]
+ [propagate destination event-mask event]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1247,12 +1282,13 @@
   [(if (:propagate this) 1 0)
    (:destination this)
    (:event-mask this)
-   (:event this)]))
+   (:event this)])
+ xcljb.common/Request
+ (opcode [_] 25))
 
 (clojure.core/defrecord
  GrabPointerRequest
- [opcode
-  owner-events
+ [owner-events
   grab-window
   event-mask
   pointer-mode
@@ -1293,11 +1329,13 @@
    (:keyboard-mode this)
    (:confine-to this)
    (:cursor this)
-   (:time this)]))
+   (:time this)])
+ xcljb.common/Request
+ (opcode [_] 26))
 
 (clojure.core/defrecord
  UngrabPointerRequest
- [opcode time]
+ [time]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1307,12 +1345,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/TIMESTAMP)])
- (to-value [this] [(clojure.core/repeat 1 0) (:time this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:time this)])
+ xcljb.common/Request
+ (opcode [_] 27))
 
 (clojure.core/defrecord
  GrabButtonRequest
- [opcode
-  owner-events
+ [owner-events
   grab-window
   event-mask
   pointer-mode
@@ -1360,11 +1399,13 @@
    (:cursor this)
    (:button this)
    (clojure.core/repeat 1 0)
-   (:modifiers this)]))
+   (:modifiers this)])
+ xcljb.common/Request
+ (opcode [_] 28))
 
 (clojure.core/defrecord
  UngrabButtonRequest
- [opcode button grab-window modifiers]
+ [button grab-window modifiers]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1386,11 +1427,13 @@
   [(:button this)
    (:grab-window this)
    (:modifiers this)
-   (clojure.core/repeat 2 0)]))
+   (clojure.core/repeat 2 0)])
+ xcljb.common/Request
+ (opcode [_] 29))
 
 (clojure.core/defrecord
  ChangeActivePointerGrabRequest
- [opcode cursor time event-mask]
+ [cursor time event-mask]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1415,11 +1458,13 @@
    (:cursor this)
    (:time this)
    (:event-mask this)
-   (clojure.core/repeat 2 0)]))
+   (clojure.core/repeat 2 0)])
+ xcljb.common/Request
+ (opcode [_] 30))
 
 (clojure.core/defrecord
  GrabKeyboardRequest
- [opcode owner-events grab-window time pointer-mode keyboard-mode]
+ [owner-events grab-window time pointer-mode keyboard-mode]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1447,11 +1492,13 @@
    (:time this)
    (:pointer-mode this)
    (:keyboard-mode this)
-   (clojure.core/repeat 2 0)]))
+   (clojure.core/repeat 2 0)])
+ xcljb.common/Request
+ (opcode [_] 31))
 
 (clojure.core/defrecord
  UngrabKeyboardRequest
- [opcode time]
+ [time]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1461,17 +1508,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/TIMESTAMP)])
- (to-value [this] [(clojure.core/repeat 1 0) (:time this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:time this)])
+ xcljb.common/Request
+ (opcode [_] 32))
 
 (clojure.core/defrecord
  GrabKeyRequest
- [opcode
-  owner-events
-  grab-window
-  modifiers
-  key
-  pointer-mode
-  keyboard-mode]
+ [owner-events grab-window modifiers key pointer-mode keyboard-mode]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1502,11 +1545,13 @@
    (:key this)
    (:pointer-mode this)
    (:keyboard-mode this)
-   (clojure.core/repeat 3 0)]))
+   (clojure.core/repeat 3 0)])
+ xcljb.common/Request
+ (opcode [_] 33))
 
 (clojure.core/defrecord
  UngrabKeyRequest
- [opcode key grab-window modifiers]
+ [key grab-window modifiers]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1528,11 +1573,13 @@
   [(:key this)
    (:grab-window this)
    (:modifiers this)
-   (clojure.core/repeat 2 0)]))
+   (clojure.core/repeat 2 0)])
+ xcljb.common/Request
+ (opcode [_] 34))
 
 (clojure.core/defrecord
  AllowEventsRequest
- [opcode mode time]
+ [mode time]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1545,29 +1592,35 @@
   [this]
   [(.to-frame xcljb.gen.xproto-types/CARD8)
    (.to-frame xcljb.gen.xproto-types/TIMESTAMP)])
- (to-value [this] [(:mode this) (:time this)]))
+ (to-value [this] [(:mode this) (:time this)])
+ xcljb.common/Request
+ (opcode [_] 35))
 
 (clojure.core/defrecord
  GrabServerRequest
- [opcode]
+ []
  xcljb.common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.common/Serializable
  (to-frame [this] [])
- (to-value [this] []))
+ (to-value [this] [])
+ xcljb.common/Request
+ (opcode [_] 36))
 
 (clojure.core/defrecord
  UngrabServerRequest
- [opcode]
+ []
  xcljb.common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.common/Serializable
  (to-frame [this] [])
- (to-value [this] []))
+ (to-value [this] [])
+ xcljb.common/Request
+ (opcode [_] 37))
 
 (clojure.core/defrecord
  QueryPointerRequest
- [opcode window]
+ [window]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1577,11 +1630,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)])
- (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)])
+ xcljb.common/Request
+ (opcode [_] 38))
 
 (clojure.core/defrecord
  GetMotionEventsRequest
- [opcode window start stop]
+ [window start stop]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1603,11 +1658,13 @@
   [(clojure.core/repeat 1 0)
    (:window this)
    (:start this)
-   (:stop this)]))
+   (:stop this)])
+ xcljb.common/Request
+ (opcode [_] 39))
 
 (clojure.core/defrecord
  TranslateCoordinatesRequest
- [opcode src-window dst-window src-x src-y]
+ [src-window dst-window src-x src-y]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1632,19 +1689,13 @@
    (:src-window this)
    (:dst-window this)
    (:src-x this)
-   (:src-y this)]))
+   (:src-y this)])
+ xcljb.common/Request
+ (opcode [_] 40))
 
 (clojure.core/defrecord
  WarpPointerRequest
- [opcode
-  src-window
-  dst-window
-  src-x
-  src-y
-  src-width
-  src-height
-  dst-x
-  dst-y]
+ [src-window dst-window src-x src-y src-width src-height dst-x dst-y]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1681,11 +1732,13 @@
    (:src-width this)
    (:src-height this)
    (:dst-x this)
-   (:dst-y this)]))
+   (:dst-y this)])
+ xcljb.common/Request
+ (opcode [_] 41))
 
 (clojure.core/defrecord
  SetInputFocusRequest
- [opcode revert-to focus time]
+ [revert-to focus time]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1700,29 +1753,35 @@
   [(.to-frame xcljb.gen.xproto-types/CARD8)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/TIMESTAMP)])
- (to-value [this] [(:revert-to this) (:focus this) (:time this)]))
+ (to-value [this] [(:revert-to this) (:focus this) (:time this)])
+ xcljb.common/Request
+ (opcode [_] 42))
 
 (clojure.core/defrecord
  GetInputFocusRequest
- [opcode]
+ []
  xcljb.common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.common/Serializable
  (to-frame [this] [])
- (to-value [this] []))
+ (to-value [this] [])
+ xcljb.common/Request
+ (opcode [_] 43))
 
 (clojure.core/defrecord
  QueryKeymapRequest
- [opcode]
+ []
  xcljb.common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.common/Serializable
  (to-frame [this] [])
- (to-value [this] []))
+ (to-value [this] [])
+ xcljb.common/Request
+ (opcode [_] 44))
 
 (clojure.core/defrecord
  OpenFontRequest
- [opcode fid name-len name]
+ [fid name-len name]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1747,11 +1806,13 @@
    (:fid this)
    (:name-len this)
    (clojure.core/repeat 2 0)
-   (:name this)]))
+   (:name this)])
+ xcljb.common/Request
+ (opcode [_] 45))
 
 (clojure.core/defrecord
  CloseFontRequest
- [opcode font]
+ [font]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1761,11 +1822,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/FONT)])
- (to-value [this] [(clojure.core/repeat 1 0) (:font this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:font this)])
+ xcljb.common/Request
+ (opcode [_] 46))
 
 (clojure.core/defrecord
  QueryFontRequest
- [opcode font]
+ [font]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1775,11 +1838,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/FONTABLE)])
- (to-value [this] [(clojure.core/repeat 1 0) (:font this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:font this)])
+ xcljb.common/Request
+ (opcode [_] 47))
 
 (clojure.core/defrecord
  ListFontsRequest
- [opcode max-names pattern-len pattern]
+ [max-names pattern-len pattern]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1801,11 +1866,13 @@
   [(clojure.core/repeat 1 0)
    (:max-names this)
    (:pattern-len this)
-   (:pattern this)]))
+   (:pattern this)])
+ xcljb.common/Request
+ (opcode [_] 49))
 
 (clojure.core/defrecord
  ListFontsWithInfoRequest
- [opcode max-names pattern-len pattern]
+ [max-names pattern-len pattern]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1827,11 +1894,13 @@
   [(clojure.core/repeat 1 0)
    (:max-names this)
    (:pattern-len this)
-   (:pattern this)]))
+   (:pattern this)])
+ xcljb.common/Request
+ (opcode [_] 50))
 
 (clojure.core/defrecord
  SetFontPathRequest
- [opcode font-qty font]
+ [font-qty font]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1862,20 +1931,24 @@
    (clojure.core/repeat 2 0)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:font this))]))
+    (:font this))])
+ xcljb.common/Request
+ (opcode [_] 51))
 
 (clojure.core/defrecord
  GetFontPathRequest
- [opcode]
+ []
  xcljb.common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.common/Serializable
  (to-frame [this] [])
- (to-value [this] []))
+ (to-value [this] [])
+ xcljb.common/Request
+ (opcode [_] 52))
 
 (clojure.core/defrecord
  CreatePixmapRequest
- [opcode depth pid drawable width height]
+ [depth pid drawable width height]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1900,11 +1973,13 @@
    (:pid this)
    (:drawable this)
    (:width this)
-   (:height this)]))
+   (:height this)])
+ xcljb.common/Request
+ (opcode [_] 53))
 
 (clojure.core/defrecord
  FreePixmapRequest
- [opcode pixmap]
+ [pixmap]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1914,11 +1989,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/PIXMAP)])
- (to-value [this] [(clojure.core/repeat 1 0) (:pixmap this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:pixmap this)])
+ xcljb.common/Request
+ (opcode [_] 54))
 
 (clojure.core/defrecord
  CreateGCRequest
- [opcode cid drawable value]
+ [cid drawable value]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1947,11 +2024,13 @@
   [(clojure.core/repeat 1 0)
    (:cid this)
    (:drawable this)
-   (xcljb.common/valueparam->value (:value this))]))
+   (xcljb.common/valueparam->value (:value this))])
+ xcljb.common/Request
+ (opcode [_] 55))
 
 (clojure.core/defrecord
  ChangeGCRequest
- [opcode gc value]
+ [gc value]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -1977,11 +2056,13 @@
   [this]
   [(clojure.core/repeat 1 0)
    (:gc this)
-   (xcljb.common/valueparam->value (:value this))]))
+   (xcljb.common/valueparam->value (:value this))])
+ xcljb.common/Request
+ (opcode [_] 56))
 
 (clojure.core/defrecord
  CopyGCRequest
- [opcode src-gc dst-gc value-mask]
+ [src-gc dst-gc value-mask]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2003,11 +2084,13 @@
   [(clojure.core/repeat 1 0)
    (:src-gc this)
    (:dst-gc this)
-   (:value-mask this)]))
+   (:value-mask this)])
+ xcljb.common/Request
+ (opcode [_] 57))
 
 (clojure.core/defrecord
  SetDashesRequest
- [opcode gc dash-offset dashes-len dashes]
+ [gc dash-offset dashes-len dashes]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2036,11 +2119,13 @@
    (:gc this)
    (:dash-offset this)
    (:dashes-len this)
-   (:dashes this)]))
+   (:dashes this)])
+ xcljb.common/Request
+ (opcode [_] 58))
 
 (clojure.core/defrecord
  SetClipRectanglesRequest
- [opcode ordering gc clip-x-origin clip-y-origin rectangles]
+ [ordering gc clip-x-origin clip-y-origin rectangles]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2074,11 +2159,13 @@
    (:clip-y-origin this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:rectangles this))]))
+    (:rectangles this))])
+ xcljb.common/Request
+ (opcode [_] 59))
 
 (clojure.core/defrecord
  FreeGCRequest
- [opcode gc]
+ [gc]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2088,11 +2175,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)])
- (to-value [this] [(clojure.core/repeat 1 0) (:gc this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:gc this)])
+ xcljb.common/Request
+ (opcode [_] 60))
 
 (clojure.core/defrecord
  ClearAreaRequest
- [opcode exposures window x y width height]
+ [exposures window x y width height]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2120,20 +2209,13 @@
    (:x this)
    (:y this)
    (:width this)
-   (:height this)]))
+   (:height this)])
+ xcljb.common/Request
+ (opcode [_] 61))
 
 (clojure.core/defrecord
  CopyAreaRequest
- [opcode
-  src-drawable
-  dst-drawable
-  gc
-  src-x
-  src-y
-  dst-x
-  dst-y
-  width
-  height]
+ [src-drawable dst-drawable gc src-x src-y dst-x dst-y width height]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2173,12 +2255,13 @@
    (:dst-x this)
    (:dst-y this)
    (:width this)
-   (:height this)]))
+   (:height this)])
+ xcljb.common/Request
+ (opcode [_] 62))
 
 (clojure.core/defrecord
  CopyPlaneRequest
- [opcode
-  src-drawable
+ [src-drawable
   dst-drawable
   gc
   src-x
@@ -2230,11 +2313,13 @@
    (:dst-y this)
    (:width this)
    (:height this)
-   (:bit-plane this)]))
+   (:bit-plane this)])
+ xcljb.common/Request
+ (opcode [_] 63))
 
 (clojure.core/defrecord
  PolyPointRequest
- [opcode coordinate-mode drawable gc points]
+ [coordinate-mode drawable gc points]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2265,11 +2350,13 @@
    (:gc this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:points this))]))
+    (:points this))])
+ xcljb.common/Request
+ (opcode [_] 64))
 
 (clojure.core/defrecord
  PolyLineRequest
- [opcode coordinate-mode drawable gc points]
+ [coordinate-mode drawable gc points]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2300,11 +2387,13 @@
    (:gc this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:points this))]))
+    (:points this))])
+ xcljb.common/Request
+ (opcode [_] 65))
 
 (clojure.core/defrecord
  PolySegmentRequest
- [opcode drawable gc segments]
+ [drawable gc segments]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2335,11 +2424,13 @@
    (:gc this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:segments this))]))
+    (:segments this))])
+ xcljb.common/Request
+ (opcode [_] 66))
 
 (clojure.core/defrecord
  PolyRectangleRequest
- [opcode drawable gc rectangles]
+ [drawable gc rectangles]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2370,11 +2461,13 @@
    (:gc this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:rectangles this))]))
+    (:rectangles this))])
+ xcljb.common/Request
+ (opcode [_] 67))
 
 (clojure.core/defrecord
  PolyArcRequest
- [opcode drawable gc arcs]
+ [drawable gc arcs]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2405,11 +2498,13 @@
    (:gc this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:arcs this))]))
+    (:arcs this))])
+ xcljb.common/Request
+ (opcode [_] 68))
 
 (clojure.core/defrecord
  FillPolyRequest
- [opcode drawable gc shape coordinate-mode points]
+ [drawable gc shape coordinate-mode points]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2449,11 +2544,13 @@
    (clojure.core/repeat 2 0)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:points this))]))
+    (:points this))])
+ xcljb.common/Request
+ (opcode [_] 69))
 
 (clojure.core/defrecord
  PolyFillRectangleRequest
- [opcode drawable gc rectangles]
+ [drawable gc rectangles]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2484,11 +2581,13 @@
    (:gc this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:rectangles this))]))
+    (:rectangles this))])
+ xcljb.common/Request
+ (opcode [_] 70))
 
 (clojure.core/defrecord
  PolyFillArcRequest
- [opcode drawable gc arcs]
+ [drawable gc arcs]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2519,21 +2618,13 @@
    (:gc this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:arcs this))]))
+    (:arcs this))])
+ xcljb.common/Request
+ (opcode [_] 71))
 
 (clojure.core/defrecord
  PutImageRequest
- [opcode
-  format
-  drawable
-  gc
-  width
-  height
-  dst-x
-  dst-y
-  left-pad
-  depth
-  data]
+ [format drawable gc width height dst-x dst-y left-pad depth data]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2580,11 +2671,13 @@
    (:left-pad this)
    (:depth this)
    (clojure.core/repeat 2 0)
-   (:data this)]))
+   (:data this)])
+ xcljb.common/Request
+ (opcode [_] 72))
 
 (clojure.core/defrecord
  GetImageRequest
- [opcode format drawable x y width height plane-mask]
+ [format drawable x y width height plane-mask]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2615,11 +2708,13 @@
    (:y this)
    (:width this)
    (:height this)
-   (:plane-mask this)]))
+   (:plane-mask this)])
+ xcljb.common/Request
+ (opcode [_] 73))
 
 (clojure.core/defrecord
  PolyText8Request
- [opcode drawable gc x y items]
+ [drawable gc x y items]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2651,11 +2746,13 @@
    (:gc this)
    (:x this)
    (:y this)
-   (:items this)]))
+   (:items this)])
+ xcljb.common/Request
+ (opcode [_] 74))
 
 (clojure.core/defrecord
  PolyText16Request
- [opcode drawable gc x y items]
+ [drawable gc x y items]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2687,11 +2784,13 @@
    (:gc this)
    (:x this)
    (:y this)
-   (:items this)]))
+   (:items this)])
+ xcljb.common/Request
+ (opcode [_] 75))
 
 (clojure.core/defrecord
  ImageText8Request
- [opcode string-len drawable gc x y string]
+ [string-len drawable gc x y string]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2719,11 +2818,13 @@
    (:gc this)
    (:x this)
    (:y this)
-   (:string this)]))
+   (:string this)])
+ xcljb.common/Request
+ (opcode [_] 76))
 
 (clojure.core/defrecord
  ImageText16Request
- [opcode string-len drawable gc x y string]
+ [string-len drawable gc x y string]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2760,11 +2861,13 @@
    (:y this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:string this))]))
+    (:string this))])
+ xcljb.common/Request
+ (opcode [_] 77))
 
 (clojure.core/defrecord
  CreateColormapRequest
- [opcode alloc mid window visual]
+ [alloc mid window visual]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2783,11 +2886,13 @@
    (.to-frame xcljb.gen.xproto-types/VISUALID)])
  (to-value
   [this]
-  [(:alloc this) (:mid this) (:window this) (:visual this)]))
+  [(:alloc this) (:mid this) (:window this) (:visual this)])
+ xcljb.common/Request
+ (opcode [_] 78))
 
 (clojure.core/defrecord
  FreeColormapRequest
- [opcode cmap]
+ [cmap]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2797,11 +2902,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/COLORMAP)])
- (to-value [this] [(clojure.core/repeat 1 0) (:cmap this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:cmap this)])
+ xcljb.common/Request
+ (opcode [_] 79))
 
 (clojure.core/defrecord
  CopyColormapAndFreeRequest
- [opcode mid src-cmap]
+ [mid src-cmap]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2818,11 +2925,13 @@
    (.to-frame xcljb.gen.xproto-types/COLORMAP)])
  (to-value
   [this]
-  [(clojure.core/repeat 1 0) (:mid this) (:src-cmap this)]))
+  [(clojure.core/repeat 1 0) (:mid this) (:src-cmap this)])
+ xcljb.common/Request
+ (opcode [_] 80))
 
 (clojure.core/defrecord
  InstallColormapRequest
- [opcode cmap]
+ [cmap]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2832,11 +2941,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/COLORMAP)])
- (to-value [this] [(clojure.core/repeat 1 0) (:cmap this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:cmap this)])
+ xcljb.common/Request
+ (opcode [_] 81))
 
 (clojure.core/defrecord
  UninstallColormapRequest
- [opcode cmap]
+ [cmap]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2846,11 +2957,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/COLORMAP)])
- (to-value [this] [(clojure.core/repeat 1 0) (:cmap this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:cmap this)])
+ xcljb.common/Request
+ (opcode [_] 82))
 
 (clojure.core/defrecord
  ListInstalledColormapsRequest
- [opcode window]
+ [window]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2860,11 +2973,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)])
- (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)])
+ xcljb.common/Request
+ (opcode [_] 83))
 
 (clojure.core/defrecord
  AllocColorRequest
- [opcode cmap red green blue]
+ [cmap red green blue]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2892,11 +3007,13 @@
    (:red this)
    (:green this)
    (:blue this)
-   (clojure.core/repeat 2 0)]))
+   (clojure.core/repeat 2 0)])
+ xcljb.common/Request
+ (opcode [_] 84))
 
 (clojure.core/defrecord
  AllocNamedColorRequest
- [opcode cmap name-len name]
+ [cmap name-len name]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2921,11 +3038,13 @@
    (:cmap this)
    (:name-len this)
    (clojure.core/repeat 2 0)
-   (:name this)]))
+   (:name this)])
+ xcljb.common/Request
+ (opcode [_] 85))
 
 (clojure.core/defrecord
  AllocColorCellsRequest
- [opcode contiguous cmap colors planes]
+ [contiguous cmap colors planes]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2947,11 +3066,13 @@
   [(if (:contiguous this) 1 0)
    (:cmap this)
    (:colors this)
-   (:planes this)]))
+   (:planes this)])
+ xcljb.common/Request
+ (opcode [_] 86))
 
 (clojure.core/defrecord
  AllocColorPlanesRequest
- [opcode contiguous cmap colors reds greens blues]
+ [contiguous cmap colors reds greens blues]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -2979,11 +3100,13 @@
    (:colors this)
    (:reds this)
    (:greens this)
-   (:blues this)]))
+   (:blues this)])
+ xcljb.common/Request
+ (opcode [_] 87))
 
 (clojure.core/defrecord
  FreeColorsRequest
- [opcode cmap plane-mask pixels]
+ [cmap plane-mask pixels]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3009,11 +3132,13 @@
   [(clojure.core/repeat 1 0)
    (:cmap this)
    (:plane-mask this)
-   (:pixels this)]))
+   (:pixels this)])
+ xcljb.common/Request
+ (opcode [_] 88))
 
 (clojure.core/defrecord
  StoreColorsRequest
- [opcode cmap items]
+ [cmap items]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3041,11 +3166,13 @@
    (:cmap this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:items this))]))
+    (:items this))])
+ xcljb.common/Request
+ (opcode [_] 89))
 
 (clojure.core/defrecord
  StoreNamedColorRequest
- [opcode flags cmap pixel name-len name]
+ [flags cmap pixel name-len name]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3073,11 +3200,13 @@
    (:pixel this)
    (:name-len this)
    (clojure.core/repeat 2 0)
-   (:name this)]))
+   (:name this)])
+ xcljb.common/Request
+ (opcode [_] 90))
 
 (clojure.core/defrecord
  QueryColorsRequest
- [opcode cmap pixels]
+ [cmap pixels]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3098,11 +3227,13 @@
     (.to-frame xcljb.gen.xproto-types/CARD32))])
  (to-value
   [this]
-  [(clojure.core/repeat 1 0) (:cmap this) (:pixels this)]))
+  [(clojure.core/repeat 1 0) (:cmap this) (:pixels this)])
+ xcljb.common/Request
+ (opcode [_] 91))
 
 (clojure.core/defrecord
  LookupColorRequest
- [opcode cmap name-len name]
+ [cmap name-len name]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3127,12 +3258,13 @@
    (:cmap this)
    (:name-len this)
    (clojure.core/repeat 2 0)
-   (:name this)]))
+   (:name this)])
+ xcljb.common/Request
+ (opcode [_] 92))
 
 (clojure.core/defrecord
  CreateCursorRequest
- [opcode
-  cid
+ [cid
   source
   mask
   fore-red
@@ -3188,12 +3320,13 @@
    (:back-green this)
    (:back-blue this)
    (:x this)
-   (:y this)]))
+   (:y this)])
+ xcljb.common/Request
+ (opcode [_] 93))
 
 (clojure.core/defrecord
  CreateGlyphCursorRequest
- [opcode
-  cid
+ [cid
   source-font
   mask-font
   source-char
@@ -3249,11 +3382,13 @@
    (:fore-blue this)
    (:back-red this)
    (:back-green this)
-   (:back-blue this)]))
+   (:back-blue this)])
+ xcljb.common/Request
+ (opcode [_] 94))
 
 (clojure.core/defrecord
  FreeCursorRequest
- [opcode cursor]
+ [cursor]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3263,18 +3398,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/CURSOR)])
- (to-value [this] [(clojure.core/repeat 1 0) (:cursor this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:cursor this)])
+ xcljb.common/Request
+ (opcode [_] 95))
 
 (clojure.core/defrecord
  RecolorCursorRequest
- [opcode
-  cursor
-  fore-red
-  fore-green
-  fore-blue
-  back-red
-  back-green
-  back-blue]
+ [cursor fore-red fore-green fore-blue back-red back-green back-blue]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3308,11 +3438,13 @@
    (:fore-blue this)
    (:back-red this)
    (:back-green this)
-   (:back-blue this)]))
+   (:back-blue this)])
+ xcljb.common/Request
+ (opcode [_] 96))
 
 (clojure.core/defrecord
  QueryBestSizeRequest
- [opcode class drawable width height]
+ [class drawable width height]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3331,11 +3463,13 @@
    (.to-frame xcljb.gen.xproto-types/CARD16)])
  (to-value
   [this]
-  [(:class this) (:drawable this) (:width this) (:height this)]))
+  [(:class this) (:drawable this) (:width this) (:height this)])
+ xcljb.common/Request
+ (opcode [_] 97))
 
 (clojure.core/defrecord
  QueryExtensionRequest
- [opcode name-len name]
+ [name-len name]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3357,20 +3491,24 @@
   [(clojure.core/repeat 1 0)
    (:name-len this)
    (clojure.core/repeat 2 0)
-   (:name this)]))
+   (:name this)])
+ xcljb.common/Request
+ (opcode [_] 98))
 
 (clojure.core/defrecord
  ListExtensionsRequest
- [opcode]
+ []
  xcljb.common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.common/Serializable
  (to-frame [this] [])
- (to-value [this] []))
+ (to-value [this] [])
+ xcljb.common/Request
+ (opcode [_] 99))
 
 (clojure.core/defrecord
  ChangeKeyboardMappingRequest
- [opcode keycode-count first-keycode keysyms-per-keycode keysyms]
+ [keycode-count first-keycode keysyms-per-keycode keysyms]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3399,11 +3537,13 @@
    (:first-keycode this)
    (:keysyms-per-keycode this)
    (clojure.core/repeat 2 0)
-   (:keysyms this)]))
+   (:keysyms this)])
+ xcljb.common/Request
+ (opcode [_] 100))
 
 (clojure.core/defrecord
  GetKeyboardMappingRequest
- [opcode first-keycode count]
+ [first-keycode count]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3420,11 +3560,13 @@
    (.to-frame xcljb.gen.xproto-types/CARD8)])
  (to-value
   [this]
-  [(clojure.core/repeat 1 0) (:first-keycode this) (:count this)]))
+  [(clojure.core/repeat 1 0) (:first-keycode this) (:count this)])
+ xcljb.common/Request
+ (opcode [_] 101))
 
 (clojure.core/defrecord
  ChangeKeyboardControlRequest
- [opcode value]
+ [value]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3447,32 +3589,37 @@
  (to-value
   [this]
   [(clojure.core/repeat 1 0)
-   (xcljb.common/valueparam->value (:value this))]))
+   (xcljb.common/valueparam->value (:value this))])
+ xcljb.common/Request
+ (opcode [_] 102))
 
 (clojure.core/defrecord
  GetKeyboardControlRequest
- [opcode]
+ []
  xcljb.common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.common/Serializable
  (to-frame [this] [])
- (to-value [this] []))
+ (to-value [this] [])
+ xcljb.common/Request
+ (opcode [_] 103))
 
 (clojure.core/defrecord
  BellRequest
- [opcode percent]
+ [percent]
  xcljb.common/Measurable
  (sizeof
   [this]
   (clojure.core/+ 3 (.sizeof xcljb.gen.xproto-types/INT8)))
  xcljb.common/Serializable
  (to-frame [this] [(.to-frame xcljb.gen.xproto-types/INT8)])
- (to-value [this] [(:percent this)]))
+ (to-value [this] [(:percent this)])
+ xcljb.common/Request
+ (opcode [_] 104))
 
 (clojure.core/defrecord
  ChangePointerControlRequest
- [opcode
-  acceleration-numerator
+ [acceleration-numerator
   acceleration-denominator
   threshold
   do-acceleration
@@ -3504,20 +3651,24 @@
    (:acceleration-denominator this)
    (:threshold this)
    (if (:do-acceleration this) 1 0)
-   (if (:do-threshold this) 1 0)]))
+   (if (:do-threshold this) 1 0)])
+ xcljb.common/Request
+ (opcode [_] 105))
 
 (clojure.core/defrecord
  GetPointerControlRequest
- [opcode]
+ []
  xcljb.common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.common/Serializable
  (to-frame [this] [])
- (to-value [this] []))
+ (to-value [this] [])
+ xcljb.common/Request
+ (opcode [_] 106))
 
 (clojure.core/defrecord
  SetScreenSaverRequest
- [opcode timeout interval prefer-blanking allow-exposures]
+ [timeout interval prefer-blanking allow-exposures]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3542,20 +3693,24 @@
    (:timeout this)
    (:interval this)
    (:prefer-blanking this)
-   (:allow-exposures this)]))
+   (:allow-exposures this)])
+ xcljb.common/Request
+ (opcode [_] 107))
 
 (clojure.core/defrecord
  GetScreenSaverRequest
- [opcode]
+ []
  xcljb.common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.common/Serializable
  (to-frame [this] [])
- (to-value [this] []))
+ (to-value [this] [])
+ xcljb.common/Request
+ (opcode [_] 108))
 
 (clojure.core/defrecord
  ChangeHostsRequest
- [opcode mode family address-len address]
+ [mode family address-len address]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3584,42 +3739,50 @@
    (:family this)
    (clojure.core/repeat 1 0)
    (:address-len this)
-   (:address this)]))
+   (:address this)])
+ xcljb.common/Request
+ (opcode [_] 109))
 
 (clojure.core/defrecord
  ListHostsRequest
- [opcode]
+ []
  xcljb.common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.common/Serializable
  (to-frame [this] [])
- (to-value [this] []))
+ (to-value [this] [])
+ xcljb.common/Request
+ (opcode [_] 110))
 
 (clojure.core/defrecord
  SetAccessControlRequest
- [opcode mode]
+ [mode]
  xcljb.common/Measurable
  (sizeof
   [this]
   (clojure.core/+ 3 (.sizeof xcljb.gen.xproto-types/CARD8)))
  xcljb.common/Serializable
  (to-frame [this] [(.to-frame xcljb.gen.xproto-types/CARD8)])
- (to-value [this] [(:mode this)]))
+ (to-value [this] [(:mode this)])
+ xcljb.common/Request
+ (opcode [_] 111))
 
 (clojure.core/defrecord
  SetCloseDownModeRequest
- [opcode mode]
+ [mode]
  xcljb.common/Measurable
  (sizeof
   [this]
   (clojure.core/+ 3 (.sizeof xcljb.gen.xproto-types/CARD8)))
  xcljb.common/Serializable
  (to-frame [this] [(.to-frame xcljb.gen.xproto-types/CARD8)])
- (to-value [this] [(:mode this)]))
+ (to-value [this] [(:mode this)])
+ xcljb.common/Request
+ (opcode [_] 112))
 
 (clojure.core/defrecord
  KillClientRequest
- [opcode resource]
+ [resource]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3629,11 +3792,13 @@
   [this]
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/CARD32)])
- (to-value [this] [(clojure.core/repeat 1 0) (:resource this)]))
+ (to-value [this] [(clojure.core/repeat 1 0) (:resource this)])
+ xcljb.common/Request
+ (opcode [_] 113))
 
 (clojure.core/defrecord
  RotatePropertiesRequest
- [opcode window atoms-len delta atoms]
+ [window atoms-len delta atoms]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3662,22 +3827,26 @@
    (:window this)
    (:atoms-len this)
    (:delta this)
-   (:atoms this)]))
+   (:atoms this)])
+ xcljb.common/Request
+ (opcode [_] 114))
 
 (clojure.core/defrecord
  ForceScreenSaverRequest
- [opcode mode]
+ [mode]
  xcljb.common/Measurable
  (sizeof
   [this]
   (clojure.core/+ 3 (.sizeof xcljb.gen.xproto-types/CARD8)))
  xcljb.common/Serializable
  (to-frame [this] [(.to-frame xcljb.gen.xproto-types/CARD8)])
- (to-value [this] [(:mode this)]))
+ (to-value [this] [(:mode this)])
+ xcljb.common/Request
+ (opcode [_] 115))
 
 (clojure.core/defrecord
  SetPointerMappingRequest
- [opcode map-len map]
+ [map-len map]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3694,20 +3863,24 @@
    (clojure.core/repeat
     (clojure.core/count (:map this))
     (.to-frame xcljb.gen.xproto-types/CARD8))])
- (to-value [this] [(:map-len this) (:map this)]))
+ (to-value [this] [(:map-len this) (:map this)])
+ xcljb.common/Request
+ (opcode [_] 116))
 
 (clojure.core/defrecord
  GetPointerMappingRequest
- [opcode]
+ []
  xcljb.common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.common/Serializable
  (to-frame [this] [])
- (to-value [this] []))
+ (to-value [this] [])
+ xcljb.common/Request
+ (opcode [_] 117))
 
 (clojure.core/defrecord
  SetModifierMappingRequest
- [opcode keycodes-per-modifier keycodes]
+ [keycodes-per-modifier keycodes]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -3724,25 +3897,31 @@
    (clojure.core/repeat
     (clojure.core/count (:keycodes this))
     (.to-frame xcljb.gen.xproto-types/KEYCODE))])
- (to-value [this] [(:keycodes-per-modifier this) (:keycodes this)]))
+ (to-value [this] [(:keycodes-per-modifier this) (:keycodes this)])
+ xcljb.common/Request
+ (opcode [_] 118))
 
 (clojure.core/defrecord
  GetModifierMappingRequest
- [opcode]
+ []
  xcljb.common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.common/Serializable
  (to-frame [this] [])
- (to-value [this] []))
+ (to-value [this] [])
+ xcljb.common/Request
+ (opcode [_] 119))
 
 (clojure.core/defrecord
  NoOperationRequest
- [opcode]
+ []
  xcljb.common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.common/Serializable
  (to-frame [this] [])
- (to-value [this] []))
+ (to-value [this] [])
+ xcljb.common/Request
+ (opcode [_] 127))
 
 (clojure.core/defrecord
  GetWindowAttributesReply

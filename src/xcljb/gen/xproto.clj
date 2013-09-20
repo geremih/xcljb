@@ -430,7 +430,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->CreateWindowRequest
-    1
     depth
     wid
     parent
@@ -452,7 +451,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->ChangeWindowAttributesRequest
-    2
     window
     value)]
   (xcljb.conn-internal/send
@@ -464,7 +462,7 @@
  [conn__1079__auto__ window]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->GetWindowAttributesRequest 3 window)]
+   (xcljb.gen.xproto-types/->GetWindowAttributesRequest window)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -474,7 +472,7 @@
  [conn__1079__auto__ window]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->DestroyWindowRequest 4 window)]
+   (xcljb.gen.xproto-types/->DestroyWindowRequest window)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -484,7 +482,7 @@
  [conn__1079__auto__ window]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->DestroySubwindowsRequest 5 window)]
+   (xcljb.gen.xproto-types/->DestroySubwindowsRequest window)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -494,7 +492,7 @@
  [conn__1079__auto__ mode window]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->ChangeSaveSetRequest 6 mode window)]
+   (xcljb.gen.xproto-types/->ChangeSaveSetRequest mode window)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -504,12 +502,7 @@
  [conn__1079__auto__ window parent x y]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->ReparentWindowRequest
-    7
-    window
-    parent
-    x
-    y)]
+   (xcljb.gen.xproto-types/->ReparentWindowRequest window parent x y)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -519,7 +512,7 @@
  [conn__1079__auto__ window]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->MapWindowRequest 8 window)]
+   (xcljb.gen.xproto-types/->MapWindowRequest window)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -529,7 +522,7 @@
  [conn__1079__auto__ window]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->MapSubwindowsRequest 9 window)]
+   (xcljb.gen.xproto-types/->MapSubwindowsRequest window)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -539,7 +532,7 @@
  [conn__1079__auto__ window]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->UnmapWindowRequest 10 window)]
+   (xcljb.gen.xproto-types/->UnmapWindowRequest window)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -549,7 +542,7 @@
  [conn__1079__auto__ window]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->UnmapSubwindowsRequest 11 window)]
+   (xcljb.gen.xproto-types/->UnmapSubwindowsRequest window)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -559,10 +552,7 @@
  [conn__1079__auto__ direction window]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->CirculateWindowRequest
-    13
-    direction
-    window)]
+   (xcljb.gen.xproto-types/->CirculateWindowRequest direction window)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -572,7 +562,7 @@
  [conn__1079__auto__ drawable]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->GetGeometryRequest 14 drawable)]
+   (xcljb.gen.xproto-types/->GetGeometryRequest drawable)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -582,7 +572,7 @@
  [conn__1079__auto__ window]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->QueryTreeRequest 15 window)]
+   (xcljb.gen.xproto-types/->QueryTreeRequest window)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -593,7 +583,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->InternAtomRequest
-    16
     only-if-exists
     name-len
     name)]
@@ -606,7 +595,7 @@
  [conn__1079__auto__ atom]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->GetAtomNameRequest 17 atom)]
+   (xcljb.gen.xproto-types/->GetAtomNameRequest atom)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -617,7 +606,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->ChangePropertyRequest
-    18
     mode
     window
     property
@@ -634,7 +622,7 @@
  [conn__1079__auto__ window property]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->DeletePropertyRequest 19 window property)]
+   (xcljb.gen.xproto-types/->DeletePropertyRequest window property)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -651,7 +639,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->GetPropertyRequest
-    20
     delete
     window
     property
@@ -667,7 +654,7 @@
  [conn__1079__auto__ window]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->ListPropertiesRequest 21 window)]
+   (xcljb.gen.xproto-types/->ListPropertiesRequest window)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -678,7 +665,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->SetSelectionOwnerRequest
-    22
     owner
     selection
     time)]
@@ -691,7 +677,7 @@
  [conn__1079__auto__ selection]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->GetSelectionOwnerRequest 23 selection)]
+   (xcljb.gen.xproto-types/->GetSelectionOwnerRequest selection)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -702,7 +688,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->ConvertSelectionRequest
-    24
     requestor
     selection
     target
@@ -718,7 +703,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->SendEventRequest
-    25
     propagate
     destination
     event-mask
@@ -741,7 +725,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->GrabPointerRequest
-    26
     owner-events
     grab-window
     event-mask
@@ -759,7 +742,7 @@
  [conn__1079__auto__ time]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->UngrabPointerRequest 27 time)]
+   (xcljb.gen.xproto-types/->UngrabPointerRequest time)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -779,7 +762,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->GrabButtonRequest
-    28
     owner-events
     grab-window
     event-mask
@@ -799,7 +781,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->UngrabButtonRequest
-    29
     button
     grab-window
     modifiers)]
@@ -813,7 +794,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->ChangeActivePointerGrabRequest
-    30
     cursor
     time
     event-mask)]
@@ -832,7 +812,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->GrabKeyboardRequest
-    31
     owner-events
     grab-window
     time
@@ -847,7 +826,7 @@
  [conn__1079__auto__ time]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->UngrabKeyboardRequest 32 time)]
+   (xcljb.gen.xproto-types/->UngrabKeyboardRequest time)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -864,7 +843,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->GrabKeyRequest
-    33
     owner-events
     grab-window
     modifiers
@@ -881,7 +859,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->UngrabKeyRequest
-    34
     key
     grab-window
     modifiers)]
@@ -894,7 +871,7 @@
  [conn__1079__auto__ mode time]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->AllowEventsRequest 35 mode time)]
+   (xcljb.gen.xproto-types/->AllowEventsRequest mode time)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -904,7 +881,7 @@
  [conn__1079__auto__]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->GrabServerRequest 36)]
+   (xcljb.gen.xproto-types/->GrabServerRequest)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -914,7 +891,7 @@
  [conn__1079__auto__]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->UngrabServerRequest 37)]
+   (xcljb.gen.xproto-types/->UngrabServerRequest)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -924,7 +901,7 @@
  [conn__1079__auto__ window]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->QueryPointerRequest 38 window)]
+   (xcljb.gen.xproto-types/->QueryPointerRequest window)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -934,11 +911,7 @@
  [conn__1079__auto__ window start stop]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->GetMotionEventsRequest
-    39
-    window
-    start
-    stop)]
+   (xcljb.gen.xproto-types/->GetMotionEventsRequest window start stop)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -949,7 +922,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->TranslateCoordinatesRequest
-    40
     src-window
     dst-window
     src-x
@@ -972,7 +944,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->WarpPointerRequest
-    41
     src-window
     dst-window
     src-x
@@ -991,7 +962,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->SetInputFocusRequest
-    42
     revert-to
     focus
     time)]
@@ -1004,7 +974,7 @@
  [conn__1079__auto__]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->GetInputFocusRequest 43)]
+   (xcljb.gen.xproto-types/->GetInputFocusRequest)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1014,7 +984,7 @@
  [conn__1079__auto__]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->QueryKeymapRequest 44)]
+   (xcljb.gen.xproto-types/->QueryKeymapRequest)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1024,7 +994,7 @@
  [conn__1079__auto__ fid name-len name]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->OpenFontRequest 45 fid name-len name)]
+   (xcljb.gen.xproto-types/->OpenFontRequest fid name-len name)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1034,7 +1004,7 @@
  [conn__1079__auto__ font]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->CloseFontRequest 46 font)]
+   (xcljb.gen.xproto-types/->CloseFontRequest font)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1044,7 +1014,7 @@
  [conn__1079__auto__ font]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->QueryFontRequest 47 font)]
+   (xcljb.gen.xproto-types/->QueryFontRequest font)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1055,7 +1025,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->ListFontsRequest
-    49
     max-names
     pattern-len
     pattern)]
@@ -1069,7 +1038,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->ListFontsWithInfoRequest
-    50
     max-names
     pattern-len
     pattern)]
@@ -1082,7 +1050,7 @@
  [conn__1079__auto__ font-qty font]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->SetFontPathRequest 51 font-qty font)]
+   (xcljb.gen.xproto-types/->SetFontPathRequest font-qty font)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1092,7 +1060,7 @@
  [conn__1079__auto__]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->GetFontPathRequest 52)]
+   (xcljb.gen.xproto-types/->GetFontPathRequest)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1103,7 +1071,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->CreatePixmapRequest
-    53
     depth
     pid
     drawable
@@ -1118,7 +1085,7 @@
  [conn__1079__auto__ pixmap]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->FreePixmapRequest 54 pixmap)]
+   (xcljb.gen.xproto-types/->FreePixmapRequest pixmap)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1128,7 +1095,7 @@
  [conn__1079__auto__ cid drawable value]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->CreateGCRequest 55 cid drawable value)]
+   (xcljb.gen.xproto-types/->CreateGCRequest cid drawable value)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1138,7 +1105,7 @@
  [conn__1079__auto__ gc value]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->ChangeGCRequest 56 gc value)]
+   (xcljb.gen.xproto-types/->ChangeGCRequest gc value)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1148,11 +1115,7 @@
  [conn__1079__auto__ src-gc dst-gc value-mask]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->CopyGCRequest
-    57
-    src-gc
-    dst-gc
-    value-mask)]
+   (xcljb.gen.xproto-types/->CopyGCRequest src-gc dst-gc value-mask)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1163,7 +1126,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->SetDashesRequest
-    58
     gc
     dash-offset
     dashes-len
@@ -1183,7 +1145,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->SetClipRectanglesRequest
-    59
     ordering
     gc
     clip-x-origin
@@ -1198,7 +1159,7 @@
  [conn__1079__auto__ gc]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->FreeGCRequest 60 gc)]
+   (xcljb.gen.xproto-types/->FreeGCRequest gc)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1209,7 +1170,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->ClearAreaRequest
-    61
     exposures
     window
     x
@@ -1235,7 +1195,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->CopyAreaRequest
-    62
     src-drawable
     dst-drawable
     gc
@@ -1265,7 +1224,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->CopyPlaneRequest
-    63
     src-drawable
     dst-drawable
     gc
@@ -1286,7 +1244,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->PolyPointRequest
-    64
     coordinate-mode
     drawable
     gc
@@ -1301,7 +1258,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->PolyLineRequest
-    65
     coordinate-mode
     drawable
     gc
@@ -1315,11 +1271,7 @@
  [conn__1079__auto__ drawable gc segments]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->PolySegmentRequest
-    66
-    drawable
-    gc
-    segments)]
+   (xcljb.gen.xproto-types/->PolySegmentRequest drawable gc segments)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1330,7 +1282,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->PolyRectangleRequest
-    67
     drawable
     gc
     rectangles)]
@@ -1343,7 +1294,7 @@
  [conn__1079__auto__ drawable gc arcs]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->PolyArcRequest 68 drawable gc arcs)]
+   (xcljb.gen.xproto-types/->PolyArcRequest drawable gc arcs)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1354,7 +1305,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->FillPolyRequest
-    69
     drawable
     gc
     shape
@@ -1370,7 +1320,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->PolyFillRectangleRequest
-    70
     drawable
     gc
     rectangles)]
@@ -1383,7 +1332,7 @@
  [conn__1079__auto__ drawable gc arcs]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->PolyFillArcRequest 71 drawable gc arcs)]
+   (xcljb.gen.xproto-types/->PolyFillArcRequest drawable gc arcs)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1404,7 +1353,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->PutImageRequest
-    72
     format
     drawable
     gc
@@ -1425,7 +1373,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->GetImageRequest
-    73
     format
     drawable
     x
@@ -1442,13 +1389,7 @@
  [conn__1079__auto__ drawable gc x y items]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->PolyText8Request
-    74
-    drawable
-    gc
-    x
-    y
-    items)]
+   (xcljb.gen.xproto-types/->PolyText8Request drawable gc x y items)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1458,13 +1399,7 @@
  [conn__1079__auto__ drawable gc x y items]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->PolyText16Request
-    75
-    drawable
-    gc
-    x
-    y
-    items)]
+   (xcljb.gen.xproto-types/->PolyText16Request drawable gc x y items)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1475,7 +1410,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->ImageText8Request
-    76
     string-len
     drawable
     gc
@@ -1492,7 +1426,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->ImageText16Request
-    77
     string-len
     drawable
     gc
@@ -1509,7 +1442,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->CreateColormapRequest
-    78
     alloc
     mid
     window
@@ -1523,7 +1455,7 @@
  [conn__1079__auto__ cmap]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->FreeColormapRequest 79 cmap)]
+   (xcljb.gen.xproto-types/->FreeColormapRequest cmap)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1533,10 +1465,7 @@
  [conn__1079__auto__ mid src-cmap]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->CopyColormapAndFreeRequest
-    80
-    mid
-    src-cmap)]
+   (xcljb.gen.xproto-types/->CopyColormapAndFreeRequest mid src-cmap)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1546,7 +1475,7 @@
  [conn__1079__auto__ cmap]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->InstallColormapRequest 81 cmap)]
+   (xcljb.gen.xproto-types/->InstallColormapRequest cmap)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1556,7 +1485,7 @@
  [conn__1079__auto__ cmap]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->UninstallColormapRequest 82 cmap)]
+   (xcljb.gen.xproto-types/->UninstallColormapRequest cmap)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1566,7 +1495,7 @@
  [conn__1079__auto__ window]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->ListInstalledColormapsRequest 83 window)]
+   (xcljb.gen.xproto-types/->ListInstalledColormapsRequest window)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1576,7 +1505,7 @@
  [conn__1079__auto__ cmap red green blue]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->AllocColorRequest 84 cmap red green blue)]
+   (xcljb.gen.xproto-types/->AllocColorRequest cmap red green blue)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1587,7 +1516,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->AllocNamedColorRequest
-    85
     cmap
     name-len
     name)]
@@ -1601,7 +1529,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->AllocColorCellsRequest
-    86
     contiguous
     cmap
     colors
@@ -1616,7 +1543,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->AllocColorPlanesRequest
-    87
     contiguous
     cmap
     colors
@@ -1632,11 +1558,7 @@
  [conn__1079__auto__ cmap plane-mask pixels]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->FreeColorsRequest
-    88
-    cmap
-    plane-mask
-    pixels)]
+   (xcljb.gen.xproto-types/->FreeColorsRequest cmap plane-mask pixels)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1646,7 +1568,7 @@
  [conn__1079__auto__ cmap items]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->StoreColorsRequest 89 cmap items)]
+   (xcljb.gen.xproto-types/->StoreColorsRequest cmap items)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1657,7 +1579,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->StoreNamedColorRequest
-    90
     flags
     cmap
     pixel
@@ -1672,7 +1593,7 @@
  [conn__1079__auto__ cmap pixels]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->QueryColorsRequest 91 cmap pixels)]
+   (xcljb.gen.xproto-types/->QueryColorsRequest cmap pixels)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1682,7 +1603,7 @@
  [conn__1079__auto__ cmap name-len name]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->LookupColorRequest 92 cmap name-len name)]
+   (xcljb.gen.xproto-types/->LookupColorRequest cmap name-len name)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1704,7 +1625,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->CreateCursorRequest
-    93
     cid
     source
     mask
@@ -1737,7 +1657,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->CreateGlyphCursorRequest
-    94
     cid
     source-font
     mask-font
@@ -1758,7 +1677,7 @@
  [conn__1079__auto__ cursor]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->FreeCursorRequest 95 cursor)]
+   (xcljb.gen.xproto-types/->FreeCursorRequest cursor)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1776,7 +1695,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->RecolorCursorRequest
-    96
     cursor
     fore-red
     fore-green
@@ -1794,7 +1712,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->QueryBestSizeRequest
-    97
     class
     drawable
     width
@@ -1808,7 +1725,7 @@
  [conn__1079__auto__ name-len name]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->QueryExtensionRequest 98 name-len name)]
+   (xcljb.gen.xproto-types/->QueryExtensionRequest name-len name)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1818,7 +1735,7 @@
  [conn__1079__auto__]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->ListExtensionsRequest 99)]
+   (xcljb.gen.xproto-types/->ListExtensionsRequest)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1833,7 +1750,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->ChangeKeyboardMappingRequest
-    100
     keycode-count
     first-keycode
     keysyms-per-keycode
@@ -1848,7 +1764,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->GetKeyboardMappingRequest
-    101
     first-keycode
     count)]
   (xcljb.conn-internal/send
@@ -1860,7 +1775,7 @@
  [conn__1079__auto__ value]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->ChangeKeyboardControlRequest 102 value)]
+   (xcljb.gen.xproto-types/->ChangeKeyboardControlRequest value)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1870,7 +1785,7 @@
  [conn__1079__auto__]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->GetKeyboardControlRequest 103)]
+   (xcljb.gen.xproto-types/->GetKeyboardControlRequest)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1880,7 +1795,7 @@
  [conn__1079__auto__ percent]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->BellRequest 104 percent)]
+   (xcljb.gen.xproto-types/->BellRequest percent)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1896,7 +1811,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->ChangePointerControlRequest
-    105
     acceleration-numerator
     acceleration-denominator
     threshold
@@ -1911,7 +1825,7 @@
  [conn__1079__auto__]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->GetPointerControlRequest 106)]
+   (xcljb.gen.xproto-types/->GetPointerControlRequest)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1922,7 +1836,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->SetScreenSaverRequest
-    107
     timeout
     interval
     prefer-blanking
@@ -1936,7 +1849,7 @@
  [conn__1079__auto__]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->GetScreenSaverRequest 108)]
+   (xcljb.gen.xproto-types/->GetScreenSaverRequest)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1947,7 +1860,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->ChangeHostsRequest
-    109
     mode
     family
     address-len
@@ -1961,7 +1873,7 @@
  [conn__1079__auto__]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->ListHostsRequest 110)]
+   (xcljb.gen.xproto-types/->ListHostsRequest)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1971,7 +1883,7 @@
  [conn__1079__auto__ mode]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->SetAccessControlRequest 111 mode)]
+   (xcljb.gen.xproto-types/->SetAccessControlRequest mode)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1981,7 +1893,7 @@
  [conn__1079__auto__ mode]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->SetCloseDownModeRequest 112 mode)]
+   (xcljb.gen.xproto-types/->SetCloseDownModeRequest mode)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -1991,7 +1903,7 @@
  [conn__1079__auto__ resource]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->KillClientRequest 113 resource)]
+   (xcljb.gen.xproto-types/->KillClientRequest resource)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -2002,7 +1914,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->RotatePropertiesRequest
-    114
     window
     atoms-len
     delta
@@ -2016,7 +1927,7 @@
  [conn__1079__auto__ mode]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->ForceScreenSaverRequest 115 mode)]
+   (xcljb.gen.xproto-types/->ForceScreenSaverRequest mode)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -2026,7 +1937,7 @@
  [conn__1079__auto__ map-len map]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->SetPointerMappingRequest 116 map-len map)]
+   (xcljb.gen.xproto-types/->SetPointerMappingRequest map-len map)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -2036,7 +1947,7 @@
  [conn__1079__auto__]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->GetPointerMappingRequest 117)]
+   (xcljb.gen.xproto-types/->GetPointerMappingRequest)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -2047,7 +1958,6 @@
  (clojure.core/let
   [request-struct__1080__auto__
    (xcljb.gen.xproto-types/->SetModifierMappingRequest
-    118
     keycodes-per-modifier
     keycodes)]
   (xcljb.conn-internal/send
@@ -2059,7 +1969,7 @@
  [conn__1079__auto__]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->GetModifierMappingRequest 119)]
+   (xcljb.gen.xproto-types/->GetModifierMappingRequest)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
@@ -2069,7 +1979,7 @@
  [conn__1079__auto__]
  (clojure.core/let
   [request-struct__1080__auto__
-   (xcljb.gen.xproto-types/->NoOperationRequest 127)]
+   (xcljb.gen.xproto-types/->NoOperationRequest)]
   (xcljb.conn-internal/send
    conn__1079__auto__
    request-struct__1080__auto__)))
