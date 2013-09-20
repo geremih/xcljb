@@ -755,9 +755,7 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/CARD8)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/INT16)
@@ -770,16 +768,10 @@
    [(.to-frame xcljb.gen.xproto-types/CARD32)
     (clojure.core/repeat
      (clojure.core/-> this (:value) (clojure.core/count))
-     :uint32)]
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+     :uint32)]])
  (to-value
   [this]
-  [1
-   (:depth this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(:depth this)
    (:wid this)
    (:parent this)
    (:x this)
@@ -789,8 +781,7 @@
    (:border-width this)
    (:class this)
    (:visual this)
-   (xcljb.gen-common/valueparam->value (:value this))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (xcljb.gen-common/valueparam->value (:value this))]))
 
 (clojure.core/defrecord
  ChangeWindowAttributesRequest
@@ -810,26 +801,17 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    [(.to-frame xcljb.gen.xproto-types/CARD32)
     (clojure.core/repeat
      (clojure.core/-> this (:value) (clojure.core/count))
-     :uint32)]
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+     :uint32)]])
  (to-value
   [this]
-  [2
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:window this)
-   (xcljb.gen-common/valueparam->value (:value this))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (xcljb.gen-common/valueparam->value (:value this))]))
 
 (clojure.core/defrecord
  GetWindowAttributesRequest
@@ -841,21 +823,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/WINDOW)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [3
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:window this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/WINDOW)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
 
 (clojure.core/defrecord
  DestroyWindowRequest
@@ -867,21 +837,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/WINDOW)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [4
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:window this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/WINDOW)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
 
 (clojure.core/defrecord
  DestroySubwindowsRequest
@@ -893,21 +851,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/WINDOW)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [5
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:window this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/WINDOW)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
 
 (clojure.core/defrecord
  ChangeSaveSetRequest
@@ -922,21 +868,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/BYTE)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/WINDOW)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [6
-   (:mode this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:window this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(.to-frame xcljb.gen.xproto-types/BYTE)
+   (.to-frame xcljb.gen.xproto-types/WINDOW)])
+ (to-value [this] [(:mode this) (:window this)]))
 
 (clojure.core/defrecord
  ReparentWindowRequest
@@ -954,27 +888,18 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/INT16)
-   (.to-frame xcljb.gen.xproto-types/INT16)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/INT16)])
  (to-value
   [this]
-  [7
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:window this)
    (:parent this)
    (:x this)
-   (:y this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:y this)]))
 
 (clojure.core/defrecord
  MapWindowRequest
@@ -986,21 +911,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/WINDOW)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [8
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:window this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/WINDOW)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
 
 (clojure.core/defrecord
  MapSubwindowsRequest
@@ -1012,21 +925,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/WINDOW)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [9
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:window this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/WINDOW)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
 
 (clojure.core/defrecord
  UnmapWindowRequest
@@ -1038,21 +939,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/WINDOW)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [10
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:window this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/WINDOW)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
 
 (clojure.core/defrecord
  UnmapSubwindowsRequest
@@ -1064,21 +953,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/WINDOW)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [11
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:window this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/WINDOW)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
 
 (clojure.core/defrecord
  CirculateWindowRequest
@@ -1093,21 +970,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/WINDOW)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [13
-   (:direction this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:window this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(.to-frame xcljb.gen.xproto-types/CARD8)
+   (.to-frame xcljb.gen.xproto-types/WINDOW)])
+ (to-value [this] [(:direction this) (:window this)]))
 
 (clojure.core/defrecord
  GetGeometryRequest
@@ -1119,21 +984,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/DRAWABLE)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [14
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:drawable this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/DRAWABLE)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:drawable this)]))
 
 (clojure.core/defrecord
  QueryTreeRequest
@@ -1145,21 +998,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/WINDOW)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [15
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:window this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/WINDOW)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
 
 (clojure.core/defrecord
  InternAtomRequest
@@ -1177,24 +1018,15 @@
  (to-frame
   [this]
   [:ubyte
-   :ubyte
-   :uint16
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (clojure.core/repeat 2 :byte)
-   (gloss.core/string :ascii)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (gloss.core/string :ascii)])
  (to-value
   [this]
-  [16
-   (if (:only-if-exists this) 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(if (:only-if-exists this) 1 0)
    (:name-len this)
    (clojure.core/repeat 2 0)
-   (:name this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:name this)]))
 
 (clojure.core/defrecord
  GetAtomNameRequest
@@ -1206,21 +1038,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/ATOM)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [17
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:atom this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/ATOM)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:atom this)]))
 
 (clojure.core/defrecord
  ChangePropertyRequest
@@ -1243,9 +1063,7 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/CARD8)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/ATOM)
    (.to-frame xcljb.gen.xproto-types/ATOM)
@@ -1254,24 +1072,17 @@
    (.to-frame xcljb.gen.xproto-types/CARD32)
    (clojure.core/repeat
     (clojure.core/count (:data this))
-    (.to-frame xcljb.gen.xproto-types/void))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (.to-frame xcljb.gen.xproto-types/void))])
  (to-value
   [this]
-  [18
-   (:mode this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(:mode this)
    (:window this)
    (:property this)
    (:type this)
    (:format this)
    (clojure.core/repeat 3 0)
    (:data-len this)
-   (:data this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:data this)]))
 
 (clojure.core/defrecord
  DeletePropertyRequest
@@ -1287,23 +1098,12 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
-   (.to-frame xcljb.gen.xproto-types/ATOM)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/ATOM)])
  (to-value
   [this]
-  [19
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:window this)
-   (:property this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 0) (:window this) (:property this)]))
 
 (clojure.core/defrecord
  GetPropertyRequest
@@ -1323,28 +1123,19 @@
  (to-frame
   [this]
   [:ubyte
-   :ubyte
-   :uint16
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/ATOM)
    (.to-frame xcljb.gen.xproto-types/ATOM)
    (.to-frame xcljb.gen.xproto-types/CARD32)
-   (.to-frame xcljb.gen.xproto-types/CARD32)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/CARD32)])
  (to-value
   [this]
-  [20
-   (if (:delete this) 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(if (:delete this) 1 0)
    (:window this)
    (:property this)
    (:type this)
    (:long-offset this)
-   (:long-length this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:long-length this)]))
 
 (clojure.core/defrecord
  ListPropertiesRequest
@@ -1356,21 +1147,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/WINDOW)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [21
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:window this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/WINDOW)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
 
 (clojure.core/defrecord
  SetSelectionOwnerRequest
@@ -1387,25 +1166,16 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/ATOM)
-   (.to-frame xcljb.gen.xproto-types/TIMESTAMP)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/TIMESTAMP)])
  (to-value
   [this]
-  [22
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:owner this)
    (:selection this)
-   (:time this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:time this)]))
 
 (clojure.core/defrecord
  GetSelectionOwnerRequest
@@ -1417,21 +1187,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/ATOM)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [23
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:selection this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/ATOM)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:selection this)]))
 
 (clojure.core/defrecord
  ConvertSelectionRequest
@@ -1450,29 +1208,20 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/ATOM)
    (.to-frame xcljb.gen.xproto-types/ATOM)
    (.to-frame xcljb.gen.xproto-types/ATOM)
-   (.to-frame xcljb.gen.xproto-types/TIMESTAMP)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/TIMESTAMP)])
  (to-value
   [this]
-  [24
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:requestor this)
    (:selection this)
    (:target this)
    (:property this)
-   (:time this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:time this)]))
 
 (clojure.core/defrecord
  SendEventRequest
@@ -1490,24 +1239,15 @@
  (to-frame
   [this]
   [:ubyte
-   :ubyte
-   :uint16
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/CARD32)
-   (gloss.core/string :ascii)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (gloss.core/string :ascii)])
  (to-value
   [this]
-  [25
-   (if (:propagate this) 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(if (:propagate this) 1 0)
    (:destination this)
    (:event-mask this)
-   (:event this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:event this)]))
 
 (clojure.core/defrecord
  GrabPointerRequest
@@ -1537,32 +1277,23 @@
  (to-frame
   [this]
   [:ubyte
-   :ubyte
-   :uint16
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/BYTE)
    (.to-frame xcljb.gen.xproto-types/BYTE)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/CURSOR)
-   (.to-frame xcljb.gen.xproto-types/TIMESTAMP)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/TIMESTAMP)])
  (to-value
   [this]
-  [26
-   (if (:owner-events this) 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(if (:owner-events this) 1 0)
    (:grab-window this)
    (:event-mask this)
    (:pointer-mode this)
    (:keyboard-mode this)
    (:confine-to this)
    (:cursor this)
-   (:time this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:time this)]))
 
 (clojure.core/defrecord
  UngrabPointerRequest
@@ -1574,21 +1305,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/TIMESTAMP)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [27
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:time this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/TIMESTAMP)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:time this)]))
 
 (clojure.core/defrecord
  GrabButtonRequest
@@ -1621,8 +1340,6 @@
  (to-frame
   [this]
   [:ubyte
-   :ubyte
-   :uint16
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD8)
@@ -1631,16 +1348,10 @@
    (.to-frame xcljb.gen.xproto-types/CURSOR)
    (.to-frame xcljb.gen.xproto-types/CARD8)
    (clojure.core/repeat 1 :byte)
-   (.to-frame xcljb.gen.xproto-types/CARD16)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/CARD16)])
  (to-value
   [this]
-  [28
-   (if (:owner-events this) 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(if (:owner-events this) 1 0)
    (:grab-window this)
    (:event-mask this)
    (:pointer-mode this)
@@ -1649,8 +1360,7 @@
    (:cursor this)
    (:button this)
    (clojure.core/repeat 1 0)
-   (:modifiers this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:modifiers this)]))
 
 (clojure.core/defrecord
  UngrabButtonRequest
@@ -1667,25 +1377,16 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/CARD8)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/CARD16)
-   (clojure.core/repeat 2 :byte)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (clojure.core/repeat 2 :byte)])
  (to-value
   [this]
-  [29
-   (:button this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(:button this)
    (:grab-window this)
    (:modifiers this)
-   (clojure.core/repeat 2 0)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (clojure.core/repeat 2 0)]))
 
 (clojure.core/defrecord
  ChangeActivePointerGrabRequest
@@ -1703,27 +1404,18 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/CURSOR)
    (.to-frame xcljb.gen.xproto-types/TIMESTAMP)
    (.to-frame xcljb.gen.xproto-types/CARD16)
-   (clojure.core/repeat 2 :byte)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (clojure.core/repeat 2 :byte)])
  (to-value
   [this]
-  [30
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:cursor this)
    (:time this)
    (:event-mask this)
-   (clojure.core/repeat 2 0)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (clojure.core/repeat 2 0)]))
 
 (clojure.core/defrecord
  GrabKeyboardRequest
@@ -1743,28 +1435,19 @@
  (to-frame
   [this]
   [:ubyte
-   :ubyte
-   :uint16
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/TIMESTAMP)
    (.to-frame xcljb.gen.xproto-types/BYTE)
    (.to-frame xcljb.gen.xproto-types/BYTE)
-   (clojure.core/repeat 2 :byte)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (clojure.core/repeat 2 :byte)])
  (to-value
   [this]
-  [31
-   (if (:owner-events this) 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(if (:owner-events this) 1 0)
    (:grab-window this)
    (:time this)
    (:pointer-mode this)
    (:keyboard-mode this)
-   (clojure.core/repeat 2 0)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (clojure.core/repeat 2 0)]))
 
 (clojure.core/defrecord
  UngrabKeyboardRequest
@@ -1776,21 +1459,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/TIMESTAMP)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [32
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:time this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/TIMESTAMP)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:time this)]))
 
 (clojure.core/defrecord
  GrabKeyRequest
@@ -1817,30 +1488,21 @@
  (to-frame
   [this]
   [:ubyte
-   :ubyte
-   :uint16
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/KEYCODE)
    (.to-frame xcljb.gen.xproto-types/CARD8)
    (.to-frame xcljb.gen.xproto-types/CARD8)
-   (clojure.core/repeat 3 :byte)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (clojure.core/repeat 3 :byte)])
  (to-value
   [this]
-  [33
-   (if (:owner-events this) 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(if (:owner-events this) 1 0)
    (:grab-window this)
    (:modifiers this)
    (:key this)
    (:pointer-mode this)
    (:keyboard-mode this)
-   (clojure.core/repeat 3 0)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (clojure.core/repeat 3 0)]))
 
 (clojure.core/defrecord
  UngrabKeyRequest
@@ -1857,25 +1519,16 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/KEYCODE)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/KEYCODE)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/CARD16)
-   (clojure.core/repeat 2 :byte)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (clojure.core/repeat 2 :byte)])
  (to-value
   [this]
-  [34
-   (:key this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(:key this)
    (:grab-window this)
    (:modifiers this)
-   (clojure.core/repeat 2 0)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (clojure.core/repeat 2 0)]))
 
 (clojure.core/defrecord
  AllowEventsRequest
@@ -1890,21 +1543,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/TIMESTAMP)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [35
-   (:mode this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:time this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(.to-frame xcljb.gen.xproto-types/CARD8)
+   (.to-frame xcljb.gen.xproto-types/TIMESTAMP)])
+ (to-value [this] [(:mode this) (:time this)]))
 
 (clojure.core/defrecord
  GrabServerRequest
@@ -1912,21 +1553,8 @@
  xcljb.gen-common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.gen-common/Serializable
- (to-frame
-  [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [36
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+ (to-frame [this] [])
+ (to-value [this] []))
 
 (clojure.core/defrecord
  UngrabServerRequest
@@ -1934,21 +1562,8 @@
  xcljb.gen-common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.gen-common/Serializable
- (to-frame
-  [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [37
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+ (to-frame [this] [])
+ (to-value [this] []))
 
 (clojure.core/defrecord
  QueryPointerRequest
@@ -1960,21 +1575,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/WINDOW)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [38
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:window this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/WINDOW)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
 
 (clojure.core/defrecord
  GetMotionEventsRequest
@@ -1991,25 +1594,16 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/TIMESTAMP)
-   (.to-frame xcljb.gen.xproto-types/TIMESTAMP)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/TIMESTAMP)])
  (to-value
   [this]
-  [39
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:window this)
    (:start this)
-   (:stop this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:stop this)]))
 
 (clojure.core/defrecord
  TranslateCoordinatesRequest
@@ -2027,27 +1621,18 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/INT16)
-   (.to-frame xcljb.gen.xproto-types/INT16)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/INT16)])
  (to-value
   [this]
-  [40
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:src-window this)
    (:dst-window this)
    (:src-x this)
-   (:src-y this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:src-y this)]))
 
 (clojure.core/defrecord
  WarpPointerRequest
@@ -2077,9 +1662,7 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/INT16)
@@ -2087,16 +1670,10 @@
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/INT16)
-   (.to-frame xcljb.gen.xproto-types/INT16)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/INT16)])
  (to-value
   [this]
-  [41
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:src-window this)
    (:dst-window this)
    (:src-x this)
@@ -2104,8 +1681,7 @@
    (:src-width this)
    (:src-height this)
    (:dst-x this)
-   (:dst-y this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:dst-y this)]))
 
 (clojure.core/defrecord
  SetInputFocusRequest
@@ -2121,23 +1697,10 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/CARD8)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
-   (.to-frame xcljb.gen.xproto-types/TIMESTAMP)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [42
-   (:revert-to this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:focus this)
-   (:time this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (.to-frame xcljb.gen.xproto-types/TIMESTAMP)])
+ (to-value [this] [(:revert-to this) (:focus this) (:time this)]))
 
 (clojure.core/defrecord
  GetInputFocusRequest
@@ -2145,21 +1708,8 @@
  xcljb.gen-common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.gen-common/Serializable
- (to-frame
-  [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [43
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+ (to-frame [this] [])
+ (to-value [this] []))
 
 (clojure.core/defrecord
  QueryKeymapRequest
@@ -2167,21 +1717,8 @@
  xcljb.gen-common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.gen-common/Serializable
- (to-frame
-  [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [44
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+ (to-frame [this] [])
+ (to-value [this] []))
 
 (clojure.core/defrecord
  OpenFontRequest
@@ -2199,27 +1736,18 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/FONT)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (clojure.core/repeat 2 :byte)
-   (gloss.core/string :ascii)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (gloss.core/string :ascii)])
  (to-value
   [this]
-  [45
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:fid this)
    (:name-len this)
    (clojure.core/repeat 2 0)
-   (:name this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:name this)]))
 
 (clojure.core/defrecord
  CloseFontRequest
@@ -2231,21 +1759,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/FONT)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [46
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:font this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/FONT)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:font this)]))
 
 (clojure.core/defrecord
  QueryFontRequest
@@ -2257,21 +1773,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/FONTABLE)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [47
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:font this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/FONTABLE)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:font this)]))
 
 (clojure.core/defrecord
  ListFontsRequest
@@ -2288,25 +1792,16 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
-   (gloss.core/string :ascii)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (gloss.core/string :ascii)])
  (to-value
   [this]
-  [49
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:max-names this)
    (:pattern-len this)
-   (:pattern this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:pattern this)]))
 
 (clojure.core/defrecord
  ListFontsWithInfoRequest
@@ -2323,25 +1818,16 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
-   (gloss.core/string :ascii)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (gloss.core/string :ascii)])
  (to-value
   [this]
-  [50
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:max-names this)
    (:pattern-len this)
-   (:pattern this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:pattern this)]))
 
 (clojure.core/defrecord
  SetFontPathRequest
@@ -2363,29 +1849,20 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (clojure.core/repeat 2 :byte)
    (clojure.core/map
     (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
-    (:font this))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (:font this))])
  (to-value
   [this]
-  [51
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:font-qty this)
    (clojure.core/repeat 2 0)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:font this))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+    (:font this))]))
 
 (clojure.core/defrecord
  GetFontPathRequest
@@ -2393,21 +1870,8 @@
  xcljb.gen-common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.gen-common/Serializable
- (to-frame
-  [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [52
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+ (to-frame [this] [])
+ (to-value [this] []))
 
 (clojure.core/defrecord
  CreatePixmapRequest
@@ -2425,27 +1889,18 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/CARD8)
    (.to-frame xcljb.gen.xproto-types/PIXMAP)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/CARD16)
-   (.to-frame xcljb.gen.xproto-types/CARD16)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/CARD16)])
  (to-value
   [this]
-  [53
-   (:depth this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(:depth this)
    (:pid this)
    (:drawable this)
    (:width this)
-   (:height this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:height this)]))
 
 (clojure.core/defrecord
  FreePixmapRequest
@@ -2457,21 +1912,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/PIXMAP)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [54
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:pixmap this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/PIXMAP)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:pixmap this)]))
 
 (clojure.core/defrecord
  CreateGCRequest
@@ -2492,28 +1935,19 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    [(.to-frame xcljb.gen.xproto-types/CARD32)
     (clojure.core/repeat
      (clojure.core/-> this (:value) (clojure.core/count))
-     :uint32)]
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+     :uint32)]])
  (to-value
   [this]
-  [55
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:cid this)
    (:drawable this)
-   (xcljb.gen-common/valueparam->value (:value this))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (xcljb.gen-common/valueparam->value (:value this))]))
 
 (clojure.core/defrecord
  ChangeGCRequest
@@ -2533,26 +1967,17 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    [(.to-frame xcljb.gen.xproto-types/CARD32)
     (clojure.core/repeat
      (clojure.core/-> this (:value) (clojure.core/count))
-     :uint32)]
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+     :uint32)]])
  (to-value
   [this]
-  [56
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:gc this)
-   (xcljb.gen-common/valueparam->value (:value this))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (xcljb.gen-common/valueparam->value (:value this))]))
 
 (clojure.core/defrecord
  CopyGCRequest
@@ -2569,25 +1994,16 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
-   (.to-frame xcljb.gen.xproto-types/CARD32)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/CARD32)])
  (to-value
   [this]
-  [57
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:src-gc this)
    (:dst-gc this)
-   (:value-mask this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:value-mask this)]))
 
 (clojure.core/defrecord
  SetDashesRequest
@@ -2607,29 +2023,20 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (clojure.core/repeat
     (clojure.core/count (:dashes this))
-    (.to-frame xcljb.gen.xproto-types/CARD8))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (.to-frame xcljb.gen.xproto-types/CARD8))])
  (to-value
   [this]
-  [58
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:gc this)
    (:dash-offset this)
    (:dashes-len this)
-   (:dashes this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:dashes this)]))
 
 (clojure.core/defrecord
  SetClipRectanglesRequest
@@ -2652,31 +2059,22 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/BYTE)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/BYTE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (clojure.core/map
     (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
-    (:rectangles this))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (:rectangles this))])
  (to-value
   [this]
-  [59
-   (:ordering this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(:ordering this)
    (:gc this)
    (:clip-x-origin this)
    (:clip-y-origin this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:rectangles this))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+    (:rectangles this))]))
 
 (clojure.core/defrecord
  FreeGCRequest
@@ -2688,21 +2086,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/GCONTEXT)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [60
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:gc this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/GCONTEXT)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:gc this)]))
 
 (clojure.core/defrecord
  ClearAreaRequest
@@ -2722,28 +2108,19 @@
  (to-frame
   [this]
   [:ubyte
-   :ubyte
-   :uint16
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
-   (.to-frame xcljb.gen.xproto-types/CARD16)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/CARD16)])
  (to-value
   [this]
-  [61
-   (if (:exposures this) 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(if (:exposures this) 1 0)
    (:window this)
    (:x this)
    (:y this)
    (:width this)
-   (:height this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:height this)]))
 
 (clojure.core/defrecord
  CopyAreaRequest
@@ -2775,9 +2152,7 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
@@ -2786,16 +2161,10 @@
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
-   (.to-frame xcljb.gen.xproto-types/CARD16)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/CARD16)])
  (to-value
   [this]
-  [62
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:src-drawable this)
    (:dst-drawable this)
    (:gc this)
@@ -2804,8 +2173,7 @@
    (:dst-x this)
    (:dst-y this)
    (:width this)
-   (:height this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:height this)]))
 
 (clojure.core/defrecord
  CopyPlaneRequest
@@ -2839,9 +2207,7 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
@@ -2851,16 +2217,10 @@
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
-   (.to-frame xcljb.gen.xproto-types/CARD32)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/CARD32)])
  (to-value
   [this]
-  [63
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:src-drawable this)
    (:dst-drawable this)
    (:gc this)
@@ -2870,8 +2230,7 @@
    (:dst-y this)
    (:width this)
    (:height this)
-   (:bit-plane this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:bit-plane this)]))
 
 (clojure.core/defrecord
  PolyPointRequest
@@ -2893,29 +2252,20 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/BYTE)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/BYTE)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/map
     (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
-    (:points this))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (:points this))])
  (to-value
   [this]
-  [64
-   (:coordinate-mode this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(:coordinate-mode this)
    (:drawable this)
    (:gc this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:points this))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+    (:points this))]))
 
 (clojure.core/defrecord
  PolyLineRequest
@@ -2937,29 +2287,20 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/BYTE)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/BYTE)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/map
     (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
-    (:points this))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (:points this))])
  (to-value
   [this]
-  [65
-   (:coordinate-mode this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(:coordinate-mode this)
    (:drawable this)
    (:gc this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:points this))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+    (:points this))]))
 
 (clojure.core/defrecord
  PolySegmentRequest
@@ -2981,29 +2322,20 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/map
     (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
-    (:segments this))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (:segments this))])
  (to-value
   [this]
-  [66
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:drawable this)
    (:gc this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:segments this))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+    (:segments this))]))
 
 (clojure.core/defrecord
  PolyRectangleRequest
@@ -3025,29 +2357,20 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/map
     (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
-    (:rectangles this))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (:rectangles this))])
  (to-value
   [this]
-  [67
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:drawable this)
    (:gc this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:rectangles this))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+    (:rectangles this))]))
 
 (clojure.core/defrecord
  PolyArcRequest
@@ -3069,29 +2392,20 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/map
     (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
-    (:arcs this))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (:arcs this))])
  (to-value
   [this]
-  [68
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:drawable this)
    (:gc this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:arcs this))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+    (:arcs this))]))
 
 (clojure.core/defrecord
  FillPolyRequest
@@ -3116,9 +2430,7 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (.to-frame xcljb.gen.xproto-types/CARD8)
@@ -3126,16 +2438,10 @@
    (clojure.core/repeat 2 :byte)
    (clojure.core/map
     (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
-    (:points this))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (:points this))])
  (to-value
   [this]
-  [69
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:drawable this)
    (:gc this)
    (:shape this)
@@ -3143,8 +2449,7 @@
    (clojure.core/repeat 2 0)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:points this))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+    (:points this))]))
 
 (clojure.core/defrecord
  PolyFillRectangleRequest
@@ -3166,29 +2471,20 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/map
     (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
-    (:rectangles this))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (:rectangles this))])
  (to-value
   [this]
-  [70
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:drawable this)
    (:gc this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:rectangles this))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+    (:rectangles this))]))
 
 (clojure.core/defrecord
  PolyFillArcRequest
@@ -3210,29 +2506,20 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/map
     (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
-    (:arcs this))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (:arcs this))])
  (to-value
   [this]
-  [71
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:drawable this)
    (:gc this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:arcs this))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+    (:arcs this))]))
 
 (clojure.core/defrecord
  PutImageRequest
@@ -3268,9 +2555,7 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/CARD8)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (.to-frame xcljb.gen.xproto-types/CARD16)
@@ -3282,16 +2567,10 @@
    (clojure.core/repeat 2 :byte)
    (clojure.core/repeat
     (clojure.core/count (:data this))
-    (.to-frame xcljb.gen.xproto-types/BYTE))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (.to-frame xcljb.gen.xproto-types/BYTE))])
  (to-value
   [this]
-  [72
-   (:format this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(:format this)
    (:drawable this)
    (:gc this)
    (:width this)
@@ -3301,8 +2580,7 @@
    (:left-pad this)
    (:depth this)
    (clojure.core/repeat 2 0)
-   (:data this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:data this)]))
 
 (clojure.core/defrecord
  GetImageRequest
@@ -3322,31 +2600,22 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/CARD8)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
-   (.to-frame xcljb.gen.xproto-types/CARD32)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/CARD32)])
  (to-value
   [this]
-  [73
-   (:format this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(:format this)
    (:drawable this)
    (:x this)
    (:y this)
    (:width this)
    (:height this)
-   (:plane-mask this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:plane-mask this)]))
 
 (clojure.core/defrecord
  PolyText8Request
@@ -3367,31 +2636,22 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (clojure.core/repeat
     (clojure.core/count (:items this))
-    (.to-frame xcljb.gen.xproto-types/BYTE))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (.to-frame xcljb.gen.xproto-types/BYTE))])
  (to-value
   [this]
-  [74
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:drawable this)
    (:gc this)
    (:x this)
    (:y this)
-   (:items this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:items this)]))
 
 (clojure.core/defrecord
  PolyText16Request
@@ -3412,31 +2672,22 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (clojure.core/repeat
     (clojure.core/count (:items this))
-    (.to-frame xcljb.gen.xproto-types/BYTE))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (.to-frame xcljb.gen.xproto-types/BYTE))])
  (to-value
   [this]
-  [75
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:drawable this)
    (:gc this)
    (:x this)
    (:y this)
-   (:items this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:items this)]))
 
 (clojure.core/defrecord
  ImageText8Request
@@ -3455,29 +2706,20 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/BYTE)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/BYTE)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/INT16)
-   (gloss.core/string :ascii)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (gloss.core/string :ascii)])
  (to-value
   [this]
-  [76
-   (:string-len this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(:string-len this)
    (:drawable this)
    (:gc this)
    (:x this)
    (:y this)
-   (:string this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:string this)]))
 
 (clojure.core/defrecord
  ImageText16Request
@@ -3501,33 +2743,24 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/BYTE)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/BYTE)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (clojure.core/map
     (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
-    (:string this))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (:string this))])
  (to-value
   [this]
-  [77
-   (:string-len this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(:string-len this)
    (:drawable this)
    (:gc this)
    (:x this)
    (:y this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:string this))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+    (:string this))]))
 
 (clojure.core/defrecord
  CreateColormapRequest
@@ -3544,25 +2777,13 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/BYTE)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/BYTE)
    (.to-frame xcljb.gen.xproto-types/COLORMAP)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
-   (.to-frame xcljb.gen.xproto-types/VISUALID)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/VISUALID)])
  (to-value
   [this]
-  [78
-   (:alloc this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:mid this)
-   (:window this)
-   (:visual this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(:alloc this) (:mid this) (:window this) (:visual this)]))
 
 (clojure.core/defrecord
  FreeColormapRequest
@@ -3574,21 +2795,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/COLORMAP)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [79
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:cmap this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/COLORMAP)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:cmap this)]))
 
 (clojure.core/defrecord
  CopyColormapAndFreeRequest
@@ -3604,23 +2813,12 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/COLORMAP)
-   (.to-frame xcljb.gen.xproto-types/COLORMAP)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/COLORMAP)])
  (to-value
   [this]
-  [80
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:mid this)
-   (:src-cmap this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 0) (:mid this) (:src-cmap this)]))
 
 (clojure.core/defrecord
  InstallColormapRequest
@@ -3632,21 +2830,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/COLORMAP)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [81
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:cmap this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/COLORMAP)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:cmap this)]))
 
 (clojure.core/defrecord
  UninstallColormapRequest
@@ -3658,21 +2844,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/COLORMAP)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [82
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:cmap this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/COLORMAP)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:cmap this)]))
 
 (clojure.core/defrecord
  ListInstalledColormapsRequest
@@ -3684,21 +2858,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/WINDOW)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [83
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:window this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/WINDOW)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:window this)]))
 
 (clojure.core/defrecord
  AllocColorRequest
@@ -3717,29 +2879,20 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/COLORMAP)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
-   (clojure.core/repeat 2 :byte)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (clojure.core/repeat 2 :byte)])
  (to-value
   [this]
-  [84
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:cmap this)
    (:red this)
    (:green this)
    (:blue this)
-   (clojure.core/repeat 2 0)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (clojure.core/repeat 2 0)]))
 
 (clojure.core/defrecord
  AllocNamedColorRequest
@@ -3757,27 +2910,18 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/COLORMAP)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (clojure.core/repeat 2 :byte)
-   (gloss.core/string :ascii)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (gloss.core/string :ascii)])
  (to-value
   [this]
-  [85
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:cmap this)
    (:name-len this)
    (clojure.core/repeat 2 0)
-   (:name this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:name this)]))
 
 (clojure.core/defrecord
  AllocColorCellsRequest
@@ -3795,24 +2939,15 @@
  (to-frame
   [this]
   [:ubyte
-   :ubyte
-   :uint16
    (.to-frame xcljb.gen.xproto-types/COLORMAP)
    (.to-frame xcljb.gen.xproto-types/CARD16)
-   (.to-frame xcljb.gen.xproto-types/CARD16)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/CARD16)])
  (to-value
   [this]
-  [86
-   (if (:contiguous this) 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(if (:contiguous this) 1 0)
    (:cmap this)
    (:colors this)
-   (:planes this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:planes this)]))
 
 (clojure.core/defrecord
  AllocColorPlanesRequest
@@ -3832,28 +2967,19 @@
  (to-frame
   [this]
   [:ubyte
-   :ubyte
-   :uint16
    (.to-frame xcljb.gen.xproto-types/COLORMAP)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
-   (.to-frame xcljb.gen.xproto-types/CARD16)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/CARD16)])
  (to-value
   [this]
-  [87
-   (if (:contiguous this) 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(if (:contiguous this) 1 0)
    (:cmap this)
    (:colors this)
    (:reds this)
    (:greens this)
-   (:blues this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:blues this)]))
 
 (clojure.core/defrecord
  FreeColorsRequest
@@ -3872,27 +2998,18 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/COLORMAP)
    (.to-frame xcljb.gen.xproto-types/CARD32)
    (clojure.core/repeat
     (clojure.core/count (:pixels this))
-    (.to-frame xcljb.gen.xproto-types/CARD32))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (.to-frame xcljb.gen.xproto-types/CARD32))])
  (to-value
   [this]
-  [88
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:cmap this)
    (:plane-mask this)
-   (:pixels this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:pixels this)]))
 
 (clojure.core/defrecord
  StoreColorsRequest
@@ -3913,27 +3030,18 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/COLORMAP)
    (clojure.core/map
     (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
-    (:items this))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (:items this))])
  (to-value
   [this]
-  [89
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:cmap this)
    (clojure.core/map
     (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
-    (:items this))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+    (:items this))]))
 
 (clojure.core/defrecord
  StoreNamedColorRequest
@@ -3952,29 +3060,20 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/CARD8)
    (.to-frame xcljb.gen.xproto-types/COLORMAP)
    (.to-frame xcljb.gen.xproto-types/CARD32)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (clojure.core/repeat 2 :byte)
-   (gloss.core/string :ascii)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (gloss.core/string :ascii)])
  (to-value
   [this]
-  [90
-   (:flags this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(:flags this)
    (:cmap this)
    (:pixel this)
    (:name-len this)
    (clojure.core/repeat 2 0)
-   (:name this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:name this)]))
 
 (clojure.core/defrecord
  QueryColorsRequest
@@ -3992,25 +3091,14 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/COLORMAP)
    (clojure.core/repeat
     (clojure.core/count (:pixels this))
-    (.to-frame xcljb.gen.xproto-types/CARD32))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (.to-frame xcljb.gen.xproto-types/CARD32))])
  (to-value
   [this]
-  [91
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:cmap this)
-   (:pixels this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 0) (:cmap this) (:pixels this)]))
 
 (clojure.core/defrecord
  LookupColorRequest
@@ -4028,27 +3116,18 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/COLORMAP)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (clojure.core/repeat 2 :byte)
-   (gloss.core/string :ascii)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (gloss.core/string :ascii)])
  (to-value
   [this]
-  [92
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:cmap this)
    (:name-len this)
    (clojure.core/repeat 2 0)
-   (:name this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:name this)]))
 
 (clojure.core/defrecord
  CreateCursorRequest
@@ -4084,9 +3163,7 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/CURSOR)
    (.to-frame xcljb.gen.xproto-types/PIXMAP)
    (.to-frame xcljb.gen.xproto-types/PIXMAP)
@@ -4097,16 +3174,10 @@
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
-   (.to-frame xcljb.gen.xproto-types/CARD16)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/CARD16)])
  (to-value
   [this]
-  [93
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:cid this)
    (:source this)
    (:mask this)
@@ -4117,8 +3188,7 @@
    (:back-green this)
    (:back-blue this)
    (:x this)
-   (:y this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:y this)]))
 
 (clojure.core/defrecord
  CreateGlyphCursorRequest
@@ -4154,9 +3224,7 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/CURSOR)
    (.to-frame xcljb.gen.xproto-types/FONT)
    (.to-frame xcljb.gen.xproto-types/FONT)
@@ -4167,16 +3235,10 @@
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
-   (.to-frame xcljb.gen.xproto-types/CARD16)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/CARD16)])
  (to-value
   [this]
-  [94
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:cid this)
    (:source-font this)
    (:mask-font this)
@@ -4187,8 +3249,7 @@
    (:fore-blue this)
    (:back-red this)
    (:back-green this)
-   (:back-blue this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:back-blue this)]))
 
 (clojure.core/defrecord
  FreeCursorRequest
@@ -4200,21 +3261,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/CURSOR)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [95
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:cursor this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/CURSOR)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:cursor this)]))
 
 (clojure.core/defrecord
  RecolorCursorRequest
@@ -4242,33 +3291,24 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/CURSOR)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/CARD16)
-   (.to-frame xcljb.gen.xproto-types/CARD16)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/CARD16)])
  (to-value
   [this]
-  [96
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:cursor this)
    (:fore-red this)
    (:fore-green this)
    (:fore-blue this)
    (:back-red this)
    (:back-green this)
-   (:back-blue this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:back-blue this)]))
 
 (clojure.core/defrecord
  QueryBestSizeRequest
@@ -4285,25 +3325,13 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/CARD8)
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/CARD16)
-   (.to-frame xcljb.gen.xproto-types/CARD16)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/CARD16)])
  (to-value
   [this]
-  [97
-   (:class this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:drawable this)
-   (:width this)
-   (:height this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(:class this) (:drawable this) (:width this) (:height this)]))
 
 (clojure.core/defrecord
  QueryExtensionRequest
@@ -4320,25 +3348,16 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (clojure.core/repeat 2 :byte)
-   (gloss.core/string :ascii)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (gloss.core/string :ascii)])
  (to-value
   [this]
-  [98
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:name-len this)
    (clojure.core/repeat 2 0)
-   (:name this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:name this)]))
 
 (clojure.core/defrecord
  ListExtensionsRequest
@@ -4346,21 +3365,8 @@
  xcljb.gen-common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.gen-common/Serializable
- (to-frame
-  [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [99
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+ (to-frame [this] [])
+ (to-value [this] []))
 
 (clojure.core/defrecord
  ChangeKeyboardMappingRequest
@@ -4380,29 +3386,20 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/CARD8)
    (.to-frame xcljb.gen.xproto-types/KEYCODE)
    (.to-frame xcljb.gen.xproto-types/CARD8)
    (clojure.core/repeat 2 :byte)
    (clojure.core/repeat
     (clojure.core/count (:keysyms this))
-    (.to-frame xcljb.gen.xproto-types/KEYSYM))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (.to-frame xcljb.gen.xproto-types/KEYSYM))])
  (to-value
   [this]
-  [100
-   (:keycode-count this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(:keycode-count this)
    (:first-keycode this)
    (:keysyms-per-keycode this)
    (clojure.core/repeat 2 0)
-   (:keysyms this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:keysyms this)]))
 
 (clojure.core/defrecord
  GetKeyboardMappingRequest
@@ -4418,23 +3415,12 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/KEYCODE)
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/CARD8)])
  (to-value
   [this]
-  [101
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:first-keycode this)
-   (:count this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 0) (:first-keycode this) (:count this)]))
 
 (clojure.core/defrecord
  ChangeKeyboardControlRequest
@@ -4453,24 +3439,15 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    [(.to-frame xcljb.gen.xproto-types/CARD32)
     (clojure.core/repeat
      (clojure.core/-> this (:value) (clojure.core/count))
-     :uint32)]
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+     :uint32)]])
  (to-value
   [this]
-  [102
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (xcljb.gen-common/valueparam->value (:value this))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 0)
+   (xcljb.gen-common/valueparam->value (:value this))]))
 
 (clojure.core/defrecord
  GetKeyboardControlRequest
@@ -4478,21 +3455,8 @@
  xcljb.gen-common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.gen-common/Serializable
- (to-frame
-  [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [103
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+ (to-frame [this] [])
+ (to-value [this] []))
 
 (clojure.core/defrecord
  BellRequest
@@ -4502,21 +3466,8 @@
   [this]
   (clojure.core/+ 3 (.sizeof xcljb.gen.xproto-types/INT8)))
  xcljb.gen-common/Serializable
- (to-frame
-  [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/INT8)
-   :uint16
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [104
-   (:percent this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+ (to-frame [this] [(.to-frame xcljb.gen.xproto-types/INT8)])
+ (to-value [this] [(:percent this)]))
 
 (clojure.core/defrecord
  ChangePointerControlRequest
@@ -4540,29 +3491,20 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/INT16)
    :ubyte
-   :ubyte
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   :ubyte])
  (to-value
   [this]
-  [105
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:acceleration-numerator this)
    (:acceleration-denominator this)
    (:threshold this)
    (if (:do-acceleration this) 1 0)
-   (if (:do-threshold this) 1 0)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (if (:do-threshold this) 1 0)]))
 
 (clojure.core/defrecord
  GetPointerControlRequest
@@ -4570,21 +3512,8 @@
  xcljb.gen-common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.gen-common/Serializable
- (to-frame
-  [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [106
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+ (to-frame [this] [])
+ (to-value [this] []))
 
 (clojure.core/defrecord
  SetScreenSaverRequest
@@ -4602,27 +3531,18 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/CARD8)
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+   (.to-frame xcljb.gen.xproto-types/CARD8)])
  (to-value
   [this]
-  [107
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:timeout this)
    (:interval this)
    (:prefer-blanking this)
-   (:allow-exposures this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:allow-exposures this)]))
 
 (clojure.core/defrecord
  GetScreenSaverRequest
@@ -4630,21 +3550,8 @@
  xcljb.gen-common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.gen-common/Serializable
- (to-frame
-  [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [108
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+ (to-frame [this] [])
+ (to-value [this] []))
 
 (clojure.core/defrecord
  ChangeHostsRequest
@@ -4664,29 +3571,20 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/CARD8)
    (.to-frame xcljb.gen.xproto-types/CARD8)
    (clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (clojure.core/repeat
     (clojure.core/count (:address this))
-    (.to-frame xcljb.gen.xproto-types/BYTE))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (.to-frame xcljb.gen.xproto-types/BYTE))])
  (to-value
   [this]
-  [109
-   (:mode this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(:mode this)
    (:family this)
    (clojure.core/repeat 1 0)
    (:address-len this)
-   (:address this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:address this)]))
 
 (clojure.core/defrecord
  ListHostsRequest
@@ -4694,21 +3592,8 @@
  xcljb.gen-common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.gen-common/Serializable
- (to-frame
-  [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [110
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+ (to-frame [this] [])
+ (to-value [this] []))
 
 (clojure.core/defrecord
  SetAccessControlRequest
@@ -4718,21 +3603,8 @@
   [this]
   (clojure.core/+ 3 (.sizeof xcljb.gen.xproto-types/CARD8)))
  xcljb.gen-common/Serializable
- (to-frame
-  [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [111
-   (:mode this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+ (to-frame [this] [(.to-frame xcljb.gen.xproto-types/CARD8)])
+ (to-value [this] [(:mode this)]))
 
 (clojure.core/defrecord
  SetCloseDownModeRequest
@@ -4742,21 +3614,8 @@
   [this]
   (clojure.core/+ 3 (.sizeof xcljb.gen.xproto-types/CARD8)))
  xcljb.gen-common/Serializable
- (to-frame
-  [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [112
-   (:mode this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+ (to-frame [this] [(.to-frame xcljb.gen.xproto-types/CARD8)])
+ (to-value [this] [(:mode this)]))
 
 (clojure.core/defrecord
  KillClientRequest
@@ -4768,21 +3627,9 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (.to-frame xcljb.gen.xproto-types/CARD32)
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [113
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:resource this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+  [(clojure.core/repeat 1 :byte)
+   (.to-frame xcljb.gen.xproto-types/CARD32)])
+ (to-value [this] [(clojure.core/repeat 1 0) (:resource this)]))
 
 (clojure.core/defrecord
  RotatePropertiesRequest
@@ -4802,29 +3649,20 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
+  [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (clojure.core/repeat
     (clojure.core/count (:atoms this))
-    (.to-frame xcljb.gen.xproto-types/ATOM))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
+    (.to-frame xcljb.gen.xproto-types/ATOM))])
  (to-value
   [this]
-  [114
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(clojure.core/repeat 1 0)
    (:window this)
    (:atoms-len this)
    (:delta this)
-   (:atoms this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+   (:atoms this)]))
 
 (clojure.core/defrecord
  ForceScreenSaverRequest
@@ -4834,21 +3672,8 @@
   [this]
   (clojure.core/+ 3 (.sizeof xcljb.gen.xproto-types/CARD8)))
  xcljb.gen-common/Serializable
- (to-frame
-  [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [115
-   (:mode this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+ (to-frame [this] [(.to-frame xcljb.gen.xproto-types/CARD8)])
+ (to-value [this] [(:mode this)]))
 
 (clojure.core/defrecord
  SetPointerMappingRequest
@@ -4865,23 +3690,11 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/CARD8)
    (clojure.core/repeat
     (clojure.core/count (:map this))
-    (.to-frame xcljb.gen.xproto-types/CARD8))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [116
-   (:map-len this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:map this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+    (.to-frame xcljb.gen.xproto-types/CARD8))])
+ (to-value [this] [(:map-len this) (:map this)]))
 
 (clojure.core/defrecord
  GetPointerMappingRequest
@@ -4889,21 +3702,8 @@
  xcljb.gen-common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.gen-common/Serializable
- (to-frame
-  [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [117
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+ (to-frame [this] [])
+ (to-value [this] []))
 
 (clojure.core/defrecord
  SetModifierMappingRequest
@@ -4920,23 +3720,11 @@
  xcljb.gen-common/Serializable
  (to-frame
   [this]
-  [:ubyte
-   (.to-frame xcljb.gen.xproto-types/CARD8)
-   :uint16
+  [(.to-frame xcljb.gen.xproto-types/CARD8)
    (clojure.core/repeat
     (clojure.core/count (:keycodes this))
-    (.to-frame xcljb.gen.xproto-types/KEYCODE))
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [118
-   (:keycodes-per-modifier this)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (:keycodes this)
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+    (.to-frame xcljb.gen.xproto-types/KEYCODE))])
+ (to-value [this] [(:keycodes-per-modifier this) (:keycodes this)]))
 
 (clojure.core/defrecord
  GetModifierMappingRequest
@@ -4944,21 +3732,8 @@
  xcljb.gen-common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.gen-common/Serializable
- (to-frame
-  [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [119
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+ (to-frame [this] [])
+ (to-value [this] []))
 
 (clojure.core/defrecord
  NoOperationRequest
@@ -4966,21 +3741,8 @@
  xcljb.gen-common/Measurable
  (sizeof [this] (clojure.core/+ 3))
  xcljb.gen-common/Serializable
- (to-frame
-  [this]
-  [:ubyte
-   (clojure.core/repeat 1 :byte)
-   :uint16
-   (clojure.core/repeat
-    (xcljb.gen-common/padding (.sizeof this))
-    :byte)])
- (to-value
-  [this]
-  [127
-   (clojure.core/repeat 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
-   (clojure.core/repeat (xcljb.gen-common/padding (.sizeof this)) 0)]))
+ (to-frame [this] [])
+ (to-value [this] []))
 
 (clojure.core/defrecord
  GetWindowAttributesReply
