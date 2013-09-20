@@ -103,7 +103,7 @@
   Evalable
   (gen-eval [this]
     (let [v (.gen-eval (:expr this))]
-      `(xcljb.gen-common/bit-count ~v))))
+      `(xcljb.common/bit-count ~v))))
 
 (defrecord Sumof [ref]
   Evalable
@@ -134,7 +134,7 @@
   ReadableType
   (gen-read-type [this]
     (let [s-ch (symbol "ch")
-          s-read-pad (symbol "xcljb.gen-common" "read-pad")]
+          s-read-pad (symbol "xcljb.common" "read-pad")]
       `(~s-read-pad ~s-ch ~(:bytes this))))
   (gen-read-type-name [_]
     (symbol "_")))
@@ -161,7 +161,7 @@
   ReadableType
   (gen-read-type [this]
     (let [s-ch (symbol "ch")]
-      `(if (= (xcljb.gen-common/read-bytes ~s-ch ~(:size this)) 1)
+      `(if (= (xcljb.common/read-bytes ~s-ch ~(:size this)) 1)
          true
          false)))
   (gen-read-type-name [this]
@@ -190,7 +190,7 @@
     (assert (:expr this))
     (let [s-ch (symbol "ch")
           len (-> this (:expr) (.gen-eval))]
-      `(xcljb.gen-common/read-string ~s-ch ~len)))
+      `(xcljb.common/read-string ~s-ch ~len)))
   (gen-read-type-name [this]
     (-> this (:name) (beautify :arg) (symbol))))
 
@@ -349,15 +349,15 @@
   (gen-to-value [this]
     (let [s-this (symbol "this")
           k-name (-> this (:name) (beautify :arg) (keyword))]
-      `(xcljb.gen-common/valueparam->value (~k-name ~s-this))))
+      `(xcljb.common/valueparam->value (~k-name ~s-this))))
 
   ReadableType
   (gen-read-type [this]
     (let [s-ch (symbol "ch")
           s-mask-type (-> this (:mask-type) (parse-type))]
-      `(let [masks# (xcljb.gen-common/mask->masks (.read-type ~s-mask-type ~s-ch))
+      `(let [masks# (xcljb.common/mask->masks (.read-type ~s-mask-type ~s-ch))
              vs# (doall (repeatedly (count masks#)
-                                    (fn [] (xcljb.gen-common/read-bytes ~s-ch 4))))]
+                                    (fn [] (xcljb.common/read-bytes ~s-ch 4))))]
          (zipmap masks# vs#))))
   (gen-read-type-name [this]
     (-> this (:name) (beautify :arg) (symbol))))
@@ -404,11 +404,11 @@
     (let [s-name (-> this (:name) (beautify :type) (symbol))
           s-args (->> this (:content) (gen-args) (map symbol))]
       `(defrecord ~s-name [~@s-args]
-         xcljb.gen-common/Measurable
+         xcljb.common/Measurable
          (~(symbol "sizeof") [~(symbol "this")]
           ~(.gen-sizeof this))
 
-         xcljb.gen-common/Serializable
+         xcljb.common/Serializable
          (~(symbol "to-frame") [~(symbol "this")]
           ~(.gen-to-frame this))
          (~(symbol "to-value") [~(symbol "this")]
@@ -459,11 +459,11 @@
           s-name (-> this (:name) (beautify :request) (symbol))
           s-args (->> this (:content) (gen-args) (map symbol))]
       `(defrecord ~s-name [~s-opcode ~@s-args]
-         xcljb.gen-common/Measurable
+         xcljb.common/Measurable
          (~(symbol "sizeof") [~(symbol "this")]
           ~(.gen-sizeof this))
 
-         xcljb.gen-common/Serializable
+         xcljb.common/Serializable
          (~(symbol "to-frame") [~(symbol "this")]
           ~(.gen-to-frame this))
          (~(symbol "to-value") [~(symbol "this")]
@@ -479,7 +479,7 @@
   ReadableType
   (gen-read-type [_]
     (let [s-ch (symbol "ch")
-          s-read-bytes (symbol "xcljb.gen-common" "read-bytes")]
+          s-read-bytes (symbol "xcljb.common" "read-bytes")]
       `(~s-read-bytes ~s-ch 2)))
   ;; FIXME: Pick a name without causing naming conflict.
   (gen-read-type-name [_]
@@ -508,14 +508,14 @@
           s-reply (name->->type (:header this)
                                 (-> this (:name) (beautify :reply)))
           s-args (->> this (:content) (gen-args) (map symbol))]
-      `(defmethod xcljb.gen-common/read-reply ~opcode [~s-_ ~s-ch ~s-len val#]
+      `(defmethod xcljb.common/read-reply ~opcode [~s-_ ~s-ch ~s-len val#]
          (let [~(.gen-read-type-name (first (:content this))) val#]
            ~(gen-read-fields
              (rest (:content this))
              `(let [size# (+ 7 ~(.gen-read-sizeof this))
                     pads# (max (- 32 size#)
-                               (xcljb.gen-common/padding size#))]
-                (xcljb.gen-common/read-pad ~s-ch pads#))
+                               (xcljb.common/padding size#))]
+                (xcljb.common/read-pad ~s-ch pads#))
              `(~s-reply ~@s-args)))))))
 
 (defrecord Event [header name number no-seq-number content]
@@ -550,12 +550,12 @@
                           seq-num
                           (rest content)))
           s-args (map symbol (gen-args fields))]
-      `(defmethod xcljb.gen-common/read-event ~number [~s-_ ~s-ch]
+      `(defmethod xcljb.common/read-event ~number [~s-_ ~s-ch]
          ~(gen-read-fields
            fields
            `(let [size# (+ 1 ~(.gen-read-sizeof this))
                   pads# (max 0 (- 32 size#))]
-              (xcljb.gen-common/read-pad ~s-ch pads#))
+              (xcljb.common/read-pad ~s-ch pads#))
            `{:seq-num ~(if (:no-seq-number this)
                          nil
                          (.gen-read-type-name seq-num))
@@ -582,12 +582,12 @@
           s-error (name->->type (:header this)
                                 (-> this (:name) (beautify :error)))
           s-args (->> this (:content) (gen-args) (map symbol))]
-      `(defmethod xcljb.gen-common/read-error ~number [~s-_ ~s-ch]
+      `(defmethod xcljb.common/read-error ~number [~s-_ ~s-ch]
          ~(gen-read-fields
            (:content this)
            `(let [size# (+ 4 ~(.gen-read-sizeof this))
                   pads# (max 0 (- 32 size#))]
-              (xcljb.gen-common/read-pad ~s-ch pads#))
+              (xcljb.common/read-pad ~s-ch pads#))
            `(~s-error ~@s-args))))))
 
 ;; Xcb.

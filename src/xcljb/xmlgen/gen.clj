@@ -15,7 +15,7 @@
 
 (defn- gen-primitive [[name type]]
   `(def ~(symbol name)
-     (xcljb.gen-common/->PrimitiveType ~type)))
+     (xcljb.common/->PrimitiveType ~type)))
 
 (defn- gen-xcb [xcb]
   `(def ~(symbol "-XCB") {:header ~(:header xcb)
@@ -75,7 +75,7 @@
       (.write wrtr "\n")
       (pp/pprint
        `(ns ~(symbol (str "xcljb.gen." (:header xcb) "-types"))
-          (:require [~@(map symbol ["xcljb" "gen-common"])]))
+          (:require [~@(map symbol ["xcljb" "common"])]))
        wrtr)
 
       (.write wrtr "\n")
@@ -121,7 +121,7 @@
       (.write wrtr "\n")
       (pp/pprint
        `(ns ~(symbol (str "xcljb.gen." (:header xcb) "-internal"))
-          (:require [~@(map symbol ["xcljb" "gen-common"])]
+          (:require [~@(map symbol ["xcljb" "common"])]
                     [~@(map symbol ["xcljb.gen" (str (:header xcb) "-types")])]))
        wrtr)
 

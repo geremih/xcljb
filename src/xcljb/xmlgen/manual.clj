@@ -30,7 +30,7 @@
          [k-opcode k-window k-value]] ((juxt #(map symbol %) #(map keyword %))
                                        ["opcode" "window" "value"])]
     `(defrecord ~(symbol "ConfigureWindowRequest") [~s-opcode ~s-window ~s-value]
-       xcljb.gen-common/Measurable
+       xcljb.common/Measurable
        (~(symbol "sizeof") [~s-this]
         (+ 3
           1
@@ -40,7 +40,7 @@
           (* 4
              (count (~k-value ~s-this)))))
 
-       xcljb.gen-common/Serializable
+       xcljb.common/Serializable
        (~(symbol "to-frame") [~s-this]
         [:ubyte
          :ubyte
@@ -51,7 +51,7 @@
          (repeat (count (~k-value ~s-this))
                  :uint32)])
        (~(symbol "to-value") [~s-this]
-        (let [vp# (xcljb.gen-common/valueparam->value (~k-value ~s-this))]
+        (let [vp# (xcljb.common/valueparam->value (~k-value ~s-this))]
           [(~k-opcode ~s-this)
            0
            (+ 3 (count (~k-value ~s-this)))
@@ -74,32 +74,32 @@
          [k-opcode k-font k-string]] ((juxt #(map symbol %) #(map keyword %))
                                       ["opcode" "font" "string"])]
     `(defrecord ~(symbol "QueryTextExtentsRequest") [~s-opcode ~s-font ~s-string]
-       xcljb.gen-common/Measurable
+       xcljb.common/Measurable
        (~(symbol "sizeof") [~s-this]
         (+ 3
           1
           (.sizeof xcljb.gen.xproto-types/FONTABLE)
           (.sizeof (~k-string ~s-this))))
 
-       xcljb.gen-common/Serializable
+       xcljb.common/Serializable
        (~(symbol "to-frame") [~s-this]
         [:ubyte
          :ubyte
          :uint16
          (.to-frame xcljb.gen.xproto-types/FONTABLE)
          (map #(.to-frame %) (~k-string ~s-this))
-         (repeat (xcljb.gen-common/padding (.sizeof ~s-this)) :byte)])
+         (repeat (xcljb.common/padding (.sizeof ~s-this)) :byte)])
        (~(symbol "to-value") [~s-this]
         [(~k-opcode ~s-this)
          (if (odd? (count (~k-string ~s-this))) 1 0)
          (int (Math/ceil (/ (.sizeof ~s-this) 4)))
          (~k-font ~s-this)
          (map #(.to-value %) (~k-string ~s-this))
-         (repeat (xcljb.gen-common/padding (.sizeof ~s-this)) 0)]))))
+         (repeat (xcljb.common/padding (.sizeof ~s-this)) 0)]))))
 
 (defmethod gen-reply-fn "QueryTextExtents" [_]
   (let [s-_ (symbol "_")]
-    `(defmethod xcljb.gen-common/read-reply 48 [~s-_ ch# ~s-_ draw-direction#]
+    `(defmethod xcljb.common/read-reply 48 [~s-_ ch# ~s-_ draw-direction#]
        (let [font-ascent# (.read-type xcljb.gen.xproto-types/INT16 ch#)
              font-descent# (.read-type xcljb.gen.xproto-types/INT16 ch#)
              overall-ascent# (.read-type xcljb.gen.xproto-types/INT16 ch#)
@@ -107,7 +107,7 @@
              overall-width# (.read-type xcljb.gen.xproto-types/INT32 ch#)
              overall-left# (.read-type xcljb.gen.xproto-types/INT32 ch#)
              overall-right# (.read-type xcljb.gen.xproto-types/INT32 ch#)
-             ~s-_ (xcljb.gen-common/read-pad ch# 4)]
+             ~s-_ (xcljb.common/read-pad ch# 4)]
          (xcljb.gen.xproto-types/->QueryTextExtentsReply
           draw-direction# font-ascent# font-descent# overall-ascent#
           overall-descent# overall-width# overall-left# overall-right#)))))
@@ -122,9 +122,9 @@
 
 (defmethod gen-event-fn "ClientMessage" [_]
   (let [s-_ (symbol "_")]
-    `(defmethod xcljb.gen-common/read-event 33 [~s-_ ch#]
+    `(defmethod xcljb.common/read-event 33 [~s-_ ch#]
        (let [format# (.read-type xcljb.gen.xproto-types/CARD8 ch#)
-             seq-num# (xcljb.gen-common/read-bytes ch# 2)
+             seq-num# (xcljb.common/read-bytes ch# 2)
              window# (.read-type xcljb.gen.xproto-types/WINDOW ch#)
              type# (.read-type xcljb.gen.xproto-types/ATOM ch#)
              data# (case format#

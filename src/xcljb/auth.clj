@@ -1,5 +1,5 @@
 (ns xcljb.auth
-  (:require [xcljb.gen-common :as common]))
+  (:require [xcljb.common :as common]))
 
 (defn- parse-xauthority []
   (when-let [auth-file (System/getenv "XAUTHORITY")]

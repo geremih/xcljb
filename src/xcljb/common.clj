@@ -1,4 +1,4 @@
-(ns xcljb.gen-common
+(ns xcljb.common
   (:use [gloss io])
   (:require [gloss.core :as glcore])
   (:import [java.nio ByteBuffer]))

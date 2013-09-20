@@ -1,7 +1,7 @@
 (ns xcljb.conn-internal
   (:require [clojure.tools.logging :as log]
             [gloss.io :as gio]
-            [xcljb.gen-common :as gen-common]
+            [xcljb.common :as common]
             [xcljb.gen.xproto-types :as xproto-types]))
 
 (defn- request->frame [request]
@@ -14,7 +14,7 @@
             [(.to-frame xproto-types/CARD16)] ; length
             (rest raw-frame)
             ;; Paddings.
-            (repeat (gen-common/padding (.sizeof request))
+            (repeat (common/padding (.sizeof request))
                     (.to-frame xproto-types/BYTE)))))
 
 (defn- request->value [request]
@@ -26,7 +26,7 @@
               [(first raw-value)])
             [(int (Math/ceil (/ size 4)))]
             (rest raw-value)
-            (repeat (gen-common/padding size)
+            (repeat (common/padding size)
                     0))))
 
 (defn send [conn request]
