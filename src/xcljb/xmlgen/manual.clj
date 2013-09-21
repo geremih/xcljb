@@ -22,14 +22,15 @@
   `(defn ~(symbol "configure-window") [conn# window# value#]
      (xcljb.conn-internal/send conn#
                                (xcljb.gen.xproto-types/->ConfigureWindowRequest
-                                12 window# value#))))
+                                window# value#))))
 
 (defmethod gen-request-type "ConfigureWindow" [_]
   (let [s-this (symbol "this")
-        [[s-opcode s-window s-value]
-         [k-opcode k-window k-value]] ((juxt #(map symbol %) #(map keyword %))
-                                       ["opcode" "window" "value"])]
-    `(defrecord ~(symbol "ConfigureWindowRequest") [~s-opcode ~s-window ~s-value]
+        s-_ (symbol "_")
+        [[s-window s-value]
+         [k-window k-value]] ((juxt #(map symbol %) #(map keyword %))
+                              ["window" "value"])]
+    `(defrecord ~(symbol "ConfigureWindowRequest") [~s-window ~s-value]
        xcljb.common/Measurable
        (~(symbol "sizeof") [~s-this]
         (+ 3
@@ -43,8 +44,6 @@
        xcljb.common/Serializable
        (~(symbol "to-frame") [~s-this]
         [:ubyte
-         :ubyte
-         :uint16
          (.to-frame xcljb.gen.xproto-types/WINDOW)
          :uint16
          :uint16
@@ -52,13 +51,15 @@
                  :uint32)])
        (~(symbol "to-value") [~s-this]
         (let [vp# (xcljb.common/valueparam->value (~k-value ~s-this))]
-          [(~k-opcode ~s-this)
-           0
-           (+ 3 (count (~k-value ~s-this)))
+          [0
            (~k-window ~s-this)
            (first vp#)
            0
-           (second vp#)])))))
+           (second vp#)]))
+
+       xcljb.common/Request
+       (~(symbol "opcode") [~s-_]
+        12))))
 
 ;;; QueryTextExtents
 
@@ -66,14 +67,15 @@
   `(defn ~(symbol "query-text-extents") [conn# font# string#]
      (xcljb.conn-internal/send conn#
                                (xcljb.gen.xproto-types/->QueryTextExtentsRequest
-                                48 font# string#))))
+                                font# string#))))
 
 (defmethod gen-request-type "QueryTextExtents" [_]
   (let [s-this (symbol "this")
-        [[s-opcode s-font s-string]
-         [k-opcode k-font k-string]] ((juxt #(map symbol %) #(map keyword %))
-                                      ["opcode" "font" "string"])]
-    `(defrecord ~(symbol "QueryTextExtentsRequest") [~s-opcode ~s-font ~s-string]
+        s-_ (symbol "_")
+        [[s-font s-string]
+         [k-font k-string]] ((juxt #(map symbol %) #(map keyword %))
+                             ["font" "string"])]
+    `(defrecord ~(symbol "QueryTextExtentsRequest") [~s-font ~s-string]
        xcljb.common/Measurable
        (~(symbol "sizeof") [~s-this]
         (+ 3
@@ -84,18 +86,18 @@
        xcljb.common/Serializable
        (~(symbol "to-frame") [~s-this]
         [:ubyte
-         :ubyte
-         :uint16
          (.to-frame xcljb.gen.xproto-types/FONTABLE)
          (map #(.to-frame %) (~k-string ~s-this))
          (repeat (xcljb.common/padding (.sizeof ~s-this)) :byte)])
        (~(symbol "to-value") [~s-this]
-        [(~k-opcode ~s-this)
-         (if (odd? (count (~k-string ~s-this))) 1 0)
-         (int (Math/ceil (/ (.sizeof ~s-this) 4)))
+        [(if (odd? (count (~k-string ~s-this))) 1 0)
          (~k-font ~s-this)
          (map #(.to-value %) (~k-string ~s-this))
-         (repeat (xcljb.common/padding (.sizeof ~s-this)) 0)]))))
+         (repeat (xcljb.common/padding (.sizeof ~s-this)) 0)])
+
+       xcljb.common/Request
+       (~(symbol "opcode") [~s-_]
+        48))))
 
 (defmethod gen-reply-fn "QueryTextExtents" [_]
   (let [s-_ (symbol "_")]
