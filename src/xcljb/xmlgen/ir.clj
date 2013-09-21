@@ -38,8 +38,8 @@
     (symbol (str "xcljb.gen." ns "-internal")
             (-> name (beautify :type) (beautify :read-type)))))
 
-(defn- name->->type [header name]
-  (symbol (str "xcljb.gen." header "-types")
+(defn- name->->type [context name]
+  (symbol (str "xcljb.gen." (:header context) "-types")
           (-> name (beautify :type) (beautify :->type))))
 
 (defn- gen-read-fields [fields & body]
@@ -385,7 +385,7 @@
 
 ;; Struct.
 
-(defrecord Struct [header name content]
+(defrecord Struct [context name content]
   Measurable
   (gen-sizeof [this]
     `(+ ~@(map #(.gen-sizeof %) (:content this))))
@@ -419,7 +419,7 @@
     (let [s-ch (symbol "ch")
           s-name (-> this (:name) (beautify :type) (beautify :read-type) (symbol))
           s-args (->> this (:content) (gen-args) (map symbol))
-          s-struct (name->->type (:header this) (:name this))]
+          s-struct (name->->type (:context this) (:name this))]
       `(defn ~s-name [~s-ch]
          ~(gen-read-fields
            (:content this)
@@ -427,7 +427,7 @@
 
 ;; Request, Reply, Event, Error.
 
-(defrecord Request [header name opcode combine-adjacent content]
+(defrecord Request [context name opcode combine-adjacent content]
   Measurable
   (gen-sizeof [this]
     `(+ 3
@@ -439,7 +439,7 @@
   (gen-request-fn [this]
     (let [s-name (-> this (:name) (beautify :fn-name) (symbol))
           s-args (->> this (:content) (gen-args) (map symbol))
-          s-struct (name->->type (:header this)
+          s-struct (name->->type (:context this)
                                  (-> this (:name) (beautify :request)))]
       `(defn ~s-name [conn# ~@s-args]
          (let [request-struct# (~s-struct ~@s-args)]
@@ -487,7 +487,7 @@
   (gen-read-type-name [_]
     (symbol "seq-num")))
 
-(defrecord Reply [header name request-opcode content]
+(defrecord Reply [context name request-opcode content]
   Measurable
   (gen-sizeof [this]
     (throw (Exception.)))
@@ -507,7 +507,7 @@
           ;; Has to be named "length", since e.g. GetKeyboardMapping requires it.
           s-len (symbol "length")
           opcode (:request-opcode this)
-          s-reply (name->->type (:header this)
+          s-reply (name->->type (:context this)
                                 (-> this (:name) (beautify :reply)))
           s-args (->> this (:content) (gen-args) (map symbol))]
       `(defmethod xcljb.common/read-reply ~opcode [~s-_ ~s-ch ~s-len val#]
@@ -520,7 +520,7 @@
                 (xcljb.common/read-pad ~s-ch pads#))
              `(~s-reply ~@s-args)))))))
 
-(defrecord Event [header name number no-seq-number content]
+(defrecord Event [context name number no-seq-number content]
   Measurable
   (gen-sizeof [this]
     (throw (Exception.)))
@@ -540,7 +540,7 @@
   (gen-read-fn [this]
     (let [s-ch (symbol "ch")
           s-_ (symbol "_")
-          s-event (name->->type (:header this)
+          s-event (name->->type (:context this)
                                 (-> this (:name) (beautify :event)))
           number (:number this)
           seq-num (->SequenceNumber)
@@ -564,7 +564,7 @@
              :event (~s-event ~@s-args)})))))
 
 ;; Avoid naming conflict with java.lang.Error.
-(defrecord -Error [header name number content]
+(defrecord -Error [context name number content]
   Measurable
   (gen-sizeof [this]
     (throw (Exception.)))
@@ -581,7 +581,7 @@
   (gen-read-fn [this]
     (let [s-ch (symbol "ch")
           s-_ (symbol "_")
-          s-error (name->->type (:header this)
+          s-error (name->->type (:context this)
                                 (-> this (:name) (beautify :error)))
           s-args (->> this (:content) (gen-args) (map symbol))]
       `(defmethod xcljb.common/read-error ~number [~s-_ ~s-ch]

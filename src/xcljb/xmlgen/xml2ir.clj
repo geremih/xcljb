@@ -11,7 +11,7 @@
                      "randr" {:union #{"NotifyData"}
                               :event #{"Notify"}}})
 
-(def ^:private HEADER (atom nil))
+(def ^:private CONTEXT (atom nil))
 (def ^:private IMPORTS (atom nil))
 
 (def ^:private TYPEMAP (atom nil))
@@ -31,7 +31,7 @@
       (let [h (some #(if ((@TYPEMAP %) type) % nil) @IMPORTS)]
         (if h
           (ir/->QualifiedType h type)
-          (ir/->QualifiedType @HEADER type))))))
+          (ir/->QualifiedType (:header @CONTEXT) type))))))
 
 (defn- parse-expression [elem]
   (case (:tag elem)
@@ -144,13 +144,13 @@
   (assert (= (:tag elem) :struct))
   (let [name (-> elem (:attrs) (:name))
         content (parse-content (:content elem))
-        struct (ir/->Struct @HEADER name content)]
+        struct (ir/->Struct @CONTEXT name content)]
     (swap! COMPOSITE-TYPES conj struct)
     struct))
 
 (defn- parse-reply [name request-opcode elem]
   (let [content (parse-content (:content elem))
-        reply (ir/->Reply @HEADER name request-opcode content)]
+        reply (ir/->Reply @CONTEXT name request-opcode content)]
     (swap! REPLIES conj reply)
     reply))
 
@@ -163,7 +163,7 @@
         content (:content elem)
         request-content (parse-content content)
         reply-elem (first (filter #(= (:tag %) :reply) content))
-        request (ir/->Request @HEADER name opcode combine-adjacent request-content)]
+        request (ir/->Request @CONTEXT name opcode combine-adjacent request-content)]
     (swap! REQUESTS conj request)
     (when reply-elem
       (parse-reply name opcode reply-elem))
@@ -175,7 +175,7 @@
         num (-> attrs (:number) (Integer/parseInt))
         no-seq-num (= (:no-sequence-number attrs) "true")
         content (parse-content (:content elem))
-        event (ir/->Event @HEADER name num no-seq-num content)]
+        event (ir/->Event @CONTEXT name num no-seq-num content)]
     (swap! EVENTS conj event)
     event))
 
@@ -194,7 +194,7 @@
         name (:name attrs)
         num (-> attrs (:number) (Integer/parseInt))
         content (parse-content (:content elem))
-        error (ir/->-Error @HEADER name num content)]
+        error (ir/->-Error @CONTEXT name num content)]
     (swap! ERRORS conj error)
     error))
 
@@ -225,8 +225,9 @@
         minor-version (if-let [v (:minor-version attrs)]
                         (Integer/parseInt v)
                         nil)
-        content (parse-content (:content elem))]
-    (reset! HEADER header)
+        content (parse-content (:content elem))
+        xcb (ir/->Xcb header ext-xname ext-name ext-multiword major-version minor-version)]
+    (reset! CONTEXT xcb)
     (if (= header "xproto")
       (do
         (reset! IMPORTS #{})
@@ -242,7 +243,7 @@
       (do
         (reset! IMPORTS #{"xproto"})
         (reset! PRIMITIVE-TYPES {})))
-    (ir/->Xcb header ext-xname ext-name ext-multiword major-version minor-version)))
+    xcb))
 
 (defn- read-typemap! []
   (with-open [r (clojure.java.io/reader "src/xcljb/gen/typemap.clj")]
@@ -250,9 +251,9 @@
 
 (defn- write-typemap! []
   (spit "src/xcljb/gen/typemap.clj"
-        (assoc @TYPEMAP @HEADER (set/union
-                                 (set (keys @PRIMITIVE-TYPES))
-                                 (set (map :name @COMPOSITE-TYPES))))))
+        (assoc @TYPEMAP (:header @CONTEXT) (set/union
+                                            (set (keys @PRIMITIVE-TYPES))
+                                            (set (map :name @COMPOSITE-TYPES))))))
 
 (defn xml->ir [elem]
   (read-typemap!)
