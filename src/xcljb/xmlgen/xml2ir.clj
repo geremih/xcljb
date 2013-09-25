@@ -226,7 +226,7 @@
                         (Integer/parseInt v)
                         nil)
         content (parse-content (:content elem))
-        xcb (ir/->Xcb header ext-xname ext-name ext-multiword major-version minor-version)]
+        xcb (ir/->Xcb header ext-name ext-xname ext-multiword major-version minor-version)]
     (reset! CONTEXT xcb)
     (if (= header "xproto")
       (do
