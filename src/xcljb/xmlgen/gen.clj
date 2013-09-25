@@ -49,7 +49,9 @@
       (.write wrtr "\n")
       (pp/pprint
        `(ns ~(symbol (str "xcljb.gen." ns-name))
-          (:require xcljb.conn-internal
+          (:require ~(if (= (:header xcb) "xproto")
+                       'xcljb.conn-internal
+                       'xcljb.conn-ext)
                     ~(symbol (str "xcljb.gen." ns-name "-types"))))
        wrtr)
 

@@ -101,7 +101,7 @@
 
 (defmethod gen-reply-fn "QueryTextExtents" [_]
   (let [s-_ (symbol "_")]
-    `(defmethod xcljb.common/read-reply 48 [~s-_ ch# ~s-_ draw-direction#]
+    `(defmethod xcljb.common/read-reply [nil 48] [~s-_ ~s-_ ch# ~s-_ draw-direction#]
        (let [font-ascent# (.read-type xcljb.gen.xproto-types/INT16 ch#)
              font-descent# (.read-type xcljb.gen.xproto-types/INT16 ch#)
              overall-ascent# (.read-type xcljb.gen.xproto-types/INT16 ch#)
@@ -124,7 +124,7 @@
 
 (defmethod gen-event-fn "ClientMessage" [_]
   (let [s-_ (symbol "_")]
-    `(defmethod xcljb.common/read-event 33 [~s-_ ch#]
+    `(defmethod xcljb.common/read-event [nil 33] [~s-_ ~s-_ ch#]
        (let [format# (.read-type xcljb.gen.xproto-types/CARD8 ch#)
              seq-num# (xcljb.common/read-bytes ch# 2)
              window# (.read-type xcljb.gen.xproto-types/WINDOW ch#)

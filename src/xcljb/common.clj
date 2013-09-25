@@ -16,11 +16,11 @@
 (defprotocol ReadableType
   (read-type [this ch]))
 
-(defmulti read-reply (fn [opcode & _] opcode))
+(defmulti read-reply (fn [ext-name opcode & _] [ext-name opcode]))
 
-(defmulti read-event (fn [n & _] n))
+(defmulti read-event (fn [ext-name n & _] [ext-name n]))
 
-(defmulti read-error (fn [n & _] n))
+(defmulti read-error (fn [ext-name n & _] [ext-name n]))
 
 (def ^:private BUFFER (ByteBuffer/allocateDirect 2048))
 

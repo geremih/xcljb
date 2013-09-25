@@ -132,55 +132,71 @@
       (deliver reply nil)
       (recur replyq seq-num))))
 
-(defn- deliver-reply [reply seq-num replyq]
-  (clear-old-replies replyq seq-num)
-  (let [{seqn :seq-num, opcode :opcode, r :reply, :as v} (.peek replyq)]
-    (assert v "Sequence number corresponds to no request.")
-    (assert (= seqn seq-num) "Sequence number greater than all requests.")
-    (.take replyq)
-    (deliver r reply)))
-
-(defn- get-reply-opcode [replyq seq-num]
-  (clear-old-replies replyq seq-num)
-  (let [{seqn :seq-num, opcode :opcode, :as r} (.peek replyq)]
+(defn- get-response [resp-q seq-num]
+  (clear-old-replies resp-q seq-num)
+  (let [{seqn :seq-num, :as r} (.peek resp-q)]
     (assert r "Sequence number corresponds to no request.")
     (assert (= seqn seq-num) "Sequence number greater than all requests.")
-    opcode))
+    (.take resp-q)))
 
-(defn- handle-error [ch replyq]
+(defn- first<= [s-map n]
+  (->> s-map
+       (rseq)
+       (filter #(<= (first %) n))
+       (first)))
+
+(defn- get-event-number [event-num ext-cache]
+  (if (<= 64 event-num 127)             ; extension
+    (let [[event-base ext-name] (first<= (:event-bases @ext-cache) event-num)]
+      {:event-num (- event-num event-base)
+       :ext-name ext-name})
+    {:event-num event-num
+     :ext-name nil}))
+
+(defn- get-error-number [error-num ext-cache]
+  (if (<= 128 error-num 255)            ; extension
+    (let [[error-base _] (first<= (:error-bases @ext-cache) error-num)]
+      (- error-num error-base))
+    error-num))
+
+(defn- handle-error [ch replyq ext-cache]
   (let [code (common/read-bytes ch 1)
         seq-n (common/read-bytes ch 2)
-        err (common/read-error code ch)]
+        resp (get-response replyq seq-n)
+        err (common/read-error (:ext-name resp)
+                               (get-error-number code ext-cache)
+                               ch)]
     (log/error err)
-    (deliver-reply err seq-n replyq)))
+    (deliver (:reply resp) err)))
 
 (defn- handle-reply [ch replyq]
   (let [val (common/read-bytes ch 1) ; always unsigned for xproto-1.8
         seq-n (common/read-bytes ch 2)
         len (common/read-bytes ch 4)
-        reply-opcode (get-reply-opcode replyq seq-n)
-        reply (common/read-reply reply-opcode ch len val)]
+        resp (get-response replyq seq-n)
+        reply (common/read-reply (:ext-name resp) (:opcode resp) ch len val)]
     (log/debug reply)
-    (deliver-reply reply seq-n replyq)))
+    (deliver (:reply resp) reply)))
 
-(defn- handle-event [ch event-num replyq eventq]
-  (let [{:keys [seq-num event]} (common/read-event event-num ch)]
+(defn- handle-event [ch event-num replyq eventq ext-cache]
+  (let [{:keys [event-num ext-name]} (get-event-number event-num ext-cache)
+        {:keys [seq-num event]} (common/read-event ext-name event-num ch)]
     (log/debug event)
     (when seq-num                       ; not KeymapNotify
       (clear-old-replies replyq seq-num))
     (.put eventq event)))
 
-(defn- read-channel [ch replyq eventq]
+(defn- read-channel [ch replyq eventq ext-cache]
   (while (.isOpen ch)
     (try
       (let [type-or-event (common/read-bytes ch 1)]
         (case type-or-event
           ;; Error.
-          0 (handle-error ch replyq)
+          0 (handle-error ch replyq ext-cache)
           ;; Reply.
           1 (handle-reply ch replyq)
           ;; Event.
-          (handle-event ch type-or-event replyq eventq)))
+          (handle-event ch type-or-event replyq eventq ext-cache)))
 
       (catch java.nio.channels.AsynchronousCloseException e
         ;; Channel closed; do nothing.
@@ -209,7 +225,10 @@
         setup-reply (future (setup ch))
         replyq (LinkedBlockingQueue.)
         eventq (LinkedBlockingQueue.)
-        ch-reader (Thread. #(read-channel ch replyq eventq))]
+        ext-cache {:exts (ref {})
+                   :event-bases (ref (sorted-map))
+                   :error-bases (ref (sorted-map))}
+        ch-reader (Thread. #(read-channel ch replyq eventq ext-cache))]
     ;; Wait for setup-reply to finish.
     @setup-reply
     (log/debug "Connection setup finished.")
@@ -221,7 +240,8 @@
      :xids (ref (setup->xids @setup-reply))
      :replies replyq
      :events eventq
-     :ch-reader ch-reader}))
+     :ch-reader ch-reader
+     :ext-cache ext-cache}))
 
 (defn disconnect
   "Disconnects from the X server. Connection conn will no longer be

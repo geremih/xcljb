@@ -51,6 +51,9 @@
                  fields)
      ~@body))
 
+(defn- extension-name [context]
+  (:extension-xname context))
+
 (defprotocol RequestFn
   (gen-request-fn [this]))
 
@@ -433,7 +436,7 @@
 (defrecord Request [context name opcode combine-adjacent content]
   Measurable
   (gen-sizeof [this]
-    `(+ 3
+    `(+ ~(if (extension-name (:context this)) 4 3)
         ~@(map #(.gen-sizeof %) (:content this))))
   (gen-read-sizeof [this]
     (throw (Exception.)))
@@ -443,11 +446,17 @@
     (let [s-name (-> this (:name) (beautify :fn-name) (symbol))
           s-args (->> this (:content) (gen-args) (map symbol))
           s-struct (name->->type (:context this)
-                                 (-> this (:name) (beautify :request)))]
-      `(defn ~s-name [conn# ~@s-args]
-         (let [request-struct# (~s-struct ~@s-args)]
-           (xcljb.conn-internal/send conn#
-                                     request-struct#)))))
+                                 (-> this (:name) (beautify :request)))
+          conn (gensym "conn")
+          request-struct (gensym "request-struct")]
+      `(defn ~s-name [~conn ~@s-args]
+         (let [~request-struct (~s-struct ~@s-args)]
+           ~(if-let [ext-name (extension-name (:context this))]
+              `(xcljb.conn-ext/send ~conn
+                                    ~request-struct
+                                    ~ext-name)
+              `(xcljb.conn-internal/send ~conn
+                                         ~request-struct))))))
 
   CodeSerializable
   (gen-to-frame [this]
@@ -509,11 +518,12 @@
           s-_ (symbol "_")
           ;; Has to be named "length", since e.g. GetKeyboardMapping requires it.
           s-len (symbol "length")
+          ext-name (extension-name (:context this))
           opcode (:request-opcode this)
           s-reply (name->->type (:context this)
                                 (-> this (:name) (beautify :reply)))
           s-args (->> this (:content) (gen-args) (map symbol))]
-      `(defmethod xcljb.common/read-reply ~opcode [~s-_ ~s-ch ~s-len val#]
+      `(defmethod xcljb.common/read-reply [~ext-name ~opcode] [~s-_ ~s-_ ~s-ch ~s-len val#]
          (let [~(.gen-read-type-name (first (:content this))) val#]
            ~(gen-read-fields
              (rest (:content this))
@@ -545,6 +555,7 @@
           s-_ (symbol "_")
           s-event (name->->type (:context this)
                                 (-> this (:name) (beautify :event)))
+          ext-name (extension-name (:context this))
           number (:number this)
           seq-num (->SequenceNumber)
           content (:content this)
@@ -555,7 +566,7 @@
                           seq-num
                           (rest content)))
           s-args (map symbol (gen-args fields))]
-      `(defmethod xcljb.common/read-event ~number [~s-_ ~s-ch]
+      `(defmethod xcljb.common/read-event [~ext-name ~number] [~s-_ ~s-_ ~s-ch]
          ~(gen-read-fields
            fields
            `(let [size# (+ 1 ~(.gen-read-sizeof this))
@@ -584,10 +595,11 @@
   (gen-read-fn [this]
     (let [s-ch (symbol "ch")
           s-_ (symbol "_")
+          ext-name (extension-name (:context this))
           s-error (name->->type (:context this)
                                 (-> this (:name) (beautify :error)))
           s-args (->> this (:content) (gen-args) (map symbol))]
-      `(defmethod xcljb.common/read-error ~number [~s-_ ~s-ch]
+      `(defmethod xcljb.common/read-error [~ext-name ~number] [~s-_ ~s-_ ~s-ch]
          ~(gen-read-fields
            (:content this)
            `(let [size# (+ 4 ~(.gen-read-sizeof this))
