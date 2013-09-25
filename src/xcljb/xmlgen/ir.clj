@@ -16,6 +16,8 @@
                    (string/lower-case))
     :fn-name (-> name
                  (string/replace #"([a-z])([A-Z])" "$1-$2")
+                 ;; e.g. "GetXIDList" -> "Get-XID-List".
+                 (string/replace #"([A-Z])([A-Z][a-z])" "$1-$2")
                  (string/lower-case))
     :request (str name "Request")
     :reply (str name "Reply")
