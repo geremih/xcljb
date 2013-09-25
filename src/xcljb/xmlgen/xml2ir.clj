@@ -24,11 +24,17 @@
 (def ^:private EVENTS (atom []))
 (def ^:private ERRORS (atom []))
 
+(defn- primitive? [qualified-type]
+  (let [name (:name qualified-type)]
+    (or (@PRIMITIVE-TYPES name)
+        (some #((:primitives (@TYPEMAP %)) name) @IMPORTS))))
+
 (defn- parse-type [type]
   (let [[_ ns name] (re-matches #"^([^:]+):(.+)$" type)]
     (if ns
       (ir/->QualifiedType ns name)
-      (let [h (some #(if ((@TYPEMAP %) type) % nil) @IMPORTS)]
+      (let [h (some #(if ((apply set/union (vals (@TYPEMAP %))) type) % nil)
+                    @IMPORTS)]
         (if h
           (ir/->QualifiedType h type)
           (ir/->QualifiedType (:header @CONTEXT) type))))))
@@ -65,12 +71,11 @@
 
 (defn- parse-field [elem]
   (let [{:keys [name type enum altenum mask]} (:attrs elem)
-        t (parse-type type)
-        prim? (@PRIMITIVE-TYPES (:name t))]
+        t (parse-type type)]
     (cond
      (= (:name t) "BOOL") (ir/->BoolField name 1)
      (= (:name t) "BOOL32") (ir/->BoolField name 4)
-     prim? (ir/->PrimitiveField name t enum altenum mask)
+     (primitive? t) (ir/->PrimitiveField name t enum altenum mask)
      :else (ir/->Field name t enum altenum mask))))
 
 (defn- parse-list [elem]
@@ -78,11 +83,10 @@
         t (parse-type type)
         expr (if-let [e (-> elem (:content) (first))]
                (parse-expression e)
-               nil)
-        prim? (@PRIMITIVE-TYPES (:name t))]
+               nil)]
     (cond
      (or (= (:name t) "char") (= (:name t) "STRING8")) (ir/->StringField name expr)
-     prim? (ir/->PrimitiveList name t enum altenum mask expr)
+     (primitive? t) (ir/->PrimitiveList name t enum altenum mask expr)
      :else (ir/->List name t enum altenum mask expr))))
 
 (defn- parse-valueparam [elem]
@@ -251,9 +255,10 @@
 
 (defn- write-typemap! []
   (spit "src/xcljb/gen/typemap.clj"
-        (assoc @TYPEMAP (:header @CONTEXT) (set/union
-                                            (set (keys @PRIMITIVE-TYPES))
-                                            (set (map :name @COMPOSITE-TYPES))))))
+        (assoc @TYPEMAP
+          (:header @CONTEXT)
+          {:primitives (set (keys @PRIMITIVE-TYPES))
+           :composites (set (map :name @COMPOSITE-TYPES))})))
 
 (defn xml->ir [elem]
   (read-typemap!)
