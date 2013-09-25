@@ -5,7 +5,9 @@
             [xcljb.auth]
             [xcljb.common :as common]
             [xcljb.gen.xproto-internal :as xproto-internal]
-            [xcljb.gen.xproto-types :as xproto-types])
+            [xcljb.gen.xproto-types :as xproto-types]
+            ;; Extensions (read-reply/event/error).
+            xcljb.gen.xc-misc-internal)
   (:import [java.net InetSocketAddress]
            [java.nio ByteOrder]
            [java.nio.channels SocketChannel]
