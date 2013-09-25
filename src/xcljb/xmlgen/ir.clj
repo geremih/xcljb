@@ -3,6 +3,7 @@
 
 (defn beautify [name type]
   (case type
+    :ns-name (string/replace name #"_" "-")
     :arg (-> name
              (string/replace #"_" "-")
              (string/replace #"([a-z])([A-Z])" "$1-$2")
@@ -33,15 +34,15 @@
 
 (defn- parse-type [type]
   (let [{:keys [ns name]} type]
-    (symbol (str "xcljb.gen." ns "-types") name)))
+    (symbol (str "xcljb.gen." (beautify ns :ns-name) "-types") name)))
 
 (defn- type->read-type [type]
   (let [{:keys [ns name]} type]
-    (symbol (str "xcljb.gen." ns "-internal")
+    (symbol (str "xcljb.gen." (beautify ns :ns-name) "-internal")
             (-> name (beautify :type) (beautify :read-type)))))
 
 (defn- name->->type [context name]
-  (symbol (str "xcljb.gen." (:header context) "-types")
+  (symbol (str "xcljb.gen." (beautify (:header context) :ns-name) "-types")
           (-> name (beautify :type) (beautify :->type))))
 
 (defn- gen-read-fields [fields & body]

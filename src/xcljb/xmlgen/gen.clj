@@ -41,13 +41,14 @@
          replies
          events
          errors] (xml2ir/xml->ir root)
-        file-prefix (str "src/xcljb/gen/" (:header xcb))]
+        file-prefix (str "src/xcljb/gen/" (:header xcb))
+        ns-name (ir/beautify (:header xcb) :ns-name)]
     (with-open [wrtr (clojure.java.io/writer (str file-prefix ".clj"))]
       (write-header-comment wrtr)
 
       (.write wrtr "\n")
       (pp/pprint
-       `(ns ~(symbol (str "xcljb.gen." (:header xcb)))
+       `(ns ~(symbol (str "xcljb.gen." ns-name))
           (:require xcljb.conn-internal
                     xcljb.gen.xproto-types))
        wrtr)
@@ -74,7 +75,7 @@
 
       (.write wrtr "\n")
       (pp/pprint
-       `(ns ~(symbol (str "xcljb.gen." (:header xcb) "-types"))
+       `(ns ~(symbol (str "xcljb.gen." ns-name "-types"))
           (:require [~@(map symbol ["xcljb" "common"])]))
        wrtr)
 
@@ -120,7 +121,7 @@
 
       (.write wrtr "\n")
       (pp/pprint
-       `(ns ~(symbol (str "xcljb.gen." (:header xcb) "-internal"))
+       `(ns ~(symbol (str "xcljb.gen." ns-name "-internal"))
           (:require [~@(map symbol ["xcljb" "common"])]
                     [~@(map symbol ["xcljb.gen" (str (:header xcb) "-types")])]))
        wrtr)
