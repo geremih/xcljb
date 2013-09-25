@@ -451,8 +451,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 3
- [_ ch length val__1137__auto__]
+ [nil 3]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [backing-store val__1137__auto__]
   (clojure.core/let
@@ -531,8 +531,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 14
- [_ ch length val__1137__auto__]
+ [nil 14]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [depth val__1137__auto__]
   (clojure.core/let
@@ -579,8 +579,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 15
- [_ ch length val__1137__auto__]
+ [nil 15]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -625,8 +625,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 16
- [_ ch length val__1137__auto__]
+ [nil 16]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -645,8 +645,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 17
- [_ ch length val__1137__auto__]
+ [nil 17]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -674,8 +674,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 20
- [_ ch length val__1137__auto__]
+ [nil 20]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [format val__1137__auto__]
   (clojure.core/let
@@ -721,8 +721,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 21
- [_ ch length val__1137__auto__]
+ [nil 21]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -757,8 +757,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 23
- [_ ch length val__1137__auto__]
+ [nil 23]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -777,8 +777,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 26
- [_ ch length val__1137__auto__]
+ [nil 26]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [status val__1137__auto__]
   (clojure.core/let
@@ -797,8 +797,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 31
- [_ ch length val__1137__auto__]
+ [nil 31]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [status val__1137__auto__]
   (clojure.core/let
@@ -817,8 +817,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 38
- [_ ch length val__1137__auto__]
+ [nil 38]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [same-screen val__1137__auto__]
   (clojure.core/let
@@ -869,8 +869,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 39
- [_ ch length val__1137__auto__]
+ [nil 39]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -895,8 +895,8 @@
        20
        (clojure.core/reduce
         (clojure.core/fn
-         [x__927__auto__ y__928__auto__]
-         (clojure.core/+ x__927__auto__ (.sizeof y__928__auto__)))
+         [x__928__auto__ y__929__auto__]
+         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
         0
         events)))
      pads__1136__auto__
@@ -908,8 +908,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 40
- [_ ch length val__1137__auto__]
+ [nil 40]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [same-screen val__1137__auto__]
   (clojure.core/let
@@ -941,8 +941,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 43
- [_ ch length val__1137__auto__]
+ [nil 43]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [revert-to val__1137__auto__]
   (clojure.core/let
@@ -963,8 +963,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 44
- [_ ch length val__1137__auto__]
+ [nil 44]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -991,8 +991,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 47
- [_ ch length val__1137__auto__]
+ [nil 47]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -1063,14 +1063,14 @@
        (.sizeof xcljb.gen.xproto-types/CARD32)
        (clojure.core/reduce
         (clojure.core/fn
-         [x__927__auto__ y__928__auto__]
-         (clojure.core/+ x__927__auto__ (.sizeof y__928__auto__)))
+         [x__928__auto__ y__929__auto__]
+         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
         0
         properties)
        (clojure.core/reduce
         (clojure.core/fn
-         [x__927__auto__ y__928__auto__]
-         (clojure.core/+ x__927__auto__ (.sizeof y__928__auto__)))
+         [x__928__auto__ y__929__auto__]
+         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
         0
         char-infos)))
      pads__1136__auto__
@@ -1097,8 +1097,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 49
- [_ ch length val__1137__auto__]
+ [nil 49]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -1121,8 +1121,8 @@
        22
        (clojure.core/reduce
         (clojure.core/fn
-         [x__927__auto__ y__928__auto__]
-         (clojure.core/+ x__927__auto__ (.sizeof y__928__auto__)))
+         [x__928__auto__ y__929__auto__]
+         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
         0
         names)))
      pads__1136__auto__
@@ -1134,8 +1134,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 50
- [_ ch length val__1137__auto__]
+ [nil 50]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [name-len val__1137__auto__]
   (clojure.core/let
@@ -1201,8 +1201,8 @@
        (.sizeof xcljb.gen.xproto-types/CARD32)
        (clojure.core/reduce
         (clojure.core/fn
-         [x__927__auto__ y__928__auto__]
-         (clojure.core/+ x__927__auto__ (.sizeof y__928__auto__)))
+         [x__928__auto__ y__929__auto__]
+         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
         0
         properties)
        name-len))
@@ -1231,8 +1231,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 52
- [_ ch length val__1137__auto__]
+ [nil 52]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -1255,8 +1255,8 @@
        22
        (clojure.core/reduce
         (clojure.core/fn
-         [x__927__auto__ y__928__auto__]
-         (clojure.core/+ x__927__auto__ (.sizeof y__928__auto__)))
+         [x__928__auto__ y__929__auto__]
+         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
         0
         path)))
      pads__1136__auto__
@@ -1268,8 +1268,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 73
- [_ ch length val__1137__auto__]
+ [nil 73]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [depth val__1137__auto__]
   (clojure.core/let
@@ -1304,8 +1304,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 83
- [_ ch length val__1137__auto__]
+ [nil 83]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -1342,8 +1342,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 84
- [_ ch length val__1137__auto__]
+ [nil 84]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -1377,8 +1377,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 85
- [_ ch length val__1137__auto__]
+ [nil 85]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -1425,8 +1425,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 86
- [_ ch length val__1137__auto__]
+ [nil 86]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -1478,8 +1478,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 87
- [_ ch length val__1137__auto__]
+ [nil 87]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -1531,8 +1531,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 91
- [_ ch length val__1137__auto__]
+ [nil 91]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -1555,8 +1555,8 @@
        22
        (clojure.core/reduce
         (clojure.core/fn
-         [x__927__auto__ y__928__auto__]
-         (clojure.core/+ x__927__auto__ (.sizeof y__928__auto__)))
+         [x__928__auto__ y__929__auto__]
+         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
         0
         colors)))
      pads__1136__auto__
@@ -1568,8 +1568,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 92
- [_ ch length val__1137__auto__]
+ [nil 92]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -1612,8 +1612,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 97
- [_ ch length val__1137__auto__]
+ [nil 97]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -1638,8 +1638,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 98
- [_ ch length val__1137__auto__]
+ [nil 98]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -1674,8 +1674,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 99
- [_ ch length val__1137__auto__]
+ [nil 99]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [names-len val__1137__auto__]
   (clojure.core/let
@@ -1695,8 +1695,8 @@
        24
        (clojure.core/reduce
         (clojure.core/fn
-         [x__927__auto__ y__928__auto__]
-         (clojure.core/+ x__927__auto__ (.sizeof y__928__auto__)))
+         [x__928__auto__ y__929__auto__]
+         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
         0
         names)))
      pads__1136__auto__
@@ -1708,8 +1708,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 101
- [_ ch length val__1137__auto__]
+ [nil 101]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [keysyms-per-keycode val__1137__auto__]
   (clojure.core/let
@@ -1743,8 +1743,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 103
- [_ ch length val__1137__auto__]
+ [nil 103]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [global-auto-repeat val__1137__auto__]
   (clojure.core/let
@@ -1796,8 +1796,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 106
- [_ ch length val__1137__auto__]
+ [nil 106]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -1831,8 +1831,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 108
- [_ ch length val__1137__auto__]
+ [nil 108]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [_ val__1137__auto__]
   (clojure.core/let
@@ -1870,8 +1870,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 110
- [_ ch length val__1137__auto__]
+ [nil 110]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [mode val__1137__auto__]
   (clojure.core/let
@@ -1894,8 +1894,8 @@
        22
        (clojure.core/reduce
         (clojure.core/fn
-         [x__927__auto__ y__928__auto__]
-         (clojure.core/+ x__927__auto__ (.sizeof y__928__auto__)))
+         [x__928__auto__ y__929__auto__]
+         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
         0
         hosts)))
      pads__1136__auto__
@@ -1907,8 +1907,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 116
- [_ ch length val__1137__auto__]
+ [nil 116]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [status val__1137__auto__]
   (clojure.core/let
@@ -1927,8 +1927,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 117
- [_ ch length val__1137__auto__]
+ [nil 117]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [map-len val__1137__auto__]
   (clojure.core/let
@@ -1960,8 +1960,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 118
- [_ ch length val__1137__auto__]
+ [nil 118]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [status val__1137__auto__]
   (clojure.core/let
@@ -1980,8 +1980,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 119
- [_ ch length val__1137__auto__]
+ [nil 119]
+ [_ _ ch length val__1137__auto__]
  (clojure.core/let
   [keycodes-per-modifier val__1137__auto__]
   (clojure.core/let
@@ -2015,8 +2015,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 2
- [_ ch]
+ [nil 2]
+ [_ _ ch]
  (clojure.core/let
   [detail
    (.read-type xcljb.gen.xproto-types/KEYCODE ch)
@@ -2082,8 +2082,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 3
- [_ ch]
+ [nil 3]
+ [_ _ ch]
  (clojure.core/let
   [detail
    (.read-type xcljb.gen.xproto-types/KEYCODE ch)
@@ -2149,8 +2149,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 4
- [_ ch]
+ [nil 4]
+ [_ _ ch]
  (clojure.core/let
   [detail
    (.read-type xcljb.gen.xproto-types/BUTTON ch)
@@ -2216,8 +2216,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 5
- [_ ch]
+ [nil 5]
+ [_ _ ch]
  (clojure.core/let
   [detail
    (.read-type xcljb.gen.xproto-types/BUTTON ch)
@@ -2283,8 +2283,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 6
- [_ ch]
+ [nil 6]
+ [_ _ ch]
  (clojure.core/let
   [detail
    (.read-type xcljb.gen.xproto-types/BYTE ch)
@@ -2350,8 +2350,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 7
- [_ ch]
+ [nil 7]
+ [_ _ ch]
  (clojure.core/let
   [detail
    (.read-type xcljb.gen.xproto-types/BYTE ch)
@@ -2418,8 +2418,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 8
- [_ ch]
+ [nil 8]
+ [_ _ ch]
  (clojure.core/let
   [detail
    (.read-type xcljb.gen.xproto-types/BYTE ch)
@@ -2486,8 +2486,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 9
- [_ ch]
+ [nil 9]
+ [_ _ ch]
  (clojure.core/let
   [detail
    (.read-type xcljb.gen.xproto-types/BYTE ch)
@@ -2517,8 +2517,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 10
- [_ ch]
+ [nil 10]
+ [_ _ ch]
  (clojure.core/let
   [detail
    (.read-type xcljb.gen.xproto-types/BYTE ch)
@@ -2548,8 +2548,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 11
- [_ ch]
+ [nil 11]
+ [_ _ ch]
  (clojure.core/let
   [keys
    (clojure.core/doall
@@ -2572,8 +2572,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 12
- [_ ch]
+ [nil 12]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -2622,8 +2622,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 13
- [_ ch]
+ [nil 13]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -2680,8 +2680,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 14
- [_ ch]
+ [nil 14]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -2718,8 +2718,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 15
- [_ ch]
+ [nil 15]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -2750,8 +2750,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 16
- [_ ch]
+ [nil 16]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -2808,8 +2808,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 17
- [_ ch]
+ [nil 17]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -2836,8 +2836,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 18
- [_ ch]
+ [nil 18]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -2874,8 +2874,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 19
- [_ ch]
+ [nil 19]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -2912,8 +2912,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 20
- [_ ch]
+ [nil 20]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -2940,8 +2940,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 21
- [_ ch]
+ [nil 21]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -2990,8 +2990,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 22
- [_ ch]
+ [nil 22]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -3052,8 +3052,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 23
- [_ ch]
+ [nil 23]
+ [_ _ ch]
  (clojure.core/let
   [stack-mode
    (.read-type xcljb.gen.xproto-types/BYTE ch)
@@ -3112,8 +3112,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 24
- [_ ch]
+ [nil 24]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -3147,8 +3147,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 25
- [_ ch]
+ [nil 25]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -3179,8 +3179,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 26
- [_ ch]
+ [nil 26]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -3217,8 +3217,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 27
- [_ ch]
+ [nil 27]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -3258,8 +3258,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 28
- [_ ch]
+ [nil 28]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -3300,8 +3300,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 29
- [_ ch]
+ [nil 29]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -3335,8 +3335,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 30
- [_ ch]
+ [nil 30]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -3382,8 +3382,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 31
- [_ ch]
+ [nil 31]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -3425,8 +3425,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 32
- [_ ch]
+ [nil 32]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -3467,8 +3467,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 34
- [_ ch]
+ [nil 34]
+ [_ _ ch]
  (clojure.core/let
   [_
    (xcljb.common/read-pad ch 1)
@@ -3505,8 +3505,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-error
- 1
- [_ ch]
+ [nil 1]
+ [_ _ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3535,8 +3535,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-error
- 2
- [_ ch]
+ [nil 2]
+ [_ _ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3565,8 +3565,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-error
- 3
- [_ ch]
+ [nil 3]
+ [_ _ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3595,8 +3595,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-error
- 4
- [_ ch]
+ [nil 4]
+ [_ _ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3625,8 +3625,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-error
- 5
- [_ ch]
+ [nil 5]
+ [_ _ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3655,8 +3655,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-error
- 6
- [_ ch]
+ [nil 6]
+ [_ _ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3685,8 +3685,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-error
- 7
- [_ ch]
+ [nil 7]
+ [_ _ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3715,8 +3715,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-error
- 8
- [_ ch]
+ [nil 8]
+ [_ _ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3745,8 +3745,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-error
- 9
- [_ ch]
+ [nil 9]
+ [_ _ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3775,8 +3775,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-error
- 10
- [_ ch]
+ [nil 10]
+ [_ _ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3805,8 +3805,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-error
- 11
- [_ ch]
+ [nil 11]
+ [_ _ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3835,8 +3835,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-error
- 12
- [_ ch]
+ [nil 12]
+ [_ _ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3865,8 +3865,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-error
- 13
- [_ ch]
+ [nil 13]
+ [_ _ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3895,8 +3895,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-error
- 14
- [_ ch]
+ [nil 14]
+ [_ _ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3925,8 +3925,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-error
- 15
- [_ ch]
+ [nil 15]
+ [_ _ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3955,8 +3955,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-error
- 16
- [_ ch]
+ [nil 16]
+ [_ _ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -3985,8 +3985,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-error
- 17
- [_ ch]
+ [nil 17]
+ [_ _ ch]
  (clojure.core/let
   [bad-value
    (.read-type xcljb.gen.xproto-types/CARD32 ch)
@@ -4017,8 +4017,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-reply
- 48
- [_ ch__1349__auto__ _ draw-direction__1350__auto__]
+ [nil 48]
+ [_ _ ch__1349__auto__ _ draw-direction__1350__auto__]
  (clojure.core/let
   [font-ascent__1351__auto__
    (.read-type xcljb.gen.xproto-types/INT16 ch__1349__auto__)
@@ -4048,8 +4048,8 @@
 
 (clojure.core/defmethod
  xcljb.common/read-event
- 33
- [_ ch__1366__auto__]
+ [nil 33]
+ [_ _ ch__1366__auto__]
  (clojure.core/let
   [format__1367__auto__
    (.read-type xcljb.gen.xproto-types/CARD8 ch__1366__auto__)

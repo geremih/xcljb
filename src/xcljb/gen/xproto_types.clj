@@ -190,8 +190,8 @@
    4
    (clojure.core/reduce
     (clojure.core/fn
-     [x__925__auto__ y__926__auto__]
-     (clojure.core/+ x__925__auto__ (.sizeof y__926__auto__)))
+     [x__926__auto__ y__927__auto__]
+     (clojure.core/+ x__926__auto__ (.sizeof y__927__auto__)))
     0
     (:visuals this))))
  xcljb.common/Serializable
@@ -202,7 +202,7 @@
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (clojure.core/repeat 4 :byte)
    (clojure.core/map
-    (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
+    (fn* [p1__930__931__auto__] (.to-frame p1__930__931__auto__))
     (:visuals this))])
  (to-value
   [this]
@@ -211,7 +211,7 @@
    (:visuals-len this)
    (clojure.core/repeat 4 0)
    (clojure.core/map
-    (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
+    (fn* [p1__932__933__auto__] (.to-value p1__932__933__auto__))
     (:visuals this))]))
 
 (clojure.core/defrecord
@@ -255,8 +255,8 @@
    (.sizeof xcljb.gen.xproto-types/CARD8)
    (clojure.core/reduce
     (clojure.core/fn
-     [x__925__auto__ y__926__auto__]
-     (clojure.core/+ x__925__auto__ (.sizeof y__926__auto__)))
+     [x__926__auto__ y__927__auto__]
+     (clojure.core/+ x__926__auto__ (.sizeof y__927__auto__)))
     0
     (:allowed-depths this))))
  xcljb.common/Serializable
@@ -279,7 +279,7 @@
    (.to-frame xcljb.gen.xproto-types/CARD8)
    (.to-frame xcljb.gen.xproto-types/CARD8)
    (clojure.core/map
-    (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
+    (fn* [p1__930__931__auto__] (.to-frame p1__930__931__auto__))
     (:allowed-depths this))])
  (to-value
   [this]
@@ -300,7 +300,7 @@
    (:root-depth this)
    (:allowed-depths-len this)
    (clojure.core/map
-    (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
+    (fn* [p1__932__933__auto__] (.to-value p1__932__933__auto__))
     (:allowed-depths this))]))
 
 (clojure.core/defrecord
@@ -460,14 +460,14 @@
    (clojure.core/count (:vendor this))
    (clojure.core/reduce
     (clojure.core/fn
-     [x__925__auto__ y__926__auto__]
-     (clojure.core/+ x__925__auto__ (.sizeof y__926__auto__)))
+     [x__926__auto__ y__927__auto__]
+     (clojure.core/+ x__926__auto__ (.sizeof y__927__auto__)))
     0
     (:pixmap-formats this))
    (clojure.core/reduce
     (clojure.core/fn
-     [x__925__auto__ y__926__auto__]
-     (clojure.core/+ x__925__auto__ (.sizeof y__926__auto__)))
+     [x__926__auto__ y__927__auto__]
+     (clojure.core/+ x__926__auto__ (.sizeof y__927__auto__)))
     0
     (:roots this))))
  xcljb.common/Serializable
@@ -495,10 +495,10 @@
    (clojure.core/repeat 4 :byte)
    (gloss.core/string :ascii)
    (clojure.core/map
-    (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
+    (fn* [p1__930__931__auto__] (.to-frame p1__930__931__auto__))
     (:pixmap-formats this))
    (clojure.core/map
-    (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
+    (fn* [p1__930__931__auto__] (.to-frame p1__930__931__auto__))
     (:roots this))])
  (to-value
   [this]
@@ -524,10 +524,10 @@
    (clojure.core/repeat 4 0)
    (:vendor this)
    (clojure.core/map
-    (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
+    (fn* [p1__932__933__auto__] (.to-value p1__932__933__auto__))
     (:pixmap-formats this))
    (clojure.core/map
-    (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
+    (fn* [p1__932__933__auto__] (.to-value p1__932__933__auto__))
     (:roots this))]))
 
 (clojure.core/defrecord
@@ -1911,8 +1911,8 @@
    2
    (clojure.core/reduce
     (clojure.core/fn
-     [x__925__auto__ y__926__auto__]
-     (clojure.core/+ x__925__auto__ (.sizeof y__926__auto__)))
+     [x__926__auto__ y__927__auto__]
+     (clojure.core/+ x__926__auto__ (.sizeof y__927__auto__)))
     0
     (:font this))))
  xcljb.common/Serializable
@@ -1922,7 +1922,7 @@
    (.to-frame xcljb.gen.xproto-types/CARD16)
    (clojure.core/repeat 2 :byte)
    (clojure.core/map
-    (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
+    (fn* [p1__930__931__auto__] (.to-frame p1__930__931__auto__))
     (:font this))])
  (to-value
   [this]
@@ -1930,7 +1930,7 @@
    (:font-qty this)
    (clojure.core/repeat 2 0)
    (clojure.core/map
-    (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
+    (fn* [p1__932__933__auto__] (.to-value p1__932__933__auto__))
     (:font this))])
  xcljb.common/Request
  (opcode [_] 51))
@@ -2137,8 +2137,8 @@
    (.sizeof xcljb.gen.xproto-types/INT16)
    (clojure.core/reduce
     (clojure.core/fn
-     [x__925__auto__ y__926__auto__]
-     (clojure.core/+ x__925__auto__ (.sizeof y__926__auto__)))
+     [x__926__auto__ y__927__auto__]
+     (clojure.core/+ x__926__auto__ (.sizeof y__927__auto__)))
     0
     (:rectangles this))))
  xcljb.common/Serializable
@@ -2149,7 +2149,7 @@
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (clojure.core/map
-    (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
+    (fn* [p1__930__931__auto__] (.to-frame p1__930__931__auto__))
     (:rectangles this))])
  (to-value
   [this]
@@ -2158,7 +2158,7 @@
    (:clip-x-origin this)
    (:clip-y-origin this)
    (clojure.core/map
-    (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
+    (fn* [p1__932__933__auto__] (.to-value p1__932__933__auto__))
     (:rectangles this))])
  xcljb.common/Request
  (opcode [_] 59))
@@ -2330,8 +2330,8 @@
    (.sizeof xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/reduce
     (clojure.core/fn
-     [x__925__auto__ y__926__auto__]
-     (clojure.core/+ x__925__auto__ (.sizeof y__926__auto__)))
+     [x__926__auto__ y__927__auto__]
+     (clojure.core/+ x__926__auto__ (.sizeof y__927__auto__)))
     0
     (:points this))))
  xcljb.common/Serializable
@@ -2341,7 +2341,7 @@
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/map
-    (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
+    (fn* [p1__930__931__auto__] (.to-frame p1__930__931__auto__))
     (:points this))])
  (to-value
   [this]
@@ -2349,7 +2349,7 @@
    (:drawable this)
    (:gc this)
    (clojure.core/map
-    (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
+    (fn* [p1__932__933__auto__] (.to-value p1__932__933__auto__))
     (:points this))])
  xcljb.common/Request
  (opcode [_] 64))
@@ -2367,8 +2367,8 @@
    (.sizeof xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/reduce
     (clojure.core/fn
-     [x__925__auto__ y__926__auto__]
-     (clojure.core/+ x__925__auto__ (.sizeof y__926__auto__)))
+     [x__926__auto__ y__927__auto__]
+     (clojure.core/+ x__926__auto__ (.sizeof y__927__auto__)))
     0
     (:points this))))
  xcljb.common/Serializable
@@ -2378,7 +2378,7 @@
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/map
-    (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
+    (fn* [p1__930__931__auto__] (.to-frame p1__930__931__auto__))
     (:points this))])
  (to-value
   [this]
@@ -2386,7 +2386,7 @@
    (:drawable this)
    (:gc this)
    (clojure.core/map
-    (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
+    (fn* [p1__932__933__auto__] (.to-value p1__932__933__auto__))
     (:points this))])
  xcljb.common/Request
  (opcode [_] 65))
@@ -2404,8 +2404,8 @@
    (.sizeof xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/reduce
     (clojure.core/fn
-     [x__925__auto__ y__926__auto__]
-     (clojure.core/+ x__925__auto__ (.sizeof y__926__auto__)))
+     [x__926__auto__ y__927__auto__]
+     (clojure.core/+ x__926__auto__ (.sizeof y__927__auto__)))
     0
     (:segments this))))
  xcljb.common/Serializable
@@ -2415,7 +2415,7 @@
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/map
-    (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
+    (fn* [p1__930__931__auto__] (.to-frame p1__930__931__auto__))
     (:segments this))])
  (to-value
   [this]
@@ -2423,7 +2423,7 @@
    (:drawable this)
    (:gc this)
    (clojure.core/map
-    (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
+    (fn* [p1__932__933__auto__] (.to-value p1__932__933__auto__))
     (:segments this))])
  xcljb.common/Request
  (opcode [_] 66))
@@ -2441,8 +2441,8 @@
    (.sizeof xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/reduce
     (clojure.core/fn
-     [x__925__auto__ y__926__auto__]
-     (clojure.core/+ x__925__auto__ (.sizeof y__926__auto__)))
+     [x__926__auto__ y__927__auto__]
+     (clojure.core/+ x__926__auto__ (.sizeof y__927__auto__)))
     0
     (:rectangles this))))
  xcljb.common/Serializable
@@ -2452,7 +2452,7 @@
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/map
-    (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
+    (fn* [p1__930__931__auto__] (.to-frame p1__930__931__auto__))
     (:rectangles this))])
  (to-value
   [this]
@@ -2460,7 +2460,7 @@
    (:drawable this)
    (:gc this)
    (clojure.core/map
-    (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
+    (fn* [p1__932__933__auto__] (.to-value p1__932__933__auto__))
     (:rectangles this))])
  xcljb.common/Request
  (opcode [_] 67))
@@ -2478,8 +2478,8 @@
    (.sizeof xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/reduce
     (clojure.core/fn
-     [x__925__auto__ y__926__auto__]
-     (clojure.core/+ x__925__auto__ (.sizeof y__926__auto__)))
+     [x__926__auto__ y__927__auto__]
+     (clojure.core/+ x__926__auto__ (.sizeof y__927__auto__)))
     0
     (:arcs this))))
  xcljb.common/Serializable
@@ -2489,7 +2489,7 @@
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/map
-    (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
+    (fn* [p1__930__931__auto__] (.to-frame p1__930__931__auto__))
     (:arcs this))])
  (to-value
   [this]
@@ -2497,7 +2497,7 @@
    (:drawable this)
    (:gc this)
    (clojure.core/map
-    (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
+    (fn* [p1__932__933__auto__] (.to-value p1__932__933__auto__))
     (:arcs this))])
  xcljb.common/Request
  (opcode [_] 68))
@@ -2518,8 +2518,8 @@
    2
    (clojure.core/reduce
     (clojure.core/fn
-     [x__925__auto__ y__926__auto__]
-     (clojure.core/+ x__925__auto__ (.sizeof y__926__auto__)))
+     [x__926__auto__ y__927__auto__]
+     (clojure.core/+ x__926__auto__ (.sizeof y__927__auto__)))
     0
     (:points this))))
  xcljb.common/Serializable
@@ -2532,7 +2532,7 @@
    (.to-frame xcljb.gen.xproto-types/CARD8)
    (clojure.core/repeat 2 :byte)
    (clojure.core/map
-    (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
+    (fn* [p1__930__931__auto__] (.to-frame p1__930__931__auto__))
     (:points this))])
  (to-value
   [this]
@@ -2543,7 +2543,7 @@
    (:coordinate-mode this)
    (clojure.core/repeat 2 0)
    (clojure.core/map
-    (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
+    (fn* [p1__932__933__auto__] (.to-value p1__932__933__auto__))
     (:points this))])
  xcljb.common/Request
  (opcode [_] 69))
@@ -2561,8 +2561,8 @@
    (.sizeof xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/reduce
     (clojure.core/fn
-     [x__925__auto__ y__926__auto__]
-     (clojure.core/+ x__925__auto__ (.sizeof y__926__auto__)))
+     [x__926__auto__ y__927__auto__]
+     (clojure.core/+ x__926__auto__ (.sizeof y__927__auto__)))
     0
     (:rectangles this))))
  xcljb.common/Serializable
@@ -2572,7 +2572,7 @@
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/map
-    (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
+    (fn* [p1__930__931__auto__] (.to-frame p1__930__931__auto__))
     (:rectangles this))])
  (to-value
   [this]
@@ -2580,7 +2580,7 @@
    (:drawable this)
    (:gc this)
    (clojure.core/map
-    (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
+    (fn* [p1__932__933__auto__] (.to-value p1__932__933__auto__))
     (:rectangles this))])
  xcljb.common/Request
  (opcode [_] 70))
@@ -2598,8 +2598,8 @@
    (.sizeof xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/reduce
     (clojure.core/fn
-     [x__925__auto__ y__926__auto__]
-     (clojure.core/+ x__925__auto__ (.sizeof y__926__auto__)))
+     [x__926__auto__ y__927__auto__]
+     (clojure.core/+ x__926__auto__ (.sizeof y__927__auto__)))
     0
     (:arcs this))))
  xcljb.common/Serializable
@@ -2609,7 +2609,7 @@
    (.to-frame xcljb.gen.xproto-types/DRAWABLE)
    (.to-frame xcljb.gen.xproto-types/GCONTEXT)
    (clojure.core/map
-    (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
+    (fn* [p1__930__931__auto__] (.to-frame p1__930__931__auto__))
     (:arcs this))])
  (to-value
   [this]
@@ -2617,7 +2617,7 @@
    (:drawable this)
    (:gc this)
    (clojure.core/map
-    (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
+    (fn* [p1__932__933__auto__] (.to-value p1__932__933__auto__))
     (:arcs this))])
  xcljb.common/Request
  (opcode [_] 71))
@@ -2837,8 +2837,8 @@
    (.sizeof xcljb.gen.xproto-types/INT16)
    (clojure.core/reduce
     (clojure.core/fn
-     [x__925__auto__ y__926__auto__]
-     (clojure.core/+ x__925__auto__ (.sizeof y__926__auto__)))
+     [x__926__auto__ y__927__auto__]
+     (clojure.core/+ x__926__auto__ (.sizeof y__927__auto__)))
     0
     (:string this))))
  xcljb.common/Serializable
@@ -2850,7 +2850,7 @@
    (.to-frame xcljb.gen.xproto-types/INT16)
    (.to-frame xcljb.gen.xproto-types/INT16)
    (clojure.core/map
-    (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
+    (fn* [p1__930__931__auto__] (.to-frame p1__930__931__auto__))
     (:string this))])
  (to-value
   [this]
@@ -2860,7 +2860,7 @@
    (:x this)
    (:y this)
    (clojure.core/map
-    (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
+    (fn* [p1__932__933__auto__] (.to-value p1__932__933__auto__))
     (:string this))])
  xcljb.common/Request
  (opcode [_] 77))
@@ -3148,8 +3148,8 @@
    (.sizeof xcljb.gen.xproto-types/COLORMAP)
    (clojure.core/reduce
     (clojure.core/fn
-     [x__925__auto__ y__926__auto__]
-     (clojure.core/+ x__925__auto__ (.sizeof y__926__auto__)))
+     [x__926__auto__ y__927__auto__]
+     (clojure.core/+ x__926__auto__ (.sizeof y__927__auto__)))
     0
     (:items this))))
  xcljb.common/Serializable
@@ -3158,14 +3158,14 @@
   [(clojure.core/repeat 1 :byte)
    (.to-frame xcljb.gen.xproto-types/COLORMAP)
    (clojure.core/map
-    (fn* [p1__929__930__auto__] (.to-frame p1__929__930__auto__))
+    (fn* [p1__930__931__auto__] (.to-frame p1__930__931__auto__))
     (:items this))])
  (to-value
   [this]
   [(clojure.core/repeat 1 0)
    (:cmap this)
    (clojure.core/map
-    (fn* [p1__931__932__auto__] (.to-value p1__931__932__auto__))
+    (fn* [p1__932__933__auto__] (.to-value p1__932__933__auto__))
     (:items this))])
  xcljb.common/Request
  (opcode [_] 89))
@@ -4343,7 +4343,7 @@
 
 (clojure.core/defrecord
  QueryTextExtentsRequest
- [opcode font string]
+ [font string]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -4356,8 +4356,6 @@
  (to-frame
   [this]
   [:ubyte
-   :ubyte
-   :uint16
    (.to-frame xcljb.gen.xproto-types/FONTABLE)
    (clojure.core/map
     (fn* [p1__1334__1336__auto__] (.to-frame p1__1334__1336__auto__))
@@ -4365,19 +4363,18 @@
    (clojure.core/repeat (xcljb.common/padding (.sizeof this)) :byte)])
  (to-value
   [this]
-  [(:opcode this)
-   (if (clojure.core/odd? (clojure.core/count (:string this))) 1 0)
-   (clojure.core/int
-    (java.lang.Math/ceil (clojure.core// (.sizeof this) 4)))
+  [(if (clojure.core/odd? (clojure.core/count (:string this))) 1 0)
    (:font this)
    (clojure.core/map
     (fn* [p1__1335__1337__auto__] (.to-value p1__1335__1337__auto__))
     (:string this))
-   (clojure.core/repeat (xcljb.common/padding (.sizeof this)) 0)]))
+   (clojure.core/repeat (xcljb.common/padding (.sizeof this)) 0)])
+ xcljb.common/Request
+ (opcode [_] 48))
 
 (clojure.core/defrecord
  ConfigureWindowRequest
- [opcode window value]
+ [window value]
  xcljb.common/Measurable
  (sizeof
   [this]
@@ -4392,8 +4389,6 @@
  (to-frame
   [this]
   [:ubyte
-   :ubyte
-   :uint16
    (.to-frame xcljb.gen.xproto-types/WINDOW)
    :uint16
    :uint16
@@ -4402,13 +4397,13 @@
   [this]
   (clojure.core/let
    [vp__1313__auto__ (xcljb.common/valueparam->value (:value this))]
-   [(:opcode this)
-    0
-    (clojure.core/+ 3 (clojure.core/count (:value this)))
+   [0
     (:window this)
     (clojure.core/first vp__1313__auto__)
     0
-    (clojure.core/second vp__1313__auto__)])))
+    (clojure.core/second vp__1313__auto__)]))
+ xcljb.common/Request
+ (opcode [_] 12))
 
 (clojure.core/defrecord
  QueryTextExtentsReply
