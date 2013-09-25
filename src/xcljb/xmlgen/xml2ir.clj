@@ -266,10 +266,10 @@
         :typedef (parse-typedef e)
         :struct (parse-struct e)
         :union nil
-        :request (when-not ((get-in SKIP [(:header xcb) :request])
+        :request (when-not ((get-in SKIP [(:header xcb) :request] #{})
                             (-> e (:attrs) (:name)))
                    (parse-request e))
-        :event (when-not ((get-in SKIP [(:header xcb) :event])
+        :event (when-not ((get-in SKIP [(:header xcb) :event] #{})
                           (-> e (:attrs) (:name)))
                  (parse-event e))
         :eventcopy (parse-eventcopy e)
