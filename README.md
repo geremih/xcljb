@@ -24,6 +24,12 @@ Using JNA with JNAerator to access the XCB functions results in the following:
 
 Besides the ugly names (underscores ... *ugh*), if any of the `byte` or `short` casts are left out, the function cannot be invoked. Note that the enum `xcb_window_class_t` in C is now an inner class in Java, making what could have been a keyword access more difficult than it should. It's possible to work around some of these problems by writing the Java interface by hand or hiding things behind macros, but I wanted something better.
 
+## Features
+
+* Core protocol fully implemented
+* Extensions
+  * XC-MISC
+
 ## Installation
 
 ### Leiningen
@@ -66,10 +72,6 @@ Since Java does not have access to Unix domain socket, one would have to either 
 Examples are listed under the `src/xcljb/examples/` directory.
 
 [TinyCLJWM](https://github.com/noodlewiz/tinycljwm) is [TinyWM](http://incise.org/tinywm.html) in Clojure.
-
-## Todo
-
-* Extensions
 
 ## Credits
 
