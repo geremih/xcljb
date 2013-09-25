@@ -36,7 +36,7 @@ Besides the ugly names (underscores ... *ugh*), if any of the `byte` or `short` 
 
 Add the following to the `project.clj` dependencies:
 
-    [xcljb "0.1.0"]
+    [xcljb "0.2.0"]
 
 ## Usage
 
