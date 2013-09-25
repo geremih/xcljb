@@ -127,7 +127,7 @@
 
 (defn- clear-old-replies [replyq seq-num]
   (when-let [{seqn :seq-num, reply :reply} (.peek replyq)]
-    (when (< seqn seq-num)
+    (when (not= seqn seq-num)
       (.take replyq)
       (deliver reply nil)
       (recur replyq seq-num))))
