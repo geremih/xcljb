@@ -24,20 +24,22 @@
 
 (def ^:private BUFFER (ByteBuffer/allocateDirect 2048))
 
-(defn read-bytes [ch bytes & {:keys [signed]
-                              :or {signed false}}]
+(defn read-bytes [ch bytes & {:keys [signed float]
+                              :or {signed false, float false}}]
   (-> BUFFER (.position 0) (.limit bytes))
   (.read ch BUFFER)
   (.rewind BUFFER)
-  (if signed
-    (case bytes
-      1 (decode :byte BUFFER)
-      2 (decode :int16 BUFFER)
-      4 (decode :int32 BUFFER))
-    (case bytes
-      1 (decode :ubyte BUFFER)
-      2 (decode :uint16 BUFFER)
-      4 (decode :uint32 BUFFER))))
+  (cond
+   (and float (= bytes 4)) (decode :float32 BUFFER)
+   (and float (= bytes 8)) (decode :float64 BUFFER)
+   signed (case bytes
+            1 (decode :byte BUFFER)
+            2 (decode :int16 BUFFER)
+            4 (decode :int32 BUFFER))
+   :else (case bytes
+           1 (decode :ubyte BUFFER)
+           2 (decode :uint16 BUFFER)
+           4 (decode :uint32 BUFFER))))
 
 (defn read-string [ch length]
   (-> BUFFER (.position 0) (.limit length))
@@ -73,7 +75,8 @@
     (case (:type this)
       (:ubyte :byte) 1
       (:uint16 :int16) 2
-      (:uint32 :int32) 4))
+      (:uint32 :int32 :float32) 4
+      :float64 8))
 
   Serializable
   (to-frame [this]
@@ -89,4 +92,6 @@
       :uint32 (read-bytes ch 4)
       :byte (read-bytes ch 1 :signed true)
       :int16 (read-bytes ch 2 :signed true)
-      :int32 (read-bytes ch 4 :signed true))))
+      :int32 (read-bytes ch 4 :signed true)
+      :float32 (read-bytes ch 4 :float true)
+      :float64 (read-bytes ch 8 :float true))))

@@ -243,7 +243,9 @@
                                  "CARD16" :uint16
                                  "CARD32" :uint32
                                  "char" :ubyte
-                                 "void" :ubyte}))
+                                 "void" :ubyte
+                                 "float" :float32
+                                 "double" :float64}))
       (do
         (reset! IMPORTS #{"xproto"})
         (reset! PRIMITIVE-TYPES {})))
