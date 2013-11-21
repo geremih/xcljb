@@ -23,6 +23,9 @@
 (def ^:private EVENTS (atom []))
 (def ^:private ERRORS (atom []))
 
+(defn- skip? [name type]
+  (contains? (get-in SKIP [(:header @CONTEXT) type])
+             name))
 
 (defn- parse-type [type]
   (let [[_ ns name] (re-matches #"^([^:]+):(.+)$" type)]
@@ -138,10 +141,10 @@
     (swap! TYPES conj (ir/->Struct name content))))
 
 (defn- parse-reply [name request-opcode elem]
-  (let [content (parse-content (:content elem))
-        reply (ir/->Reply @CONTEXT name request-opcode content)]
-    (swap! REPLIES conj reply)
-    reply))
+  (when-not (skip? name :reply)
+    (let [content (parse-content (:content elem))
+          reply (ir/->Reply @CONTEXT name request-opcode content)]
+      (swap! REPLIES conj reply))))
 
 (defn- parse-request [elem]
   (assert (= (:tag elem) :request))
@@ -150,23 +153,25 @@
         opcode (-> attrs (:opcode) (Integer/parseInt))
         combine-adjacent (= (:combine-adjacent attrs) "true")
         content (:content elem)
-        request-content (parse-content content)
-        reply-elem (first (filter #(= (:tag %) :reply) content))
-        request (ir/->Request @CONTEXT name opcode combine-adjacent request-content)]
-    (swap! REQUESTS conj request)
+        reply-elem (first (filter #(= (:tag %) :reply) content))]
+    (when-not (skip? name :request)
+      (let [request-content (parse-content content)
+            request (ir/->Request @CONTEXT name opcode combine-adjacent request-content)]
+        (swap! REQUESTS conj request)))
     (when reply-elem
       (parse-reply name opcode reply-elem))
-    request))
+    nil))
 
 (defn- parse-event [elem]
   (let [attrs (:attrs elem)
         name (:name attrs)
         num (-> attrs (:number) (Integer/parseInt))
-        no-seq-num (= (:no-sequence-number attrs) "true")
-        content (parse-content (:content elem))
-        event (ir/->Event @CONTEXT name num no-seq-num content)]
-    (swap! EVENTS conj event)
-    event))
+        no-seq-num (= (:no-sequence-number attrs) "true")]
+    (when-not (skip? name :event)
+      (let [content (parse-content (:content elem))
+            event (ir/->Event @CONTEXT name num no-seq-num content)]
+        (swap! EVENTS conj event)))
+    nil))
 
 (defn- parse-eventcopy [elem]
   (let [attrs (:attrs elem)
@@ -257,12 +262,8 @@
         :typedef (parse-typedef e)
         :struct (parse-struct e)
         :union nil
-        :request (when-not ((get-in SKIP [(:header xcb) :request] #{})
-                            (-> e (:attrs) (:name)))
-                   (parse-request e))
-        :event (when-not ((get-in SKIP [(:header xcb) :event] #{})
-                          (-> e (:attrs) (:name)))
-                 (parse-event e))
+        :request (parse-request e)
+        :event (parse-event e)
         :eventcopy (parse-eventcopy e)
         :error (parse-error e)
         :errorcopy (parse-errorcopy e)))

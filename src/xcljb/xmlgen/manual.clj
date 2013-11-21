@@ -3,15 +3,12 @@
 (ns xcljb.xmlgen.manual)
 
 (def MANUAL {"xproto" {:request #{"ConfigureWindow" "QueryTextExtents"}
-                       :reply #{"QueryTextExtents"}
                        :event #{"ClientMessage"}}})
 
 (defmulti gen-request-fn identity)
-(defmulti gen-reply-fn identity)
 (defmulti gen-event-fn identity)
 
 (defmulti gen-request-type identity)
-(defmulti gen-reply-type identity)
 (defmulti gen-event-type identity)
 
 ;;; xproto
@@ -98,27 +95,6 @@
        xcljb.common/Request
        (~(symbol "opcode") [~s-_]
         48))))
-
-(defmethod gen-reply-fn "QueryTextExtents" [_]
-  (let [s-_ (symbol "_")]
-    `(defmethod xcljb.common/read-reply [nil 48] [~s-_ ~s-_ ch# ~s-_ draw-direction#]
-       (let [font-ascent# (.read-type xcljb.gen.xproto-types/INT16 ch#)
-             font-descent# (.read-type xcljb.gen.xproto-types/INT16 ch#)
-             overall-ascent# (.read-type xcljb.gen.xproto-types/INT16 ch#)
-             overall-descent# (.read-type xcljb.gen.xproto-types/INT16 ch#)
-             overall-width# (.read-type xcljb.gen.xproto-types/INT32 ch#)
-             overall-left# (.read-type xcljb.gen.xproto-types/INT32 ch#)
-             overall-right# (.read-type xcljb.gen.xproto-types/INT32 ch#)
-             ~s-_ (xcljb.common/read-pad ch# 4)]
-         (xcljb.gen.xproto-types/->QueryTextExtentsReply
-          draw-direction# font-ascent# font-descent# overall-ascent#
-          overall-descent# overall-width# overall-left# overall-right#)))))
-
-(defmethod gen-reply-type "QueryTextExtents" [_]
-  `(defrecord ~(symbol "QueryTextExtentsReply")
-       [~@(map symbol ["draw-direction" "font-ascent" "font-descent"
-                       "overall-ascent" "overall-descent" "overall-width"
-                       "overall-left" "overall-right"])]))
 
 ;;; ClientMessage
 
