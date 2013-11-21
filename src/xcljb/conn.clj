@@ -149,8 +149,8 @@
 (defn- get-response [resp-q seq-num]
   (clear-old-replies resp-q seq-num)
   (let [{seqn :seq-num, :as r} (.peek resp-q)]
-    (assert r "Sequence number corresponds to no request.")
-    (assert (= seqn seq-num) "Sequence number greater than all requests.")
+    (assert r (str "Sequence number corresponds to no request: " seq-num))
+    (assert (= seqn seq-num) (str "Sequence number greater than all requests: " seq-num))
     (.take resp-q)))
 
 (defn- first<= [s-map n]
