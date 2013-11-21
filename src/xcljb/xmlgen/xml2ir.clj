@@ -7,9 +7,9 @@
 (def ^:private SKIP {"xproto" {:union #{"ClientMessageData"}
                                :request #{"ConfigureWindow"
                                           "QueryTextExtents"}
-                               :event #{"ClientMessage"}}
+                               :event {"ClientMessage" 33}}
                      "randr" {:union #{"NotifyData"}
-                              :event #{"Notify"}}})
+                              :event {"Notify" 1}}})
 
 (def ^:private CONTEXT (atom nil))
 (def ^:private IMPORTS (atom nil))
@@ -263,9 +263,11 @@
   (spit "src/xcljb/gen/typemap.clj"
         (assoc @TYPEMAP
           (:header @CONTEXT)
-          {:types (set (map :name @TYPES))
-           :events (zipmap (map :name @EVENTS)
-                           (map :number @EVENTS))
+          {:types (set/union (set (map :name @TYPES))
+                             (get-in SKIP [(:header @CONTEXT) :union]))
+           :events (merge (zipmap (map :name @EVENTS)
+                                  (map :number @EVENTS))
+                          (get-in SKIP [(:header @CONTEXT) :event]))
            :errors (zipmap (map :name @ERRORS)
                            (map :number @ERRORS))})))
 
