@@ -4,8 +4,7 @@
   (:require [xcljb.conn :as conn]
             [xcljb.core :as core]
             [xcljb.gen.xproto :as xproto]
-            [xcljb.gen.xproto-types :as xproto-types])
-  (:import [xcljb.gen.xproto_types ExposeEvent KeyReleaseEvent]))
+            [xcljb.gen.xproto-types :as xproto-types]))
 
 (def ^:private WIDTH 300)
 (def ^:private HEIGHT 100)
@@ -48,11 +47,11 @@
     (xproto/map-window c window)
     (while true
       (let [e (core/wait-event c)]
-        (condp instance? e
-          ExposeEvent
+        (case (:xcljb/event e)
+          :Expose
           (text-draw c screen window 10 (- HEIGHT 10) "Press ESC key to exit...")
 
-          KeyReleaseEvent
+          :KeyRelease
           (when (= (:detail e) 9)       ; ESC
             (conn/disconnect c)
             (System/exit 0))

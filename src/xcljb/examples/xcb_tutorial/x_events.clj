@@ -3,8 +3,7 @@
 (ns xcljb.examples.xcb-tutorial.x-events
   (:require [xcljb.conn :as conn]
             [xcljb.core :as core]
-            [xcljb.gen.xproto :as xproto])
-  (:import [xcljb.gen.xproto_types ExposeEvent ButtonPressEvent ButtonReleaseEvent MotionNotifyEvent EnterNotifyEvent LeaveNotifyEvent KeyPressEvent KeyReleaseEvent]))
+            [xcljb.gen.xproto :as xproto]))
 
 (defn- print-modifiers [mask]
   (let [mods ["Shift" "Lock" "Ctrl" "Alt" "Mod2" "Mod3" "Mod4" "Mod5" "Button1" "Button2" "Button3" "Button4" "Button5"]
@@ -39,13 +38,13 @@
     (xproto/map-window c win)
     (while true
       (let [e (core/wait-event c)]
-        (condp instance? e
-          ExposeEvent
+        (case (:xcljb/event e)
+          :Expose
           (do
             (printf "Window %d exposed. Region to be redrawn at location (%d,%d), with dimension (%d,%d)\n" (:window e) (:x e) (:y e) (:width e) (:height e))
             (flush))
 
-          ButtonPressEvent
+          :ButtonPress
           (do
             (print-modifiers (:state e))
             (case (:detail e)
@@ -54,33 +53,33 @@
               (printf "Button %d pressed in window %d, at coordinates (%d,%d)\n" (:detail e) (:event e) (:event-x e) (:event-y e)))
             (flush))
 
-          ButtonReleaseEvent
+          :ButtonRelease
           (do
             (print-modifiers (:state e))
             (printf "Button %d released in window %d, at coordinates (%d,%d)\n" (:detail e) (:event e) (:event-x e) (:event-y e))
             (flush))
 
-          MotionNotifyEvent
+          :MotionNotify
           (do
             (printf "Mouse moved in window %d, at coordinates (%d,%d)\n" (:event e) (:event-x e) (:event-y e))
             (flush))
 
-          EnterNotifyEvent
+          :EnterNotify
           (do
             (printf "Mouse entered window %d, at coordinates (%d,%d)\n" (:event e) (:event-x e) (:event-y e))
             (flush))
 
-          LeaveNotifyEvent
+          :LeaveNotify
           (do
             (printf "Mouse left window %d, at coordinates (%d,%d)\n" (:event e) (:event-x e) (:event-y e))
             (flush))
 
-          KeyPressEvent
+          :KeyPress
           (do
             (print-modifiers (:state e))
             (println "Key pressed in window" (:event e)))
 
-          KeyReleaseEvent
+          :KeyRelease
           (do
             (print-modifiers (:state e))
             (println "Key released in window" (:event e)))

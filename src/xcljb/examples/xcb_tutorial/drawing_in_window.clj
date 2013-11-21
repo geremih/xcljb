@@ -3,9 +3,7 @@
 (ns xcljb.examples.xcb-tutorial.drawing-in-window
   (:require [xcljb.conn :as conn]
             [xcljb.core :as core]
-            [xcljb.gen.xproto :as xproto]
-            [xcljb.gen.xproto-types :as xproto-types])
-  (:import [xcljb.gen.xproto_types ExposeEvent]))
+            [xcljb.gen.xproto :as xproto]))
 
 (defn -main [& args]
   (let [c (conn/connect)
@@ -16,22 +14,24 @@
                             [10 20]
                             [20 10]
                             [20 20]]]
-                 (xproto-types/->Point x y))
+                 {:x x, :y y})
         polyline (for [[x y] [[50 10
                                5 20     ; rest of points are relative
                                25 -20
                                10 10]]]
-                   (xproto-types/->Point x y))
+                   {:x x, :y y})
         segments (for [[x1 y1 x2 y2] [[100 10 140 30]
                                       [110 25 130 60]]]
-                   (xproto-types/->Segment x1 y1 x2 y2))
+                   {:x1 x1, :y1 y1
+                    :x2 x2, :y2 y2})
         rectangles (for [[x y width height] [[10 50 40 20]
                                              [80 50 10 40]]]
-                     (xproto-types/->Rectangle x y width height))
-        arcs (for [[x y width height angle1 angle2]
+                     {:x x, :y y, :width width, :height height})
+        arcs (for [arc
                    [[10 100 60 40 0 (bit-shift-left 90 6)]
                     [90 100 55 40 0 (bit-shift-left 270 6)]]]
-               (xproto-types/->Arc x y width height angle1 angle2))]
+               (zipmap [:x :y :width :height :angle1 :angle2]
+                       arc))]
     (xproto/create-gc c
                       foreground
                       (:root screen)
@@ -53,8 +53,8 @@
     (xproto/map-window c win)
     (while true
       (let [e (core/wait-event c)]
-        (condp instance? e
-          ExposeEvent
+        (case (:xcljb/event e)
+          :Expose
           (do
             ;; We draw the points.
             (xproto/poly-point c

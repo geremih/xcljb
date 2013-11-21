@@ -3,9 +3,7 @@
 (ns xcljb.examples.xcb-tutorial.change-cursor
   (:require [xcljb.conn :as conn]
             [xcljb.core :as core]
-            [xcljb.gen.xproto :as xproto]
-            [xcljb.gen.xproto-types :as xproto-types])
-  (:import [xcljb.gen.xproto_types ExposeEvent ButtonPressEvent KeyReleaseEvent]))
+            [xcljb.gen.xproto :as xproto]))
 
 (def ^:private WIDTH 300)
 (def ^:private HEIGHT 150)
@@ -33,7 +31,7 @@
                             [(+ x1 width) (- y1 height)]
                             [x1 (- y1 height)]
                             [x1 y1]]]
-                 (xproto-types/->Point x y))]
+                 {:x x, :y y})]
     (xproto/poly-line c
                       (:origin xproto/COORD-MODE)
                       window
@@ -96,8 +94,8 @@
     (cursor-set c screen window 68)
     (while true
       (let [e (core/wait-event c)]
-        (condp instance? e
-          ExposeEvent
+        (case (:xcljb/event e)
+          :Expose
           (let [text1 "click here to change cursor"
                 text2 "Press ESC key to exit..."]
             (button-draw c screen window
@@ -106,7 +104,7 @@
                          text1)
             (text-draw c screen window 10 (- HEIGHT 10) text2))
 
-          ButtonPressEvent
+          :ButtonPress
           (let [length (count "click here to change cursor")]
             (when (and (<= (/ (- WIDTH (* 7 length)) 2)
                            (:event-x e)
@@ -121,7 +119,7 @@
               (cursor-set c screen window 58)
               (cursor-set c screen window 68)))
 
-          KeyReleaseEvent
+          :KeyRelease
           (when (= (:detail e) 9)       ; ESC
             (conn/disconnect c)
             (System/exit 0))
