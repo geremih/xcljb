@@ -2,4091 +2,816 @@
 
 (clojure.core/ns
  xcljb.gen.xproto-internal
- (:require [xcljb common] [xcljb.gen xproto-types]))
-
-(clojure.core/defn
- read-Char2b
- [ch]
- (clojure.core/let
-  [byte1
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   byte2
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)]
-  (xcljb.gen.xproto-types/->Char2b byte1 byte2)))
-
-(clojure.core/defn
- read-Point
- [ch]
- (clojure.core/let
-  [x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)]
-  (xcljb.gen.xproto-types/->Point x y)))
-
-(clojure.core/defn
- read-Rectangle
- [ch]
- (clojure.core/let
-  [x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   width
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   height
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)]
-  (xcljb.gen.xproto-types/->Rectangle x y width height)))
-
-(clojure.core/defn
- read-Arc
- [ch]
- (clojure.core/let
-  [x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   width
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   height
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   angle1
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   angle2
-   (.read-type xcljb.gen.xproto-types/INT16 ch)]
-  (xcljb.gen.xproto-types/->Arc x y width height angle1 angle2)))
-
-(clojure.core/defn
- read-Format
- [ch]
- (clojure.core/let
-  [depth
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   bits-per-pixel
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   scanline-pad
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 5)]
-  (xcljb.gen.xproto-types/->Format depth bits-per-pixel scanline-pad)))
-
-(clojure.core/defn
- read-Visualtype
- [ch]
- (clojure.core/let
-  [visual-id
-   (.read-type xcljb.gen.xproto-types/VISUALID ch)
-   class
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   bits-per-rgb-value
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   colormap-entries
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   red-mask
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   green-mask
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   blue-mask
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   _
-   (xcljb.common/read-pad ch 4)]
-  (xcljb.gen.xproto-types/->Visualtype
-   visual-id
-   class
-   bits-per-rgb-value
-   colormap-entries
-   red-mask
-   green-mask
-   blue-mask)))
-
-(clojure.core/defn
- read-Depth
- [ch]
- (clojure.core/let
-  [depth
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)
-   visuals-len
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   _
-   (xcljb.common/read-pad ch 4)
-   visuals
-   (clojure.core/doall
-    (clojure.core/repeatedly
-     visuals-len
-     (clojure.core/fn
-      []
-      (xcljb.gen.xproto-internal/read-Visualtype ch))))]
-  (xcljb.gen.xproto-types/->Depth depth visuals-len visuals)))
-
-(clojure.core/defn
- read-Screen
- [ch]
- (clojure.core/let
-  [root
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   default-colormap
-   (.read-type xcljb.gen.xproto-types/COLORMAP ch)
-   white-pixel
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   black-pixel
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   current-input-masks
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   width-in-pixels
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   height-in-pixels
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   width-in-millimeters
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   height-in-millimeters
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   min-installed-maps
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   max-installed-maps
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   root-visual
-   (.read-type xcljb.gen.xproto-types/VISUALID ch)
-   backing-stores
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   save-unders
-   (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-   root-depth
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   allowed-depths-len
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   allowed-depths
-   (clojure.core/doall
-    (clojure.core/repeatedly
-     allowed-depths-len
-     (clojure.core/fn [] (xcljb.gen.xproto-internal/read-Depth ch))))]
-  (xcljb.gen.xproto-types/->Screen
-   root
-   default-colormap
-   white-pixel
-   black-pixel
-   current-input-masks
-   width-in-pixels
-   height-in-pixels
-   width-in-millimeters
-   height-in-millimeters
-   min-installed-maps
-   max-installed-maps
-   root-visual
-   backing-stores
-   save-unders
-   root-depth
-   allowed-depths-len
-   allowed-depths)))
-
-(clojure.core/defn
- read-SetupRequest
- [ch]
- (clojure.core/let
-  [byte-order
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)
-   protocol-major-version
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   protocol-minor-version
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   authorization-protocol-name-len
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   authorization-protocol-data-len
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   _
-   (xcljb.common/read-pad ch 2)
-   authorization-protocol-name
-   (xcljb.common/read-string ch authorization-protocol-name-len)
-   authorization-protocol-data
-   (xcljb.common/read-string ch authorization-protocol-data-len)]
-  (xcljb.gen.xproto-types/->SetupRequest
-   byte-order
-   protocol-major-version
-   protocol-minor-version
-   authorization-protocol-name-len
-   authorization-protocol-data-len
-   authorization-protocol-name
-   authorization-protocol-data)))
-
-(clojure.core/defn
- read-SetupFailed
- [ch]
- (clojure.core/let
-  [status
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   reason-len
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   protocol-major-version
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   protocol-minor-version
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   length
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   reason
-   (xcljb.common/read-string ch reason-len)]
-  (xcljb.gen.xproto-types/->SetupFailed
-   status
-   reason-len
-   protocol-major-version
-   protocol-minor-version
-   length
-   reason)))
-
-(clojure.core/defn
- read-SetupAuthenticate
- [ch]
- (clojure.core/let
-  [status
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 5)
-   length
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   reason
-   (xcljb.common/read-string ch (clojure.core/* length 4))]
-  (xcljb.gen.xproto-types/->SetupAuthenticate status length reason)))
-
-(clojure.core/defn
- read-Setup
- [ch]
- (clojure.core/let
-  [status
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)
-   protocol-major-version
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   protocol-minor-version
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   length
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   release-number
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   resource-id-base
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   resource-id-mask
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   motion-buffer-size
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   vendor-len
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   maximum-request-length
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   roots-len
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   pixmap-formats-len
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   image-byte-order
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   bitmap-format-bit-order
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   bitmap-format-scanline-unit
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   bitmap-format-scanline-pad
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   min-keycode
-   (.read-type xcljb.gen.xproto-types/KEYCODE ch)
-   max-keycode
-   (.read-type xcljb.gen.xproto-types/KEYCODE ch)
-   _
-   (xcljb.common/read-pad ch 4)
-   vendor
-   (xcljb.common/read-string ch vendor-len)
-   pixmap-formats
-   (clojure.core/doall
-    (clojure.core/repeatedly
-     pixmap-formats-len
-     (clojure.core/fn [] (xcljb.gen.xproto-internal/read-Format ch))))
-   roots
-   (clojure.core/doall
-    (clojure.core/repeatedly
-     roots-len
-     (clojure.core/fn [] (xcljb.gen.xproto-internal/read-Screen ch))))]
-  (xcljb.gen.xproto-types/->Setup
-   status
-   protocol-major-version
-   protocol-minor-version
-   length
-   release-number
-   resource-id-base
-   resource-id-mask
-   motion-buffer-size
-   vendor-len
-   maximum-request-length
-   roots-len
-   pixmap-formats-len
-   image-byte-order
-   bitmap-format-bit-order
-   bitmap-format-scanline-unit
-   bitmap-format-scanline-pad
-   min-keycode
-   max-keycode
-   vendor
-   pixmap-formats
-   roots)))
-
-(clojure.core/defn
- read-Timecoord
- [ch]
- (clojure.core/let
-  [time
-   (.read-type xcljb.gen.xproto-types/TIMESTAMP ch)
-   x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)]
-  (xcljb.gen.xproto-types/->Timecoord time x y)))
-
-(clojure.core/defn
- read-Fontprop
- [ch]
- (clojure.core/let
-  [name
-   (.read-type xcljb.gen.xproto-types/ATOM ch)
-   value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)]
-  (xcljb.gen.xproto-types/->Fontprop name value)))
-
-(clojure.core/defn
- read-Charinfo
- [ch]
- (clojure.core/let
-  [left-side-bearing
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   right-side-bearing
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   character-width
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   ascent
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   descent
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   attributes
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)]
-  (xcljb.gen.xproto-types/->Charinfo
-   left-side-bearing
-   right-side-bearing
-   character-width
-   ascent
-   descent
-   attributes)))
-
-(clojure.core/defn
- read-Str
- [ch]
- (clojure.core/let
-  [name-len
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   name
-   (xcljb.common/read-string ch name-len)]
-  (xcljb.gen.xproto-types/->Str name-len name)))
-
-(clojure.core/defn
- read-Segment
- [ch]
- (clojure.core/let
-  [x1
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   y1
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   x2
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   y2
-   (.read-type xcljb.gen.xproto-types/INT16 ch)]
-  (xcljb.gen.xproto-types/->Segment x1 y1 x2 y2)))
-
-(clojure.core/defn
- read-Coloritem
- [ch]
- (clojure.core/let
-  [pixel
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   red
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   green
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   blue
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   flags
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (xcljb.gen.xproto-types/->Coloritem pixel red green blue flags)))
-
-(clojure.core/defn
- read-Rgb
- [ch]
- (clojure.core/let
-  [red
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   green
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   blue
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   _
-   (xcljb.common/read-pad ch 2)]
-  (xcljb.gen.xproto-types/->Rgb red green blue)))
-
-(clojure.core/defn
- read-Host
- [ch]
- (clojure.core/let
-  [family
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)
-   address-len
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   address
-   (clojure.core/doall
-    (clojure.core/repeatedly
-     address-len
-     (clojure.core/fn
-      []
-      (.read-type xcljb.gen.xproto-types/BYTE ch))))]
-  (xcljb.gen.xproto-types/->Host family address-len address)))
+ (:require [xcljb common gen-common] [xcljb.gen xproto-types]))
 
 (clojure.core/defmethod
  xcljb.common/read-reply
  [nil 3]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [backing-store val__1137__auto__]
-  (clojure.core/let
-   [visual
-    (.read-type xcljb.gen.xproto-types/VISUALID ch)
-    class
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    bit-gravity
-    (.read-type xcljb.gen.xproto-types/CARD8 ch)
-    win-gravity
-    (.read-type xcljb.gen.xproto-types/CARD8 ch)
-    backing-planes
-    (.read-type xcljb.gen.xproto-types/CARD32 ch)
-    backing-pixel
-    (.read-type xcljb.gen.xproto-types/CARD32 ch)
-    save-under
-    (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-    map-is-installed
-    (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-    map-state
-    (.read-type xcljb.gen.xproto-types/CARD8 ch)
-    override-redirect
-    (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-    colormap
-    (.read-type xcljb.gen.xproto-types/COLORMAP ch)
-    all-event-masks
-    (.read-type xcljb.gen.xproto-types/CARD32 ch)
-    your-event-mask
-    (.read-type xcljb.gen.xproto-types/CARD32 ch)
-    do-not-propagate-mask
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    _
-    (xcljb.common/read-pad ch 2)]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       (.sizeof xcljb.gen.xproto-types/VISUALID)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       (.sizeof xcljb.gen.xproto-types/CARD32)
-       (.sizeof xcljb.gen.xproto-types/CARD32)
-       1
-       1
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       1
-       (.sizeof xcljb.gen.xproto-types/COLORMAP)
-       (.sizeof xcljb.gen.xproto-types/CARD32)
-       (.sizeof xcljb.gen.xproto-types/CARD32)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       2))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->GetWindowAttributesReply
-    backing-store
-    visual
-    class
-    bit-gravity
-    win-gravity
-    backing-planes
-    backing-pixel
-    save-under
-    map-is-installed
-    map-state
-    override-redirect
-    colormap
-    all-event-masks
-    your-event-mask
-    do-not-propagate-mask))))
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GetWindowAttributesReply
+  reply-buf
+  nil))
 
 (clojure.core/defmethod
  xcljb.common/read-reply
  [nil 14]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [depth val__1137__auto__]
-  (clojure.core/let
-   [root
-    (.read-type xcljb.gen.xproto-types/WINDOW ch)
-    x
-    (.read-type xcljb.gen.xproto-types/INT16 ch)
-    y
-    (.read-type xcljb.gen.xproto-types/INT16 ch)
-    width
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    height
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    border-width
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    _
-    (xcljb.common/read-pad ch 2)]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       (.sizeof xcljb.gen.xproto-types/WINDOW)
-       (.sizeof xcljb.gen.xproto-types/INT16)
-       (.sizeof xcljb.gen.xproto-types/INT16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       2))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->GetGeometryReply
-    depth
-    root
-    x
-    y
-    width
-    height
-    border-width))))
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GetGeometryReply
+  reply-buf
+  nil))
 
 (clojure.core/defmethod
  xcljb.common/read-reply
  [nil 15]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [root
-    (.read-type xcljb.gen.xproto-types/WINDOW ch)
-    parent
-    (.read-type xcljb.gen.xproto-types/WINDOW ch)
-    children-len
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    _
-    (xcljb.common/read-pad ch 14)
-    children
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      children-len
-      (clojure.core/fn
-       []
-       (.read-type xcljb.gen.xproto-types/WINDOW ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/WINDOW)
-       (.sizeof xcljb.gen.xproto-types/WINDOW)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       14
-       (clojure.core/*
-        (.sizeof xcljb.gen.xproto-types/WINDOW)
-        children-len)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->QueryTreeReply
-    root
-    parent
-    children-len
-    children))))
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/QueryTreeReply
+  reply-buf
+  nil))
 
 (clojure.core/defmethod
  xcljb.common/read-reply
  [nil 16]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [atom (.read-type xcljb.gen.xproto-types/ATOM ch)]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+ 1 (.sizeof xcljb.gen.xproto-types/ATOM)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->InternAtomReply atom))))
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/InternAtomReply
+  reply-buf
+  nil))
 
 (clojure.core/defmethod
  xcljb.common/read-reply
  [nil 17]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [name-len
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    _
-    (xcljb.common/read-pad ch 22)
-    name
-    (xcljb.common/read-string ch name-len)]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       22
-       name-len))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->GetAtomNameReply name-len name))))
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GetAtomNameReply
+  reply-buf
+  nil))
 
 (clojure.core/defmethod
  xcljb.common/read-reply
  [nil 20]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [format val__1137__auto__]
-  (clojure.core/let
-   [type
-    (.read-type xcljb.gen.xproto-types/ATOM ch)
-    bytes-after
-    (.read-type xcljb.gen.xproto-types/CARD32 ch)
-    value-len
-    (.read-type xcljb.gen.xproto-types/CARD32 ch)
-    _
-    (xcljb.common/read-pad ch 12)
-    value
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      (clojure.core/* value-len (clojure.core// format 8))
-      (clojure.core/fn
-       []
-       (.read-type xcljb.gen.xproto-types/void ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       (.sizeof xcljb.gen.xproto-types/ATOM)
-       (.sizeof xcljb.gen.xproto-types/CARD32)
-       (.sizeof xcljb.gen.xproto-types/CARD32)
-       12
-       (clojure.core/*
-        (.sizeof xcljb.gen.xproto-types/void)
-        (clojure.core/* value-len (clojure.core// format 8)))))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->GetPropertyReply
-    format
-    type
-    bytes-after
-    value-len
-    value))))
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GetPropertyReply
+  reply-buf
+  nil))
 
 (clojure.core/defmethod
  xcljb.common/read-reply
  [nil 21]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [atoms-len
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    _
-    (xcljb.common/read-pad ch 22)
-    atoms
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      atoms-len
-      (clojure.core/fn
-       []
-       (.read-type xcljb.gen.xproto-types/ATOM ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       22
-       (clojure.core/*
-        (.sizeof xcljb.gen.xproto-types/ATOM)
-        atoms-len)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->ListPropertiesReply atoms-len atoms))))
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ListPropertiesReply
+  reply-buf
+  nil))
 
 (clojure.core/defmethod
  xcljb.common/read-reply
  [nil 23]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [owner (.read-type xcljb.gen.xproto-types/WINDOW ch)]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+ 1 (.sizeof xcljb.gen.xproto-types/WINDOW)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->GetSelectionOwnerReply owner))))
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GetSelectionOwnerReply
+  reply-buf
+  nil))
 
 (clojure.core/defmethod
  xcljb.common/read-reply
  [nil 26]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [status val__1137__auto__]
-  (clojure.core/let
-   []
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+ (.sizeof xcljb.gen.xproto-types/BYTE)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->GrabPointerReply status))))
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GrabPointerReply
+  reply-buf
+  nil))
 
 (clojure.core/defmethod
  xcljb.common/read-reply
  [nil 31]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [status val__1137__auto__]
-  (clojure.core/let
-   []
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+ (.sizeof xcljb.gen.xproto-types/BYTE)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->GrabKeyboardReply status))))
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GrabKeyboardReply
+  reply-buf
+  nil))
 
 (clojure.core/defmethod
  xcljb.common/read-reply
  [nil 38]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [same-screen val__1137__auto__]
-  (clojure.core/let
-   [root
-    (.read-type xcljb.gen.xproto-types/WINDOW ch)
-    child
-    (.read-type xcljb.gen.xproto-types/WINDOW ch)
-    root-x
-    (.read-type xcljb.gen.xproto-types/INT16 ch)
-    root-y
-    (.read-type xcljb.gen.xproto-types/INT16 ch)
-    win-x
-    (.read-type xcljb.gen.xproto-types/INT16 ch)
-    win-y
-    (.read-type xcljb.gen.xproto-types/INT16 ch)
-    mask
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    _
-    (xcljb.common/read-pad ch 2)]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/WINDOW)
-       (.sizeof xcljb.gen.xproto-types/WINDOW)
-       (.sizeof xcljb.gen.xproto-types/INT16)
-       (.sizeof xcljb.gen.xproto-types/INT16)
-       (.sizeof xcljb.gen.xproto-types/INT16)
-       (.sizeof xcljb.gen.xproto-types/INT16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       2))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->QueryPointerReply
-    same-screen
-    root
-    child
-    root-x
-    root-y
-    win-x
-    win-y
-    mask))))
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/QueryPointerReply
+  reply-buf
+  nil))
 
 (clojure.core/defmethod
  xcljb.common/read-reply
  [nil 39]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [events-len
-    (.read-type xcljb.gen.xproto-types/CARD32 ch)
-    _
-    (xcljb.common/read-pad ch 20)
-    events
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      events-len
-      (clojure.core/fn
-       []
-       (xcljb.gen.xproto-internal/read-Timecoord ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/CARD32)
-       20
-       (clojure.core/reduce
-        (clojure.core/fn
-         [x__928__auto__ y__929__auto__]
-         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
-        0
-        events)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->GetMotionEventsReply events-len events))))
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GetMotionEventsReply
+  reply-buf
+  nil))
 
 (clojure.core/defmethod
  xcljb.common/read-reply
  [nil 40]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [same-screen val__1137__auto__]
-  (clojure.core/let
-   [child
-    (.read-type xcljb.gen.xproto-types/WINDOW ch)
-    dst-x
-    (.read-type xcljb.gen.xproto-types/INT16 ch)
-    dst-y
-    (.read-type xcljb.gen.xproto-types/INT16 ch)]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/WINDOW)
-       (.sizeof xcljb.gen.xproto-types/INT16)
-       (.sizeof xcljb.gen.xproto-types/INT16)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->TranslateCoordinatesReply
-    same-screen
-    child
-    dst-x
-    dst-y))))
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/TranslateCoordinatesReply
+  reply-buf
+  nil))
 
 (clojure.core/defmethod
  xcljb.common/read-reply
  [nil 43]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [revert-to val__1137__auto__]
-  (clojure.core/let
-   [focus (.read-type xcljb.gen.xproto-types/WINDOW ch)]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       (.sizeof xcljb.gen.xproto-types/WINDOW)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->GetInputFocusReply revert-to focus))))
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GetInputFocusReply
+  reply-buf
+  nil))
 
 (clojure.core/defmethod
  xcljb.common/read-reply
  [nil 44]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [keys
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      32
-      (clojure.core/fn
-       []
-       (.read-type xcljb.gen.xproto-types/CARD8 ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (clojure.core/* (.sizeof xcljb.gen.xproto-types/CARD8) 32)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->QueryKeymapReply keys))))
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/QueryKeymapReply
+  reply-buf
+  nil))
 
 (clojure.core/defmethod
  xcljb.common/read-reply
  [nil 47]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [min-bounds
-    (xcljb.gen.xproto-internal/read-Charinfo ch)
-    _
-    (xcljb.common/read-pad ch 4)
-    max-bounds
-    (xcljb.gen.xproto-internal/read-Charinfo ch)
-    _
-    (xcljb.common/read-pad ch 4)
-    min-char-or-byte2
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    max-char-or-byte2
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    default-char
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    properties-len
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    draw-direction
-    (.read-type xcljb.gen.xproto-types/BYTE ch)
-    min-byte1
-    (.read-type xcljb.gen.xproto-types/CARD8 ch)
-    max-byte1
-    (.read-type xcljb.gen.xproto-types/CARD8 ch)
-    all-chars-exist
-    (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-    font-ascent
-    (.read-type xcljb.gen.xproto-types/INT16 ch)
-    font-descent
-    (.read-type xcljb.gen.xproto-types/INT16 ch)
-    char-infos-len
-    (.read-type xcljb.gen.xproto-types/CARD32 ch)
-    properties
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      properties-len
-      (clojure.core/fn
-       []
-       (xcljb.gen.xproto-internal/read-Fontprop ch))))
-    char-infos
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      char-infos-len
-      (clojure.core/fn
-       []
-       (xcljb.gen.xproto-internal/read-Charinfo ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof min-bounds)
-       4
-       (.sizeof max-bounds)
-       4
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/BYTE)
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       1
-       (.sizeof xcljb.gen.xproto-types/INT16)
-       (.sizeof xcljb.gen.xproto-types/INT16)
-       (.sizeof xcljb.gen.xproto-types/CARD32)
-       (clojure.core/reduce
-        (clojure.core/fn
-         [x__928__auto__ y__929__auto__]
-         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
-        0
-        properties)
-       (clojure.core/reduce
-        (clojure.core/fn
-         [x__928__auto__ y__929__auto__]
-         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
-        0
-        char-infos)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->QueryFontReply
-    min-bounds
-    max-bounds
-    min-char-or-byte2
-    max-char-or-byte2
-    default-char
-    properties-len
-    draw-direction
-    min-byte1
-    max-byte1
-    all-chars-exist
-    font-ascent
-    font-descent
-    char-infos-len
-    properties
-    char-infos))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 49]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [names-len
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    _
-    (xcljb.common/read-pad ch 22)
-    names
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      names-len
-      (clojure.core/fn [] (xcljb.gen.xproto-internal/read-Str ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       22
-       (clojure.core/reduce
-        (clojure.core/fn
-         [x__928__auto__ y__929__auto__]
-         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
-        0
-        names)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->ListFontsReply names-len names))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 50]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [name-len val__1137__auto__]
-  (clojure.core/let
-   [min-bounds
-    (xcljb.gen.xproto-internal/read-Charinfo ch)
-    _
-    (xcljb.common/read-pad ch 4)
-    max-bounds
-    (xcljb.gen.xproto-internal/read-Charinfo ch)
-    _
-    (xcljb.common/read-pad ch 4)
-    min-char-or-byte2
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    max-char-or-byte2
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    default-char
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    properties-len
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    draw-direction
-    (.read-type xcljb.gen.xproto-types/BYTE ch)
-    min-byte1
-    (.read-type xcljb.gen.xproto-types/CARD8 ch)
-    max-byte1
-    (.read-type xcljb.gen.xproto-types/CARD8 ch)
-    all-chars-exist
-    (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-    font-ascent
-    (.read-type xcljb.gen.xproto-types/INT16 ch)
-    font-descent
-    (.read-type xcljb.gen.xproto-types/INT16 ch)
-    replies-hint
-    (.read-type xcljb.gen.xproto-types/CARD32 ch)
-    properties
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      properties-len
-      (clojure.core/fn
-       []
-       (xcljb.gen.xproto-internal/read-Fontprop ch))))
-    name
-    (xcljb.common/read-string ch name-len)]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       (.sizeof min-bounds)
-       4
-       (.sizeof max-bounds)
-       4
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/BYTE)
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       1
-       (.sizeof xcljb.gen.xproto-types/INT16)
-       (.sizeof xcljb.gen.xproto-types/INT16)
-       (.sizeof xcljb.gen.xproto-types/CARD32)
-       (clojure.core/reduce
-        (clojure.core/fn
-         [x__928__auto__ y__929__auto__]
-         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
-        0
-        properties)
-       name-len))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->ListFontsWithInfoReply
-    name-len
-    min-bounds
-    max-bounds
-    min-char-or-byte2
-    max-char-or-byte2
-    default-char
-    properties-len
-    draw-direction
-    min-byte1
-    max-byte1
-    all-chars-exist
-    font-ascent
-    font-descent
-    replies-hint
-    properties
-    name))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 52]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [path-len
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    _
-    (xcljb.common/read-pad ch 22)
-    path
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      path-len
-      (clojure.core/fn [] (xcljb.gen.xproto-internal/read-Str ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       22
-       (clojure.core/reduce
-        (clojure.core/fn
-         [x__928__auto__ y__929__auto__]
-         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
-        0
-        path)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->GetFontPathReply path-len path))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 73]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [depth val__1137__auto__]
-  (clojure.core/let
-   [visual
-    (.read-type xcljb.gen.xproto-types/VISUALID ch)
-    _
-    (xcljb.common/read-pad ch 20)
-    data
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      (clojure.core/* length 4)
-      (clojure.core/fn
-       []
-       (.read-type xcljb.gen.xproto-types/BYTE ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       (.sizeof xcljb.gen.xproto-types/VISUALID)
-       20
-       (clojure.core/*
-        (.sizeof xcljb.gen.xproto-types/BYTE)
-        (clojure.core/* length 4))))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->GetImageReply depth visual data))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 83]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [cmaps-len
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    _
-    (xcljb.common/read-pad ch 22)
-    cmaps
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      cmaps-len
-      (clojure.core/fn
-       []
-       (.read-type xcljb.gen.xproto-types/COLORMAP ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       22
-       (clojure.core/*
-        (.sizeof xcljb.gen.xproto-types/COLORMAP)
-        cmaps-len)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->ListInstalledColormapsReply
-    cmaps-len
-    cmaps))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 84]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [red
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    green
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    blue
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    _
-    (xcljb.common/read-pad ch 2)
-    pixel
-    (.read-type xcljb.gen.xproto-types/CARD32 ch)]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       2
-       (.sizeof xcljb.gen.xproto-types/CARD32)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->AllocColorReply red green blue pixel))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 85]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [pixel
-    (.read-type xcljb.gen.xproto-types/CARD32 ch)
-    exact-red
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    exact-green
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    exact-blue
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    visual-red
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    visual-green
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    visual-blue
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/CARD32)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->AllocNamedColorReply
-    pixel
-    exact-red
-    exact-green
-    exact-blue
-    visual-red
-    visual-green
-    visual-blue))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 86]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [pixels-len
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    masks-len
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    _
-    (xcljb.common/read-pad ch 20)
-    pixels
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      pixels-len
-      (clojure.core/fn
-       []
-       (.read-type xcljb.gen.xproto-types/CARD32 ch))))
-    masks
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      masks-len
-      (clojure.core/fn
-       []
-       (.read-type xcljb.gen.xproto-types/CARD32 ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       20
-       (clojure.core/*
-        (.sizeof xcljb.gen.xproto-types/CARD32)
-        pixels-len)
-       (clojure.core/*
-        (.sizeof xcljb.gen.xproto-types/CARD32)
-        masks-len)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->AllocColorCellsReply
-    pixels-len
-    masks-len
-    pixels
-    masks))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 87]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [pixels-len
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    _
-    (xcljb.common/read-pad ch 2)
-    red-mask
-    (.read-type xcljb.gen.xproto-types/CARD32 ch)
-    green-mask
-    (.read-type xcljb.gen.xproto-types/CARD32 ch)
-    blue-mask
-    (.read-type xcljb.gen.xproto-types/CARD32 ch)
-    _
-    (xcljb.common/read-pad ch 8)
-    pixels
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      pixels-len
-      (clojure.core/fn
-       []
-       (.read-type xcljb.gen.xproto-types/CARD32 ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       2
-       (.sizeof xcljb.gen.xproto-types/CARD32)
-       (.sizeof xcljb.gen.xproto-types/CARD32)
-       (.sizeof xcljb.gen.xproto-types/CARD32)
-       8
-       (clojure.core/*
-        (.sizeof xcljb.gen.xproto-types/CARD32)
-        pixels-len)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->AllocColorPlanesReply
-    pixels-len
-    red-mask
-    green-mask
-    blue-mask
-    pixels))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 91]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [colors-len
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    _
-    (xcljb.common/read-pad ch 22)
-    colors
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      colors-len
-      (clojure.core/fn [] (xcljb.gen.xproto-internal/read-Rgb ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       22
-       (clojure.core/reduce
-        (clojure.core/fn
-         [x__928__auto__ y__929__auto__]
-         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
-        0
-        colors)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->QueryColorsReply colors-len colors))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 92]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [exact-red
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    exact-green
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    exact-blue
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    visual-red
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    visual-green
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    visual-blue
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->LookupColorReply
-    exact-red
-    exact-green
-    exact-blue
-    visual-red
-    visual-green
-    visual-blue))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 97]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [width
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    height
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->QueryBestSizeReply width height))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 98]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [present
-    (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-    major-opcode
-    (.read-type xcljb.gen.xproto-types/CARD8 ch)
-    first-event
-    (.read-type xcljb.gen.xproto-types/CARD8 ch)
-    first-error
-    (.read-type xcljb.gen.xproto-types/CARD8 ch)]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       1
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       (.sizeof xcljb.gen.xproto-types/CARD8)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->QueryExtensionReply
-    present
-    major-opcode
-    first-event
-    first-error))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 99]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [names-len val__1137__auto__]
-  (clojure.core/let
-   [_
-    (xcljb.common/read-pad ch 24)
-    names
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      names-len
-      (clojure.core/fn [] (xcljb.gen.xproto-internal/read-Str ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       24
-       (clojure.core/reduce
-        (clojure.core/fn
-         [x__928__auto__ y__929__auto__]
-         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
-        0
-        names)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->ListExtensionsReply names-len names))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 101]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [keysyms-per-keycode val__1137__auto__]
-  (clojure.core/let
-   [_
-    (xcljb.common/read-pad ch 24)
-    keysyms
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      length
-      (clojure.core/fn
-       []
-       (.read-type xcljb.gen.xproto-types/KEYSYM ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       (.sizeof xcljb.gen.xproto-types/BYTE)
-       24
-       (clojure.core/*
-        (.sizeof xcljb.gen.xproto-types/KEYSYM)
-        length)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->GetKeyboardMappingReply
-    keysyms-per-keycode
-    keysyms))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 103]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [global-auto-repeat val__1137__auto__]
-  (clojure.core/let
-   [led-mask
-    (.read-type xcljb.gen.xproto-types/CARD32 ch)
-    key-click-percent
-    (.read-type xcljb.gen.xproto-types/CARD8 ch)
-    bell-percent
-    (.read-type xcljb.gen.xproto-types/CARD8 ch)
-    bell-pitch
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    bell-duration
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    _
-    (xcljb.common/read-pad ch 2)
-    auto-repeats
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      32
-      (clojure.core/fn
-       []
-       (.read-type xcljb.gen.xproto-types/CARD8 ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       (.sizeof xcljb.gen.xproto-types/BYTE)
-       (.sizeof xcljb.gen.xproto-types/CARD32)
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       2
-       (clojure.core/* (.sizeof xcljb.gen.xproto-types/CARD8) 32)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->GetKeyboardControlReply
-    global-auto-repeat
-    led-mask
-    key-click-percent
-    bell-percent
-    bell-pitch
-    bell-duration
-    auto-repeats))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 106]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [acceleration-numerator
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    acceleration-denominator
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    threshold
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    _
-    (xcljb.common/read-pad ch 18)]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       18))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->GetPointerControlReply
-    acceleration-numerator
-    acceleration-denominator
-    threshold))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 108]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [_ val__1137__auto__]
-  (clojure.core/let
-   [timeout
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    interval
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    prefer-blanking
-    (.read-type xcljb.gen.xproto-types/BYTE ch)
-    allow-exposures
-    (.read-type xcljb.gen.xproto-types/BYTE ch)
-    _
-    (xcljb.common/read-pad ch 18)]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       1
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       (.sizeof xcljb.gen.xproto-types/BYTE)
-       (.sizeof xcljb.gen.xproto-types/BYTE)
-       18))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->GetScreenSaverReply
-    timeout
-    interval
-    prefer-blanking
-    allow-exposures))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 110]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [mode val__1137__auto__]
-  (clojure.core/let
-   [hosts-len
-    (.read-type xcljb.gen.xproto-types/CARD16 ch)
-    _
-    (xcljb.common/read-pad ch 22)
-    hosts
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      hosts-len
-      (clojure.core/fn [] (xcljb.gen.xproto-internal/read-Host ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       (.sizeof xcljb.gen.xproto-types/BYTE)
-       (.sizeof xcljb.gen.xproto-types/CARD16)
-       22
-       (clojure.core/reduce
-        (clojure.core/fn
-         [x__928__auto__ y__929__auto__]
-         (clojure.core/+ x__928__auto__ (.sizeof y__929__auto__)))
-        0
-        hosts)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->ListHostsReply mode hosts-len hosts))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 116]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [status val__1137__auto__]
-  (clojure.core/let
-   []
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+ (.sizeof xcljb.gen.xproto-types/BYTE)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->SetPointerMappingReply status))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 117]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [map-len val__1137__auto__]
-  (clojure.core/let
-   [_
-    (xcljb.common/read-pad ch 24)
-    map
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      map-len
-      (clojure.core/fn
-       []
-       (.read-type xcljb.gen.xproto-types/CARD8 ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       24
-       (clojure.core/*
-        (.sizeof xcljb.gen.xproto-types/CARD8)
-        map-len)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->GetPointerMappingReply map-len map))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 118]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [status val__1137__auto__]
-  (clojure.core/let
-   []
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+ (.sizeof xcljb.gen.xproto-types/BYTE)))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->SetModifierMappingReply status))))
-
-(clojure.core/defmethod
- xcljb.common/read-reply
- [nil 119]
- [_ _ ch length val__1137__auto__]
- (clojure.core/let
-  [keycodes-per-modifier val__1137__auto__]
-  (clojure.core/let
-   [_
-    (xcljb.common/read-pad ch 24)
-    keycodes
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      (clojure.core/* keycodes-per-modifier 8)
-      (clojure.core/fn
-       []
-       (.read-type xcljb.gen.xproto-types/KEYCODE ch))))]
-   (clojure.core/let
-    [size__1135__auto__
-     (clojure.core/+
-      7
-      (clojure.core/+
-       (.sizeof xcljb.gen.xproto-types/CARD8)
-       24
-       (clojure.core/*
-        (.sizeof xcljb.gen.xproto-types/KEYCODE)
-        (clojure.core/* keycodes-per-modifier 8))))
-     pads__1136__auto__
-     (clojure.core/max
-      (clojure.core/- 32 size__1135__auto__)
-      (xcljb.common/padding size__1135__auto__))]
-    (xcljb.common/read-pad ch pads__1136__auto__))
-   (xcljb.gen.xproto-types/->GetModifierMappingReply
-    keycodes-per-modifier
-    keycodes))))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 2]
- [_ _ ch]
- (clojure.core/let
-  [detail
-   (.read-type xcljb.gen.xproto-types/KEYCODE ch)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   time
-   (.read-type xcljb.gen.xproto-types/TIMESTAMP ch)
-   root
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   event
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   child
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   root-x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   root-y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   event-x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   event-y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   state
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   same-screen
-   (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      (.sizeof xcljb.gen.xproto-types/KEYCODE)
-      (.sizeof xcljb.gen.xproto-types/TIMESTAMP)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      1
-      1))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->KeyPressEvent
-    detail
-    time
-    root
-    event
-    child
-    root-x
-    root-y
-    event-x
-    event-y
-    state
-    same-screen)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 3]
- [_ _ ch]
- (clojure.core/let
-  [detail
-   (.read-type xcljb.gen.xproto-types/KEYCODE ch)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   time
-   (.read-type xcljb.gen.xproto-types/TIMESTAMP ch)
-   root
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   event
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   child
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   root-x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   root-y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   event-x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   event-y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   state
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   same-screen
-   (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      (.sizeof xcljb.gen.xproto-types/KEYCODE)
-      (.sizeof xcljb.gen.xproto-types/TIMESTAMP)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      1
-      1))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->KeyReleaseEvent
-    detail
-    time
-    root
-    event
-    child
-    root-x
-    root-y
-    event-x
-    event-y
-    state
-    same-screen)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 4]
- [_ _ ch]
- (clojure.core/let
-  [detail
-   (.read-type xcljb.gen.xproto-types/BUTTON ch)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   time
-   (.read-type xcljb.gen.xproto-types/TIMESTAMP ch)
-   root
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   event
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   child
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   root-x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   root-y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   event-x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   event-y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   state
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   same-screen
-   (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      (.sizeof xcljb.gen.xproto-types/BUTTON)
-      (.sizeof xcljb.gen.xproto-types/TIMESTAMP)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      1
-      1))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->ButtonPressEvent
-    detail
-    time
-    root
-    event
-    child
-    root-x
-    root-y
-    event-x
-    event-y
-    state
-    same-screen)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 5]
- [_ _ ch]
- (clojure.core/let
-  [detail
-   (.read-type xcljb.gen.xproto-types/BUTTON ch)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   time
-   (.read-type xcljb.gen.xproto-types/TIMESTAMP ch)
-   root
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   event
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   child
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   root-x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   root-y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   event-x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   event-y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   state
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   same-screen
-   (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      (.sizeof xcljb.gen.xproto-types/BUTTON)
-      (.sizeof xcljb.gen.xproto-types/TIMESTAMP)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      1
-      1))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->ButtonReleaseEvent
-    detail
-    time
-    root
-    event
-    child
-    root-x
-    root-y
-    event-x
-    event-y
-    state
-    same-screen)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 6]
- [_ _ ch]
- (clojure.core/let
-  [detail
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   time
-   (.read-type xcljb.gen.xproto-types/TIMESTAMP ch)
-   root
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   event
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   child
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   root-x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   root-y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   event-x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   event-y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   state
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   same-screen
-   (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      (.sizeof xcljb.gen.xproto-types/BYTE)
-      (.sizeof xcljb.gen.xproto-types/TIMESTAMP)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      1
-      1))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->MotionNotifyEvent
-    detail
-    time
-    root
-    event
-    child
-    root-x
-    root-y
-    event-x
-    event-y
-    state
-    same-screen)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 7]
- [_ _ ch]
- (clojure.core/let
-  [detail
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   time
-   (.read-type xcljb.gen.xproto-types/TIMESTAMP ch)
-   root
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   event
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   child
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   root-x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   root-y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   event-x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   event-y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   state
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   mode
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   same-screen-focus
-   (.read-type xcljb.gen.xproto-types/BYTE ch)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      (.sizeof xcljb.gen.xproto-types/BYTE)
-      (.sizeof xcljb.gen.xproto-types/TIMESTAMP)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/BYTE)
-      (.sizeof xcljb.gen.xproto-types/BYTE)))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->EnterNotifyEvent
-    detail
-    time
-    root
-    event
-    child
-    root-x
-    root-y
-    event-x
-    event-y
-    state
-    mode
-    same-screen-focus)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 8]
- [_ _ ch]
- (clojure.core/let
-  [detail
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   time
-   (.read-type xcljb.gen.xproto-types/TIMESTAMP ch)
-   root
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   event
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   child
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   root-x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   root-y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   event-x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   event-y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   state
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   mode
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   same-screen-focus
-   (.read-type xcljb.gen.xproto-types/BYTE ch)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      (.sizeof xcljb.gen.xproto-types/BYTE)
-      (.sizeof xcljb.gen.xproto-types/TIMESTAMP)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/BYTE)
-      (.sizeof xcljb.gen.xproto-types/BYTE)))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->LeaveNotifyEvent
-    detail
-    time
-    root
-    event
-    child
-    root-x
-    root-y
-    event-x
-    event-y
-    state
-    mode
-    same-screen-focus)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 9]
- [_ _ ch]
- (clojure.core/let
-  [detail
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   event
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   mode
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   _
-   (xcljb.common/read-pad ch 3)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      (.sizeof xcljb.gen.xproto-types/BYTE)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/BYTE)
-      3))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event (xcljb.gen.xproto-types/->FocusInEvent detail event mode)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 10]
- [_ _ ch]
- (clojure.core/let
-  [detail
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   event
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   mode
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   _
-   (xcljb.common/read-pad ch 3)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      (.sizeof xcljb.gen.xproto-types/BYTE)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/BYTE)
-      3))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event (xcljb.gen.xproto-types/->FocusOutEvent detail event mode)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 11]
- [_ _ ch]
- (clojure.core/let
-  [keys
-   (clojure.core/doall
-    (clojure.core/repeatedly
-     31
-     (clojure.core/fn
-      []
-      (.read-type xcljb.gen.xproto-types/CARD8 ch))))]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      (clojure.core/* (.sizeof xcljb.gen.xproto-types/CARD8) 31)))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num nil,
-   :event (xcljb.gen.xproto-types/->KeymapNotifyEvent keys)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 12]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   window
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   x
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   y
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   width
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   height
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   count
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   _
-   (xcljb.common/read-pad ch 2)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      2))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->ExposeEvent
-    window
-    x
-    y
-    width
-    height
-    count)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 13]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   drawable
-   (.read-type xcljb.gen.xproto-types/DRAWABLE ch)
-   x
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   y
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   width
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   height
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   count
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 3)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/DRAWABLE)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      3))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->GraphicsExposureEvent
-    drawable
-    x
-    y
-    width
-    height
-    minor-opcode
-    count
-    major-opcode)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 14]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   drawable
-   (.read-type xcljb.gen.xproto-types/DRAWABLE ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/DRAWABLE)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->NoExposureEvent
-    drawable
-    minor-opcode
-    major-opcode)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 15]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   window
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   state
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   _
-   (xcljb.common/read-pad ch 3)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/BYTE)
-      3))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->VisibilityNotifyEvent window state)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 16]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   parent
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   window
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   width
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   height
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   border-width
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   override-redirect
-   (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      1
-      1))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->CreateNotifyEvent
-    parent
-    window
-    x
-    y
-    width
-    height
-    border-width
-    override-redirect)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 17]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   event
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   window
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event (xcljb.gen.xproto-types/->DestroyNotifyEvent event window)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 18]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   event
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   window
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   from-configure
-   (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-   _
-   (xcljb.common/read-pad ch 3)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      1
-      3))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->UnmapNotifyEvent
-    event
-    window
-    from-configure)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 19]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   event
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   window
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   override-redirect
-   (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-   _
-   (xcljb.common/read-pad ch 3)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      1
-      3))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->MapNotifyEvent
-    event
-    window
-    override-redirect)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 20]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   parent
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   window
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event (xcljb.gen.xproto-types/->MapRequestEvent parent window)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 21]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   event
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   window
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   parent
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   override-redirect
-   (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-   _
-   (xcljb.common/read-pad ch 3)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      1
-      3))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->ReparentNotifyEvent
-    event
-    window
-    parent
-    x
-    y
-    override-redirect)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 22]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   event
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   window
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   above-sibling
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   width
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   height
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   border-width
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   override-redirect
-   (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      1
-      1))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->ConfigureNotifyEvent
-    event
-    window
-    above-sibling
-    x
-    y
-    width
-    height
-    border-width
-    override-redirect)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 23]
- [_ _ ch]
- (clojure.core/let
-  [stack-mode
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   parent
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   window
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   sibling
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   width
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   height
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   border-width
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   value-mask
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      (.sizeof xcljb.gen.xproto-types/BYTE)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->ConfigureRequestEvent
-    stack-mode
-    parent
-    window
-    sibling
-    x
-    y
-    width
-    height
-    border-width
-    value-mask)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 24]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   event
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   window
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   x
-   (.read-type xcljb.gen.xproto-types/INT16 ch)
-   y
-   (.read-type xcljb.gen.xproto-types/INT16 ch)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/INT16)
-      (.sizeof xcljb.gen.xproto-types/INT16)))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->GravityNotifyEvent event window x y)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 25]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   window
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   width
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   height
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD16)))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->ResizeRequestEvent window width height)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 26]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   event
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   window
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   _
-   (xcljb.common/read-pad ch 4)
-   place
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   _
-   (xcljb.common/read-pad ch 3)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      4
-      (.sizeof xcljb.gen.xproto-types/BYTE)
-      3))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->CirculateNotifyEvent event window place)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 27]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   event
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   window
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   _
-   (xcljb.common/read-pad ch 4)
-   place
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   _
-   (xcljb.common/read-pad ch 3)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      4
-      (.sizeof xcljb.gen.xproto-types/BYTE)
-      3))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->CirculateRequestEvent
-    event
-    window
-    place)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 28]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   window
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   atom
-   (.read-type xcljb.gen.xproto-types/ATOM ch)
-   time
-   (.read-type xcljb.gen.xproto-types/TIMESTAMP ch)
-   state
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   _
-   (xcljb.common/read-pad ch 3)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/ATOM)
-      (.sizeof xcljb.gen.xproto-types/TIMESTAMP)
-      (.sizeof xcljb.gen.xproto-types/BYTE)
-      3))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->PropertyNotifyEvent
-    window
-    atom
-    time
-    state)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 29]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   time
-   (.read-type xcljb.gen.xproto-types/TIMESTAMP ch)
-   owner
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   selection
-   (.read-type xcljb.gen.xproto-types/ATOM ch)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/TIMESTAMP)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/ATOM)))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->SelectionClearEvent
-    time
-    owner
-    selection)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 30]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   time
-   (.read-type xcljb.gen.xproto-types/TIMESTAMP ch)
-   owner
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   requestor
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   selection
-   (.read-type xcljb.gen.xproto-types/ATOM ch)
-   target
-   (.read-type xcljb.gen.xproto-types/ATOM ch)
-   property
-   (.read-type xcljb.gen.xproto-types/ATOM ch)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/TIMESTAMP)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/ATOM)
-      (.sizeof xcljb.gen.xproto-types/ATOM)
-      (.sizeof xcljb.gen.xproto-types/ATOM)))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->SelectionRequestEvent
-    time
-    owner
-    requestor
-    selection
-    target
-    property)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 31]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   time
-   (.read-type xcljb.gen.xproto-types/TIMESTAMP ch)
-   requestor
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   selection
-   (.read-type xcljb.gen.xproto-types/ATOM ch)
-   target
-   (.read-type xcljb.gen.xproto-types/ATOM ch)
-   property
-   (.read-type xcljb.gen.xproto-types/ATOM ch)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/TIMESTAMP)
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/ATOM)
-      (.sizeof xcljb.gen.xproto-types/ATOM)
-      (.sizeof xcljb.gen.xproto-types/ATOM)))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->SelectionNotifyEvent
-    time
-    requestor
-    selection
-    target
-    property)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 32]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   window
-   (.read-type xcljb.gen.xproto-types/WINDOW ch)
-   colormap
-   (.read-type xcljb.gen.xproto-types/COLORMAP ch)
-   new
-   (if (clojure.core/= (xcljb.common/read-bytes ch 1) 1) true false)
-   state
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   _
-   (xcljb.common/read-pad ch 2)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/WINDOW)
-      (.sizeof xcljb.gen.xproto-types/COLORMAP)
-      1
-      (.sizeof xcljb.gen.xproto-types/BYTE)
-      2))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->ColormapNotifyEvent
-    window
-    colormap
-    new
-    state)}))
-
-(clojure.core/defmethod
- xcljb.common/read-event
- [nil 34]
- [_ _ ch]
- (clojure.core/let
-  [_
-   (xcljb.common/read-pad ch 1)
-   seq-num
-   (xcljb.common/read-bytes ch 2)
-   request
-   (.read-type xcljb.gen.xproto-types/BYTE ch)
-   first-keycode
-   (.read-type xcljb.gen.xproto-types/KEYCODE ch)
-   count
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1169__auto__
-    (clojure.core/+
-     1
-     (clojure.core/+
-      2
-      1
-      (.sizeof xcljb.gen.xproto-types/BYTE)
-      (.sizeof xcljb.gen.xproto-types/KEYCODE)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1170__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1169__auto__))]
-   (xcljb.common/read-pad ch pads__1170__auto__))
-  {:seq-num seq-num,
-   :event
-   (xcljb.gen.xproto-types/->MappingNotifyEvent
-    request
-    first-keycode
-    count)}))
-
-(clojure.core/defmethod
- xcljb.common/read-error
- [nil 1]
- [_ _ ch]
- (clojure.core/let
-  [bad-value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1206__auto__
-    (clojure.core/+
-     4
-     (clojure.core/+
-      (.sizeof xcljb.gen.xproto-types/CARD32)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1207__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
-   (xcljb.common/read-pad ch pads__1207__auto__))
-  (xcljb.gen.xproto-types/->RequestError
-   bad-value
-   minor-opcode
-   major-opcode)))
-
-(clojure.core/defmethod
- xcljb.common/read-error
- [nil 2]
- [_ _ ch]
- (clojure.core/let
-  [bad-value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1206__auto__
-    (clojure.core/+
-     4
-     (clojure.core/+
-      (.sizeof xcljb.gen.xproto-types/CARD32)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1207__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
-   (xcljb.common/read-pad ch pads__1207__auto__))
-  (xcljb.gen.xproto-types/->ValueError
-   bad-value
-   minor-opcode
-   major-opcode)))
-
-(clojure.core/defmethod
- xcljb.common/read-error
- [nil 3]
- [_ _ ch]
- (clojure.core/let
-  [bad-value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1206__auto__
-    (clojure.core/+
-     4
-     (clojure.core/+
-      (.sizeof xcljb.gen.xproto-types/CARD32)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1207__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
-   (xcljb.common/read-pad ch pads__1207__auto__))
-  (xcljb.gen.xproto-types/->WindowError
-   bad-value
-   minor-opcode
-   major-opcode)))
-
-(clojure.core/defmethod
- xcljb.common/read-error
- [nil 4]
- [_ _ ch]
- (clojure.core/let
-  [bad-value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1206__auto__
-    (clojure.core/+
-     4
-     (clojure.core/+
-      (.sizeof xcljb.gen.xproto-types/CARD32)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1207__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
-   (xcljb.common/read-pad ch pads__1207__auto__))
-  (xcljb.gen.xproto-types/->PixmapError
-   bad-value
-   minor-opcode
-   major-opcode)))
-
-(clojure.core/defmethod
- xcljb.common/read-error
- [nil 5]
- [_ _ ch]
- (clojure.core/let
-  [bad-value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1206__auto__
-    (clojure.core/+
-     4
-     (clojure.core/+
-      (.sizeof xcljb.gen.xproto-types/CARD32)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1207__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
-   (xcljb.common/read-pad ch pads__1207__auto__))
-  (xcljb.gen.xproto-types/->AtomError
-   bad-value
-   minor-opcode
-   major-opcode)))
-
-(clojure.core/defmethod
- xcljb.common/read-error
- [nil 6]
- [_ _ ch]
- (clojure.core/let
-  [bad-value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1206__auto__
-    (clojure.core/+
-     4
-     (clojure.core/+
-      (.sizeof xcljb.gen.xproto-types/CARD32)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1207__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
-   (xcljb.common/read-pad ch pads__1207__auto__))
-  (xcljb.gen.xproto-types/->CursorError
-   bad-value
-   minor-opcode
-   major-opcode)))
-
-(clojure.core/defmethod
- xcljb.common/read-error
- [nil 7]
- [_ _ ch]
- (clojure.core/let
-  [bad-value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1206__auto__
-    (clojure.core/+
-     4
-     (clojure.core/+
-      (.sizeof xcljb.gen.xproto-types/CARD32)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1207__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
-   (xcljb.common/read-pad ch pads__1207__auto__))
-  (xcljb.gen.xproto-types/->FontError
-   bad-value
-   minor-opcode
-   major-opcode)))
-
-(clojure.core/defmethod
- xcljb.common/read-error
- [nil 8]
- [_ _ ch]
- (clojure.core/let
-  [bad-value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1206__auto__
-    (clojure.core/+
-     4
-     (clojure.core/+
-      (.sizeof xcljb.gen.xproto-types/CARD32)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1207__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
-   (xcljb.common/read-pad ch pads__1207__auto__))
-  (xcljb.gen.xproto-types/->MatchError
-   bad-value
-   minor-opcode
-   major-opcode)))
-
-(clojure.core/defmethod
- xcljb.common/read-error
- [nil 9]
- [_ _ ch]
- (clojure.core/let
-  [bad-value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1206__auto__
-    (clojure.core/+
-     4
-     (clojure.core/+
-      (.sizeof xcljb.gen.xproto-types/CARD32)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1207__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
-   (xcljb.common/read-pad ch pads__1207__auto__))
-  (xcljb.gen.xproto-types/->DrawableError
-   bad-value
-   minor-opcode
-   major-opcode)))
-
-(clojure.core/defmethod
- xcljb.common/read-error
- [nil 10]
- [_ _ ch]
- (clojure.core/let
-  [bad-value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1206__auto__
-    (clojure.core/+
-     4
-     (clojure.core/+
-      (.sizeof xcljb.gen.xproto-types/CARD32)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1207__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
-   (xcljb.common/read-pad ch pads__1207__auto__))
-  (xcljb.gen.xproto-types/->AccessError
-   bad-value
-   minor-opcode
-   major-opcode)))
-
-(clojure.core/defmethod
- xcljb.common/read-error
- [nil 11]
- [_ _ ch]
- (clojure.core/let
-  [bad-value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1206__auto__
-    (clojure.core/+
-     4
-     (clojure.core/+
-      (.sizeof xcljb.gen.xproto-types/CARD32)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1207__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
-   (xcljb.common/read-pad ch pads__1207__auto__))
-  (xcljb.gen.xproto-types/->AllocError
-   bad-value
-   minor-opcode
-   major-opcode)))
-
-(clojure.core/defmethod
- xcljb.common/read-error
- [nil 12]
- [_ _ ch]
- (clojure.core/let
-  [bad-value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1206__auto__
-    (clojure.core/+
-     4
-     (clojure.core/+
-      (.sizeof xcljb.gen.xproto-types/CARD32)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1207__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
-   (xcljb.common/read-pad ch pads__1207__auto__))
-  (xcljb.gen.xproto-types/->ColormapError
-   bad-value
-   minor-opcode
-   major-opcode)))
-
-(clojure.core/defmethod
- xcljb.common/read-error
- [nil 13]
- [_ _ ch]
- (clojure.core/let
-  [bad-value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1206__auto__
-    (clojure.core/+
-     4
-     (clojure.core/+
-      (.sizeof xcljb.gen.xproto-types/CARD32)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1207__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
-   (xcljb.common/read-pad ch pads__1207__auto__))
-  (xcljb.gen.xproto-types/->GContextError
-   bad-value
-   minor-opcode
-   major-opcode)))
-
-(clojure.core/defmethod
- xcljb.common/read-error
- [nil 14]
- [_ _ ch]
- (clojure.core/let
-  [bad-value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1206__auto__
-    (clojure.core/+
-     4
-     (clojure.core/+
-      (.sizeof xcljb.gen.xproto-types/CARD32)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1207__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
-   (xcljb.common/read-pad ch pads__1207__auto__))
-  (xcljb.gen.xproto-types/->IDChoiceError
-   bad-value
-   minor-opcode
-   major-opcode)))
-
-(clojure.core/defmethod
- xcljb.common/read-error
- [nil 15]
- [_ _ ch]
- (clojure.core/let
-  [bad-value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1206__auto__
-    (clojure.core/+
-     4
-     (clojure.core/+
-      (.sizeof xcljb.gen.xproto-types/CARD32)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1207__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
-   (xcljb.common/read-pad ch pads__1207__auto__))
-  (xcljb.gen.xproto-types/->NameError
-   bad-value
-   minor-opcode
-   major-opcode)))
-
-(clojure.core/defmethod
- xcljb.common/read-error
- [nil 16]
- [_ _ ch]
- (clojure.core/let
-  [bad-value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1206__auto__
-    (clojure.core/+
-     4
-     (clojure.core/+
-      (.sizeof xcljb.gen.xproto-types/CARD32)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1207__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
-   (xcljb.common/read-pad ch pads__1207__auto__))
-  (xcljb.gen.xproto-types/->LengthError
-   bad-value
-   minor-opcode
-   major-opcode)))
-
-(clojure.core/defmethod
- xcljb.common/read-error
- [nil 17]
- [_ _ ch]
- (clojure.core/let
-  [bad-value
-   (.read-type xcljb.gen.xproto-types/CARD32 ch)
-   minor-opcode
-   (.read-type xcljb.gen.xproto-types/CARD16 ch)
-   major-opcode
-   (.read-type xcljb.gen.xproto-types/CARD8 ch)
-   _
-   (xcljb.common/read-pad ch 1)]
-  (clojure.core/let
-   [size__1206__auto__
-    (clojure.core/+
-     4
-     (clojure.core/+
-      (.sizeof xcljb.gen.xproto-types/CARD32)
-      (.sizeof xcljb.gen.xproto-types/CARD16)
-      (.sizeof xcljb.gen.xproto-types/CARD8)
-      1))
-    pads__1207__auto__
-    (clojure.core/max 0 (clojure.core/- 32 size__1206__auto__))]
-   (xcljb.common/read-pad ch pads__1207__auto__))
-  (xcljb.gen.xproto-types/->ImplementationError
-   bad-value
-   minor-opcode
-   major-opcode)))
-
-;;; Manually written.
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/QueryFontReply
+  reply-buf
+  nil))
 
 (clojure.core/defmethod
  xcljb.common/read-reply
  [nil 48]
- [_ _ ch__1349__auto__ _ draw-direction__1350__auto__]
- (clojure.core/let
-  [font-ascent__1351__auto__
-   (.read-type xcljb.gen.xproto-types/INT16 ch__1349__auto__)
-   font-descent__1352__auto__
-   (.read-type xcljb.gen.xproto-types/INT16 ch__1349__auto__)
-   overall-ascent__1353__auto__
-   (.read-type xcljb.gen.xproto-types/INT16 ch__1349__auto__)
-   overall-descent__1354__auto__
-   (.read-type xcljb.gen.xproto-types/INT16 ch__1349__auto__)
-   overall-width__1355__auto__
-   (.read-type xcljb.gen.xproto-types/INT32 ch__1349__auto__)
-   overall-left__1356__auto__
-   (.read-type xcljb.gen.xproto-types/INT32 ch__1349__auto__)
-   overall-right__1357__auto__
-   (.read-type xcljb.gen.xproto-types/INT32 ch__1349__auto__)
-   _
-   (xcljb.common/read-pad ch__1349__auto__ 4)]
-  (xcljb.gen.xproto-types/->QueryTextExtentsReply
-   draw-direction__1350__auto__
-   font-ascent__1351__auto__
-   font-descent__1352__auto__
-   overall-ascent__1353__auto__
-   overall-descent__1354__auto__
-   overall-width__1355__auto__
-   overall-left__1356__auto__
-   overall-right__1357__auto__)))
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/QueryTextExtentsReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 49]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ListFontsReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 50]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ListFontsWithInfoReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 52]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GetFontPathReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 73]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GetImageReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 83]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ListInstalledColormapsReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 84]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/AllocColorReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 85]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/AllocNamedColorReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 86]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/AllocColorCellsReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 87]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/AllocColorPlanesReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 91]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/QueryColorsReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 92]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/LookupColorReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 97]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/QueryBestSizeReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 98]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/QueryExtensionReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 99]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ListExtensionsReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 101]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GetKeyboardMappingReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 103]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GetKeyboardControlReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 106]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GetPointerControlReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 108]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GetScreenSaverReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 110]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ListHostsReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 116]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/SetPointerMappingReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 117]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GetPointerMappingReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 118]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/SetModifierMappingReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-reply
+ [nil 119]
+ [_ _ reply-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GetModifierMappingReply
+  reply-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 2]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/KeyPressEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 3]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/KeyReleaseEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 4]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ButtonPressEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 5]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ButtonReleaseEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 6]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/MotionNotifyEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 7]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/EnterNotifyEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 8]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/LeaveNotifyEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 9]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/FocusInEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 10]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/FocusOutEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 11]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/KeymapNotifyEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 12]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ExposeEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 13]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GraphicsExposureEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 14]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/NoExposureEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 15]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/VisibilityNotifyEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 16]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/CreateNotifyEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 17]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/DestroyNotifyEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 18]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/UnmapNotifyEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 19]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/MapNotifyEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 20]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/MapRequestEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 21]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ReparentNotifyEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 22]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ConfigureNotifyEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 23]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ConfigureRequestEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 24]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GravityNotifyEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 25]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ResizeRequestEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 26]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/CirculateNotifyEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 27]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/CirculateRequestEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 28]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/PropertyNotifyEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 29]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/SelectionClearEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 30]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/SelectionRequestEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 31]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/SelectionNotifyEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 32]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ColormapNotifyEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-event
+ [nil 34]
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/MappingNotifyEvent
+  event-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-error
+ [nil 1]
+ [_ _ error-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/RequestError
+  error-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-error
+ [nil 2]
+ [_ _ error-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ValueError
+  error-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-error
+ [nil 3]
+ [_ _ error-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/WindowError
+  error-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-error
+ [nil 4]
+ [_ _ error-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/PixmapError
+  error-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-error
+ [nil 5]
+ [_ _ error-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/AtomError
+  error-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-error
+ [nil 6]
+ [_ _ error-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/CursorError
+  error-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-error
+ [nil 7]
+ [_ _ error-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/FontError
+  error-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-error
+ [nil 8]
+ [_ _ error-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/MatchError
+  error-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-error
+ [nil 9]
+ [_ _ error-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/DrawableError
+  error-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-error
+ [nil 10]
+ [_ _ error-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/AccessError
+  error-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-error
+ [nil 11]
+ [_ _ error-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/AllocError
+  error-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-error
+ [nil 12]
+ [_ _ error-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ColormapError
+  error-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-error
+ [nil 13]
+ [_ _ error-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/GContextError
+  error-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-error
+ [nil 14]
+ [_ _ error-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/IDChoiceError
+  error-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-error
+ [nil 15]
+ [_ _ error-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/NameError
+  error-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-error
+ [nil 16]
+ [_ _ error-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/LengthError
+  error-buf
+  nil))
+
+(clojure.core/defmethod
+ xcljb.common/read-error
+ [nil 17]
+ [_ _ error-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ImplementationError
+  error-buf
+  nil))
+
+;;; Manually written.
 
 (clojure.core/defmethod
  xcljb.common/read-event
  [nil 33]
- [_ _ ch__1366__auto__]
- (clojure.core/let
-  [format__1367__auto__
-   (.read-type xcljb.gen.xproto-types/CARD8 ch__1366__auto__)
-   seq-num__1368__auto__
-   (xcljb.common/read-bytes ch__1366__auto__ 2)
-   window__1369__auto__
-   (.read-type xcljb.gen.xproto-types/WINDOW ch__1366__auto__)
-   type__1370__auto__
-   (.read-type xcljb.gen.xproto-types/ATOM ch__1366__auto__)
-   data__1371__auto__
-   (clojure.core/case
-    format__1367__auto__
-    8
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      20
-      (fn*
-       []
-       (.read-type xcljb.gen.xproto-types/CARD8 ch__1366__auto__))))
-    16
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      10
-      (fn*
-       []
-       (.read-type xcljb.gen.xproto-types/CARD16 ch__1366__auto__))))
-    32
-    (clojure.core/doall
-     (clojure.core/repeatedly
-      5
-      (fn*
-       []
-       (.read-type xcljb.gen.xproto-types/CARD32 ch__1366__auto__)))))]
-  {:seq-num seq-num__1368__auto__,
-   :event
-   (xcljb.gen.xproto-types/->ClientMessageEvent
-    format__1367__auto__
-    window__1369__auto__
-    type__1370__auto__
-    data__1371__auto__)}))
+ [_ _ event-buf]
+ (xcljb.gen-common/deserialize
+  xcljb.gen.xproto-types/ClientMessageEvent
+  event-buf
+  nil))

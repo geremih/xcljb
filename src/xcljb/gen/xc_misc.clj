@@ -15,27 +15,38 @@
 
 (clojure.core/defn
  get-version
- [conn1621 client-major-version client-minor-version]
+ [conn client-major-version client-minor-version]
  (clojure.core/let
-  [request-struct1622
-   (xcljb.gen.xc-misc-types/->GetVersionRequest
-    client-major-version
-    client-minor-version)]
-  (xcljb.conn-ext/send conn1621 request-struct1622 "XC-MISC")))
+  [request
+   (clojure.core/zipmap
+    [:client-major-version :client-minor-version]
+    [client-major-version client-minor-version])]
+  (xcljb.conn-ext/send
+   conn
+   "XC-MISC"
+   xcljb.gen.xc-misc-types/GetVersionRequest
+   request)))
 
 (clojure.core/defn
  get-xid-range
- [conn1623]
+ [conn]
  (clojure.core/let
-  [request-struct1624 (xcljb.gen.xc-misc-types/->GetXIDRangeRequest)]
-  (xcljb.conn-ext/send conn1623 request-struct1624 "XC-MISC")))
+  [request (clojure.core/zipmap [] [])]
+  (xcljb.conn-ext/send
+   conn
+   "XC-MISC"
+   xcljb.gen.xc-misc-types/GetXIDRangeRequest
+   request)))
 
 (clojure.core/defn
  get-xid-list
- [conn1625 count]
+ [conn count]
  (clojure.core/let
-  [request-struct1626
-   (xcljb.gen.xc-misc-types/->GetXIDListRequest count)]
-  (xcljb.conn-ext/send conn1625 request-struct1626 "XC-MISC")))
+  [request (clojure.core/zipmap [:count] [count])]
+  (xcljb.conn-ext/send
+   conn
+   "XC-MISC"
+   xcljb.gen.xc-misc-types/GetXIDListRequest
+   request)))
 
 ;;; Manually written.

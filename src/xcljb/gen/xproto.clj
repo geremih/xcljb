@@ -415,7 +415,7 @@
 
 (clojure.core/defn
  create-window
- [conn1621
+ [conn
   depth
   wid
   parent
@@ -428,238 +428,288 @@
   visual
   value]
  (clojure.core/let
-  [request-struct1622
-   (xcljb.gen.xproto-types/->CreateWindowRequest
-    depth
-    wid
-    parent
-    x
-    y
-    width
-    height
-    border-width
-    class
-    visual
-    value)]
-  (xcljb.conn-internal/send conn1621 request-struct1622)))
+  [request
+   (clojure.core/zipmap
+    [:depth
+     :wid
+     :parent
+     :x
+     :y
+     :width
+     :height
+     :border-width
+     :class
+     :visual
+     :value]
+    [depth
+     wid
+     parent
+     x
+     y
+     width
+     height
+     border-width
+     class
+     visual
+     value])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/CreateWindowRequest
+   request)))
 
 (clojure.core/defn
  change-window-attributes
- [conn1623 window value]
+ [conn window value]
  (clojure.core/let
-  [request-struct1624
-   (xcljb.gen.xproto-types/->ChangeWindowAttributesRequest
-    window
-    value)]
-  (xcljb.conn-internal/send conn1623 request-struct1624)))
+  [request (clojure.core/zipmap [:window :value] [window value])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ChangeWindowAttributesRequest
+   request)))
 
 (clojure.core/defn
  get-window-attributes
- [conn1625 window]
+ [conn window]
  (clojure.core/let
-  [request-struct1626
-   (xcljb.gen.xproto-types/->GetWindowAttributesRequest window)]
-  (xcljb.conn-internal/send conn1625 request-struct1626)))
+  [request (clojure.core/zipmap [:window] [window])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GetWindowAttributesRequest
+   request)))
 
 (clojure.core/defn
  destroy-window
- [conn1627 window]
+ [conn window]
  (clojure.core/let
-  [request-struct1628
-   (xcljb.gen.xproto-types/->DestroyWindowRequest window)]
-  (xcljb.conn-internal/send conn1627 request-struct1628)))
+  [request (clojure.core/zipmap [:window] [window])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/DestroyWindowRequest
+   request)))
 
 (clojure.core/defn
  destroy-subwindows
- [conn1629 window]
+ [conn window]
  (clojure.core/let
-  [request-struct1630
-   (xcljb.gen.xproto-types/->DestroySubwindowsRequest window)]
-  (xcljb.conn-internal/send conn1629 request-struct1630)))
+  [request (clojure.core/zipmap [:window] [window])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/DestroySubwindowsRequest
+   request)))
 
 (clojure.core/defn
  change-save-set
- [conn1631 mode window]
+ [conn mode window]
  (clojure.core/let
-  [request-struct1632
-   (xcljb.gen.xproto-types/->ChangeSaveSetRequest mode window)]
-  (xcljb.conn-internal/send conn1631 request-struct1632)))
+  [request (clojure.core/zipmap [:mode :window] [mode window])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ChangeSaveSetRequest
+   request)))
 
 (clojure.core/defn
  reparent-window
- [conn1633 window parent x y]
+ [conn window parent x y]
  (clojure.core/let
-  [request-struct1634
-   (xcljb.gen.xproto-types/->ReparentWindowRequest window parent x y)]
-  (xcljb.conn-internal/send conn1633 request-struct1634)))
+  [request
+   (clojure.core/zipmap [:window :parent :x :y] [window parent x y])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ReparentWindowRequest
+   request)))
 
 (clojure.core/defn
  map-window
- [conn1635 window]
+ [conn window]
  (clojure.core/let
-  [request-struct1636
-   (xcljb.gen.xproto-types/->MapWindowRequest window)]
-  (xcljb.conn-internal/send conn1635 request-struct1636)))
+  [request (clojure.core/zipmap [:window] [window])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/MapWindowRequest
+   request)))
 
 (clojure.core/defn
  map-subwindows
- [conn1637 window]
+ [conn window]
  (clojure.core/let
-  [request-struct1638
-   (xcljb.gen.xproto-types/->MapSubwindowsRequest window)]
-  (xcljb.conn-internal/send conn1637 request-struct1638)))
+  [request (clojure.core/zipmap [:window] [window])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/MapSubwindowsRequest
+   request)))
 
 (clojure.core/defn
  unmap-window
- [conn1639 window]
+ [conn window]
  (clojure.core/let
-  [request-struct1640
-   (xcljb.gen.xproto-types/->UnmapWindowRequest window)]
-  (xcljb.conn-internal/send conn1639 request-struct1640)))
+  [request (clojure.core/zipmap [:window] [window])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/UnmapWindowRequest
+   request)))
 
 (clojure.core/defn
  unmap-subwindows
- [conn1641 window]
+ [conn window]
  (clojure.core/let
-  [request-struct1642
-   (xcljb.gen.xproto-types/->UnmapSubwindowsRequest window)]
-  (xcljb.conn-internal/send conn1641 request-struct1642)))
+  [request (clojure.core/zipmap [:window] [window])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/UnmapSubwindowsRequest
+   request)))
 
 (clojure.core/defn
  circulate-window
- [conn1643 direction window]
+ [conn direction window]
  (clojure.core/let
-  [request-struct1644
-   (xcljb.gen.xproto-types/->CirculateWindowRequest direction window)]
-  (xcljb.conn-internal/send conn1643 request-struct1644)))
+  [request
+   (clojure.core/zipmap [:direction :window] [direction window])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/CirculateWindowRequest
+   request)))
 
 (clojure.core/defn
  get-geometry
- [conn1645 drawable]
+ [conn drawable]
  (clojure.core/let
-  [request-struct1646
-   (xcljb.gen.xproto-types/->GetGeometryRequest drawable)]
-  (xcljb.conn-internal/send conn1645 request-struct1646)))
+  [request (clojure.core/zipmap [:drawable] [drawable])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GetGeometryRequest
+   request)))
 
 (clojure.core/defn
  query-tree
- [conn1647 window]
+ [conn window]
  (clojure.core/let
-  [request-struct1648
-   (xcljb.gen.xproto-types/->QueryTreeRequest window)]
-  (xcljb.conn-internal/send conn1647 request-struct1648)))
+  [request (clojure.core/zipmap [:window] [window])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/QueryTreeRequest
+   request)))
 
 (clojure.core/defn
  intern-atom
- [conn1649 only-if-exists name-len name]
+ [conn only-if-exists name-len name]
  (clojure.core/let
-  [request-struct1650
-   (xcljb.gen.xproto-types/->InternAtomRequest
-    only-if-exists
-    name-len
-    name)]
-  (xcljb.conn-internal/send conn1649 request-struct1650)))
+  [request
+   (clojure.core/zipmap
+    [:only-if-exists :name-len :name]
+    [only-if-exists name-len name])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/InternAtomRequest
+   request)))
 
 (clojure.core/defn
  get-atom-name
- [conn1651 atom]
+ [conn atom]
  (clojure.core/let
-  [request-struct1652
-   (xcljb.gen.xproto-types/->GetAtomNameRequest atom)]
-  (xcljb.conn-internal/send conn1651 request-struct1652)))
+  [request (clojure.core/zipmap [:atom] [atom])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GetAtomNameRequest
+   request)))
 
 (clojure.core/defn
  change-property
- [conn1653 mode window property type format data-len data]
+ [conn mode window property type format data-len data]
  (clojure.core/let
-  [request-struct1654
-   (xcljb.gen.xproto-types/->ChangePropertyRequest
-    mode
-    window
-    property
-    type
-    format
-    data-len
-    data)]
-  (xcljb.conn-internal/send conn1653 request-struct1654)))
+  [request
+   (clojure.core/zipmap
+    [:mode :window :property :type :format :data-len :data]
+    [mode window property type format data-len data])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ChangePropertyRequest
+   request)))
 
 (clojure.core/defn
  delete-property
- [conn1655 window property]
+ [conn window property]
  (clojure.core/let
-  [request-struct1656
-   (xcljb.gen.xproto-types/->DeletePropertyRequest window property)]
-  (xcljb.conn-internal/send conn1655 request-struct1656)))
+  [request (clojure.core/zipmap [:window :property] [window property])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/DeletePropertyRequest
+   request)))
 
 (clojure.core/defn
  get-property
- [conn1657 delete window property type long-offset long-length]
+ [conn delete window property type long-offset long-length]
  (clojure.core/let
-  [request-struct1658
-   (xcljb.gen.xproto-types/->GetPropertyRequest
-    delete
-    window
-    property
-    type
-    long-offset
-    long-length)]
-  (xcljb.conn-internal/send conn1657 request-struct1658)))
+  [request
+   (clojure.core/zipmap
+    [:delete :window :property :type :long-offset :long-length]
+    [delete window property type long-offset long-length])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GetPropertyRequest
+   request)))
 
 (clojure.core/defn
  list-properties
- [conn1659 window]
+ [conn window]
  (clojure.core/let
-  [request-struct1660
-   (xcljb.gen.xproto-types/->ListPropertiesRequest window)]
-  (xcljb.conn-internal/send conn1659 request-struct1660)))
+  [request (clojure.core/zipmap [:window] [window])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ListPropertiesRequest
+   request)))
 
 (clojure.core/defn
  set-selection-owner
- [conn1661 owner selection time]
+ [conn owner selection time]
  (clojure.core/let
-  [request-struct1662
-   (xcljb.gen.xproto-types/->SetSelectionOwnerRequest
-    owner
-    selection
-    time)]
-  (xcljb.conn-internal/send conn1661 request-struct1662)))
+  [request
+   (clojure.core/zipmap
+    [:owner :selection :time]
+    [owner selection time])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/SetSelectionOwnerRequest
+   request)))
 
 (clojure.core/defn
  get-selection-owner
- [conn1663 selection]
+ [conn selection]
  (clojure.core/let
-  [request-struct1664
-   (xcljb.gen.xproto-types/->GetSelectionOwnerRequest selection)]
-  (xcljb.conn-internal/send conn1663 request-struct1664)))
+  [request (clojure.core/zipmap [:selection] [selection])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GetSelectionOwnerRequest
+   request)))
 
 (clojure.core/defn
  convert-selection
- [conn1665 requestor selection target property time]
+ [conn requestor selection target property time]
  (clojure.core/let
-  [request-struct1666
-   (xcljb.gen.xproto-types/->ConvertSelectionRequest
-    requestor
-    selection
-    target
-    property
-    time)]
-  (xcljb.conn-internal/send conn1665 request-struct1666)))
+  [request
+   (clojure.core/zipmap
+    [:requestor :selection :target :property :time]
+    [requestor selection target property time])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ConvertSelectionRequest
+   request)))
 
 (clojure.core/defn
  send-event
- [conn1667 propagate destination event-mask event]
+ [conn propagate destination event-mask event]
  (clojure.core/let
-  [request-struct1668
-   (xcljb.gen.xproto-types/->SendEventRequest
-    propagate
-    destination
-    event-mask
-    event)]
-  (xcljb.conn-internal/send conn1667 request-struct1668)))
+  [request
+   (clojure.core/zipmap
+    [:propagate :destination :event-mask :event]
+    [propagate destination event-mask event])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/SendEventRequest
+   request)))
 
 (clojure.core/defn
  grab-pointer
- [conn1669
+ [conn
   owner-events
   grab-window
   event-mask
@@ -669,29 +719,42 @@
   cursor
   time]
  (clojure.core/let
-  [request-struct1670
-   (xcljb.gen.xproto-types/->GrabPointerRequest
-    owner-events
-    grab-window
-    event-mask
-    pointer-mode
-    keyboard-mode
-    confine-to
-    cursor
-    time)]
-  (xcljb.conn-internal/send conn1669 request-struct1670)))
+  [request
+   (clojure.core/zipmap
+    [:owner-events
+     :grab-window
+     :event-mask
+     :pointer-mode
+     :keyboard-mode
+     :confine-to
+     :cursor
+     :time]
+    [owner-events
+     grab-window
+     event-mask
+     pointer-mode
+     keyboard-mode
+     confine-to
+     cursor
+     time])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GrabPointerRequest
+   request)))
 
 (clojure.core/defn
  ungrab-pointer
- [conn1671 time]
+ [conn time]
  (clojure.core/let
-  [request-struct1672
-   (xcljb.gen.xproto-types/->UngrabPointerRequest time)]
-  (xcljb.conn-internal/send conn1671 request-struct1672)))
+  [request (clojure.core/zipmap [:time] [time])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/UngrabPointerRequest
+   request)))
 
 (clojure.core/defn
  grab-button
- [conn1673
+ [conn
   owner-events
   grab-window
   event-mask
@@ -702,65 +765,83 @@
   button
   modifiers]
  (clojure.core/let
-  [request-struct1674
-   (xcljb.gen.xproto-types/->GrabButtonRequest
-    owner-events
-    grab-window
-    event-mask
-    pointer-mode
-    keyboard-mode
-    confine-to
-    cursor
-    button
-    modifiers)]
-  (xcljb.conn-internal/send conn1673 request-struct1674)))
+  [request
+   (clojure.core/zipmap
+    [:owner-events
+     :grab-window
+     :event-mask
+     :pointer-mode
+     :keyboard-mode
+     :confine-to
+     :cursor
+     :button
+     :modifiers]
+    [owner-events
+     grab-window
+     event-mask
+     pointer-mode
+     keyboard-mode
+     confine-to
+     cursor
+     button
+     modifiers])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GrabButtonRequest
+   request)))
 
 (clojure.core/defn
  ungrab-button
- [conn1675 button grab-window modifiers]
+ [conn button grab-window modifiers]
  (clojure.core/let
-  [request-struct1676
-   (xcljb.gen.xproto-types/->UngrabButtonRequest
-    button
-    grab-window
-    modifiers)]
-  (xcljb.conn-internal/send conn1675 request-struct1676)))
+  [request
+   (clojure.core/zipmap
+    [:button :grab-window :modifiers]
+    [button grab-window modifiers])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/UngrabButtonRequest
+   request)))
 
 (clojure.core/defn
  change-active-pointer-grab
- [conn1677 cursor time event-mask]
+ [conn cursor time event-mask]
  (clojure.core/let
-  [request-struct1678
-   (xcljb.gen.xproto-types/->ChangeActivePointerGrabRequest
-    cursor
-    time
-    event-mask)]
-  (xcljb.conn-internal/send conn1677 request-struct1678)))
+  [request
+   (clojure.core/zipmap
+    [:cursor :time :event-mask]
+    [cursor time event-mask])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ChangeActivePointerGrabRequest
+   request)))
 
 (clojure.core/defn
  grab-keyboard
- [conn1679 owner-events grab-window time pointer-mode keyboard-mode]
+ [conn owner-events grab-window time pointer-mode keyboard-mode]
  (clojure.core/let
-  [request-struct1680
-   (xcljb.gen.xproto-types/->GrabKeyboardRequest
-    owner-events
-    grab-window
-    time
-    pointer-mode
-    keyboard-mode)]
-  (xcljb.conn-internal/send conn1679 request-struct1680)))
+  [request
+   (clojure.core/zipmap
+    [:owner-events :grab-window :time :pointer-mode :keyboard-mode]
+    [owner-events grab-window time pointer-mode keyboard-mode])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GrabKeyboardRequest
+   request)))
 
 (clojure.core/defn
  ungrab-keyboard
- [conn1681 time]
+ [conn time]
  (clojure.core/let
-  [request-struct1682
-   (xcljb.gen.xproto-types/->UngrabKeyboardRequest time)]
-  (xcljb.conn-internal/send conn1681 request-struct1682)))
+  [request (clojure.core/zipmap [:time] [time])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/UngrabKeyboardRequest
+   request)))
 
 (clojure.core/defn
  grab-key
- [conn1683
+ [conn
   owner-events
   grab-window
   modifiers
@@ -768,80 +849,105 @@
   pointer-mode
   keyboard-mode]
  (clojure.core/let
-  [request-struct1684
-   (xcljb.gen.xproto-types/->GrabKeyRequest
-    owner-events
-    grab-window
-    modifiers
-    key
-    pointer-mode
-    keyboard-mode)]
-  (xcljb.conn-internal/send conn1683 request-struct1684)))
+  [request
+   (clojure.core/zipmap
+    [:owner-events
+     :grab-window
+     :modifiers
+     :key
+     :pointer-mode
+     :keyboard-mode]
+    [owner-events
+     grab-window
+     modifiers
+     key
+     pointer-mode
+     keyboard-mode])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GrabKeyRequest
+   request)))
 
 (clojure.core/defn
  ungrab-key
- [conn1685 key grab-window modifiers]
+ [conn key grab-window modifiers]
  (clojure.core/let
-  [request-struct1686
-   (xcljb.gen.xproto-types/->UngrabKeyRequest
-    key
-    grab-window
-    modifiers)]
-  (xcljb.conn-internal/send conn1685 request-struct1686)))
+  [request
+   (clojure.core/zipmap
+    [:key :grab-window :modifiers]
+    [key grab-window modifiers])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/UngrabKeyRequest
+   request)))
 
 (clojure.core/defn
  allow-events
- [conn1687 mode time]
+ [conn mode time]
  (clojure.core/let
-  [request-struct1688
-   (xcljb.gen.xproto-types/->AllowEventsRequest mode time)]
-  (xcljb.conn-internal/send conn1687 request-struct1688)))
+  [request (clojure.core/zipmap [:mode :time] [mode time])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/AllowEventsRequest
+   request)))
 
 (clojure.core/defn
  grab-server
- [conn1689]
+ [conn]
  (clojure.core/let
-  [request-struct1690 (xcljb.gen.xproto-types/->GrabServerRequest)]
-  (xcljb.conn-internal/send conn1689 request-struct1690)))
+  [request (clojure.core/zipmap [] [])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GrabServerRequest
+   request)))
 
 (clojure.core/defn
  ungrab-server
- [conn1691]
+ [conn]
  (clojure.core/let
-  [request-struct1692 (xcljb.gen.xproto-types/->UngrabServerRequest)]
-  (xcljb.conn-internal/send conn1691 request-struct1692)))
+  [request (clojure.core/zipmap [] [])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/UngrabServerRequest
+   request)))
 
 (clojure.core/defn
  query-pointer
- [conn1693 window]
+ [conn window]
  (clojure.core/let
-  [request-struct1694
-   (xcljb.gen.xproto-types/->QueryPointerRequest window)]
-  (xcljb.conn-internal/send conn1693 request-struct1694)))
+  [request (clojure.core/zipmap [:window] [window])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/QueryPointerRequest
+   request)))
 
 (clojure.core/defn
  get-motion-events
- [conn1695 window start stop]
+ [conn window start stop]
  (clojure.core/let
-  [request-struct1696
-   (xcljb.gen.xproto-types/->GetMotionEventsRequest window start stop)]
-  (xcljb.conn-internal/send conn1695 request-struct1696)))
+  [request
+   (clojure.core/zipmap [:window :start :stop] [window start stop])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GetMotionEventsRequest
+   request)))
 
 (clojure.core/defn
  translate-coordinates
- [conn1697 src-window dst-window src-x src-y]
+ [conn src-window dst-window src-x src-y]
  (clojure.core/let
-  [request-struct1698
-   (xcljb.gen.xproto-types/->TranslateCoordinatesRequest
-    src-window
-    dst-window
-    src-x
-    src-y)]
-  (xcljb.conn-internal/send conn1697 request-struct1698)))
+  [request
+   (clojure.core/zipmap
+    [:src-window :dst-window :src-x :src-y]
+    [src-window dst-window src-x src-y])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/TranslateCoordinatesRequest
+   request)))
 
 (clojure.core/defn
  warp-pointer
- [conn1699
+ [conn
   src-window
   dst-window
   src-x
@@ -851,196 +957,248 @@
   dst-x
   dst-y]
  (clojure.core/let
-  [request-struct1700
-   (xcljb.gen.xproto-types/->WarpPointerRequest
-    src-window
-    dst-window
-    src-x
-    src-y
-    src-width
-    src-height
-    dst-x
-    dst-y)]
-  (xcljb.conn-internal/send conn1699 request-struct1700)))
+  [request
+   (clojure.core/zipmap
+    [:src-window
+     :dst-window
+     :src-x
+     :src-y
+     :src-width
+     :src-height
+     :dst-x
+     :dst-y]
+    [src-window
+     dst-window
+     src-x
+     src-y
+     src-width
+     src-height
+     dst-x
+     dst-y])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/WarpPointerRequest
+   request)))
 
 (clojure.core/defn
  set-input-focus
- [conn1701 revert-to focus time]
+ [conn revert-to focus time]
  (clojure.core/let
-  [request-struct1702
-   (xcljb.gen.xproto-types/->SetInputFocusRequest
-    revert-to
-    focus
-    time)]
-  (xcljb.conn-internal/send conn1701 request-struct1702)))
+  [request
+   (clojure.core/zipmap
+    [:revert-to :focus :time]
+    [revert-to focus time])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/SetInputFocusRequest
+   request)))
 
 (clojure.core/defn
  get-input-focus
- [conn1703]
+ [conn]
  (clojure.core/let
-  [request-struct1704 (xcljb.gen.xproto-types/->GetInputFocusRequest)]
-  (xcljb.conn-internal/send conn1703 request-struct1704)))
+  [request (clojure.core/zipmap [] [])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GetInputFocusRequest
+   request)))
 
 (clojure.core/defn
  query-keymap
- [conn1705]
+ [conn]
  (clojure.core/let
-  [request-struct1706 (xcljb.gen.xproto-types/->QueryKeymapRequest)]
-  (xcljb.conn-internal/send conn1705 request-struct1706)))
+  [request (clojure.core/zipmap [] [])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/QueryKeymapRequest
+   request)))
 
 (clojure.core/defn
  open-font
- [conn1707 fid name-len name]
+ [conn fid name-len name]
  (clojure.core/let
-  [request-struct1708
-   (xcljb.gen.xproto-types/->OpenFontRequest fid name-len name)]
-  (xcljb.conn-internal/send conn1707 request-struct1708)))
+  [request
+   (clojure.core/zipmap [:fid :name-len :name] [fid name-len name])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/OpenFontRequest
+   request)))
 
 (clojure.core/defn
  close-font
- [conn1709 font]
+ [conn font]
  (clojure.core/let
-  [request-struct1710 (xcljb.gen.xproto-types/->CloseFontRequest font)]
-  (xcljb.conn-internal/send conn1709 request-struct1710)))
+  [request (clojure.core/zipmap [:font] [font])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/CloseFontRequest
+   request)))
 
 (clojure.core/defn
  query-font
- [conn1711 font]
+ [conn font]
  (clojure.core/let
-  [request-struct1712 (xcljb.gen.xproto-types/->QueryFontRequest font)]
-  (xcljb.conn-internal/send conn1711 request-struct1712)))
+  [request (clojure.core/zipmap [:font] [font])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/QueryFontRequest
+   request)))
 
 (clojure.core/defn
  list-fonts
- [conn1713 max-names pattern-len pattern]
+ [conn max-names pattern-len pattern]
  (clojure.core/let
-  [request-struct1714
-   (xcljb.gen.xproto-types/->ListFontsRequest
-    max-names
-    pattern-len
-    pattern)]
-  (xcljb.conn-internal/send conn1713 request-struct1714)))
+  [request
+   (clojure.core/zipmap
+    [:max-names :pattern-len :pattern]
+    [max-names pattern-len pattern])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ListFontsRequest
+   request)))
 
 (clojure.core/defn
  list-fonts-with-info
- [conn1715 max-names pattern-len pattern]
+ [conn max-names pattern-len pattern]
  (clojure.core/let
-  [request-struct1716
-   (xcljb.gen.xproto-types/->ListFontsWithInfoRequest
-    max-names
-    pattern-len
-    pattern)]
-  (xcljb.conn-internal/send conn1715 request-struct1716)))
+  [request
+   (clojure.core/zipmap
+    [:max-names :pattern-len :pattern]
+    [max-names pattern-len pattern])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ListFontsWithInfoRequest
+   request)))
 
 (clojure.core/defn
  set-font-path
- [conn1717 font-qty font]
+ [conn font-qty font]
  (clojure.core/let
-  [request-struct1718
-   (xcljb.gen.xproto-types/->SetFontPathRequest font-qty font)]
-  (xcljb.conn-internal/send conn1717 request-struct1718)))
+  [request (clojure.core/zipmap [:font-qty :font] [font-qty font])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/SetFontPathRequest
+   request)))
 
 (clojure.core/defn
  get-font-path
- [conn1719]
+ [conn]
  (clojure.core/let
-  [request-struct1720 (xcljb.gen.xproto-types/->GetFontPathRequest)]
-  (xcljb.conn-internal/send conn1719 request-struct1720)))
+  [request (clojure.core/zipmap [] [])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GetFontPathRequest
+   request)))
 
 (clojure.core/defn
  create-pixmap
- [conn1721 depth pid drawable width height]
+ [conn depth pid drawable width height]
  (clojure.core/let
-  [request-struct1722
-   (xcljb.gen.xproto-types/->CreatePixmapRequest
-    depth
-    pid
-    drawable
-    width
-    height)]
-  (xcljb.conn-internal/send conn1721 request-struct1722)))
+  [request
+   (clojure.core/zipmap
+    [:depth :pid :drawable :width :height]
+    [depth pid drawable width height])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/CreatePixmapRequest
+   request)))
 
 (clojure.core/defn
  free-pixmap
- [conn1723 pixmap]
+ [conn pixmap]
  (clojure.core/let
-  [request-struct1724
-   (xcljb.gen.xproto-types/->FreePixmapRequest pixmap)]
-  (xcljb.conn-internal/send conn1723 request-struct1724)))
+  [request (clojure.core/zipmap [:pixmap] [pixmap])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/FreePixmapRequest
+   request)))
 
 (clojure.core/defn
  create-gc
- [conn1725 cid drawable value]
+ [conn cid drawable value]
  (clojure.core/let
-  [request-struct1726
-   (xcljb.gen.xproto-types/->CreateGCRequest cid drawable value)]
-  (xcljb.conn-internal/send conn1725 request-struct1726)))
+  [request
+   (clojure.core/zipmap [:cid :drawable :value] [cid drawable value])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/CreateGCRequest
+   request)))
 
 (clojure.core/defn
  change-gc
- [conn1727 gc value]
+ [conn gc value]
  (clojure.core/let
-  [request-struct1728
-   (xcljb.gen.xproto-types/->ChangeGCRequest gc value)]
-  (xcljb.conn-internal/send conn1727 request-struct1728)))
+  [request (clojure.core/zipmap [:gc :value] [gc value])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ChangeGCRequest
+   request)))
 
 (clojure.core/defn
  copy-gc
- [conn1729 src-gc dst-gc value-mask]
+ [conn src-gc dst-gc value-mask]
  (clojure.core/let
-  [request-struct1730
-   (xcljb.gen.xproto-types/->CopyGCRequest src-gc dst-gc value-mask)]
-  (xcljb.conn-internal/send conn1729 request-struct1730)))
+  [request
+   (clojure.core/zipmap
+    [:src-gc :dst-gc :value-mask]
+    [src-gc dst-gc value-mask])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/CopyGCRequest
+   request)))
 
 (clojure.core/defn
  set-dashes
- [conn1731 gc dash-offset dashes-len dashes]
+ [conn gc dash-offset dashes-len dashes]
  (clojure.core/let
-  [request-struct1732
-   (xcljb.gen.xproto-types/->SetDashesRequest
-    gc
-    dash-offset
-    dashes-len
-    dashes)]
-  (xcljb.conn-internal/send conn1731 request-struct1732)))
+  [request
+   (clojure.core/zipmap
+    [:gc :dash-offset :dashes-len :dashes]
+    [gc dash-offset dashes-len dashes])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/SetDashesRequest
+   request)))
 
 (clojure.core/defn
  set-clip-rectangles
- [conn1733 ordering gc clip-x-origin clip-y-origin rectangles]
+ [conn ordering gc clip-x-origin clip-y-origin rectangles]
  (clojure.core/let
-  [request-struct1734
-   (xcljb.gen.xproto-types/->SetClipRectanglesRequest
-    ordering
-    gc
-    clip-x-origin
-    clip-y-origin
-    rectangles)]
-  (xcljb.conn-internal/send conn1733 request-struct1734)))
+  [request
+   (clojure.core/zipmap
+    [:ordering :gc :clip-x-origin :clip-y-origin :rectangles]
+    [ordering gc clip-x-origin clip-y-origin rectangles])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/SetClipRectanglesRequest
+   request)))
 
 (clojure.core/defn
  free-gc
- [conn1735 gc]
+ [conn gc]
  (clojure.core/let
-  [request-struct1736 (xcljb.gen.xproto-types/->FreeGCRequest gc)]
-  (xcljb.conn-internal/send conn1735 request-struct1736)))
+  [request (clojure.core/zipmap [:gc] [gc])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/FreeGCRequest
+   request)))
 
 (clojure.core/defn
  clear-area
- [conn1737 exposures window x y width height]
+ [conn exposures window x y width height]
  (clojure.core/let
-  [request-struct1738
-   (xcljb.gen.xproto-types/->ClearAreaRequest
-    exposures
-    window
-    x
-    y
-    width
-    height)]
-  (xcljb.conn-internal/send conn1737 request-struct1738)))
+  [request
+   (clojure.core/zipmap
+    [:exposures :window :x :y :width :height]
+    [exposures window x y width height])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ClearAreaRequest
+   request)))
 
 (clojure.core/defn
  copy-area
- [conn1739
+ [conn
   src-drawable
   dst-drawable
   gc
@@ -1051,22 +1209,34 @@
   width
   height]
  (clojure.core/let
-  [request-struct1740
-   (xcljb.gen.xproto-types/->CopyAreaRequest
-    src-drawable
-    dst-drawable
-    gc
-    src-x
-    src-y
-    dst-x
-    dst-y
-    width
-    height)]
-  (xcljb.conn-internal/send conn1739 request-struct1740)))
+  [request
+   (clojure.core/zipmap
+    [:src-drawable
+     :dst-drawable
+     :gc
+     :src-x
+     :src-y
+     :dst-x
+     :dst-y
+     :width
+     :height]
+    [src-drawable
+     dst-drawable
+     gc
+     src-x
+     src-y
+     dst-x
+     dst-y
+     width
+     height])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/CopyAreaRequest
+   request)))
 
 (clojure.core/defn
  copy-plane
- [conn1741
+ [conn
   src-drawable
   dst-drawable
   gc
@@ -1078,335 +1248,393 @@
   height
   bit-plane]
  (clojure.core/let
-  [request-struct1742
-   (xcljb.gen.xproto-types/->CopyPlaneRequest
-    src-drawable
-    dst-drawable
-    gc
-    src-x
-    src-y
-    dst-x
-    dst-y
-    width
-    height
-    bit-plane)]
-  (xcljb.conn-internal/send conn1741 request-struct1742)))
+  [request
+   (clojure.core/zipmap
+    [:src-drawable
+     :dst-drawable
+     :gc
+     :src-x
+     :src-y
+     :dst-x
+     :dst-y
+     :width
+     :height
+     :bit-plane]
+    [src-drawable
+     dst-drawable
+     gc
+     src-x
+     src-y
+     dst-x
+     dst-y
+     width
+     height
+     bit-plane])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/CopyPlaneRequest
+   request)))
 
 (clojure.core/defn
  poly-point
- [conn1743 coordinate-mode drawable gc points]
+ [conn coordinate-mode drawable gc points]
  (clojure.core/let
-  [request-struct1744
-   (xcljb.gen.xproto-types/->PolyPointRequest
-    coordinate-mode
-    drawable
-    gc
-    points)]
-  (xcljb.conn-internal/send conn1743 request-struct1744)))
+  [request
+   (clojure.core/zipmap
+    [:coordinate-mode :drawable :gc :points]
+    [coordinate-mode drawable gc points])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/PolyPointRequest
+   request)))
 
 (clojure.core/defn
  poly-line
- [conn1745 coordinate-mode drawable gc points]
+ [conn coordinate-mode drawable gc points]
  (clojure.core/let
-  [request-struct1746
-   (xcljb.gen.xproto-types/->PolyLineRequest
-    coordinate-mode
-    drawable
-    gc
-    points)]
-  (xcljb.conn-internal/send conn1745 request-struct1746)))
+  [request
+   (clojure.core/zipmap
+    [:coordinate-mode :drawable :gc :points]
+    [coordinate-mode drawable gc points])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/PolyLineRequest
+   request)))
 
 (clojure.core/defn
  poly-segment
- [conn1747 drawable gc segments]
+ [conn drawable gc segments]
  (clojure.core/let
-  [request-struct1748
-   (xcljb.gen.xproto-types/->PolySegmentRequest drawable gc segments)]
-  (xcljb.conn-internal/send conn1747 request-struct1748)))
+  [request
+   (clojure.core/zipmap
+    [:drawable :gc :segments]
+    [drawable gc segments])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/PolySegmentRequest
+   request)))
 
 (clojure.core/defn
  poly-rectangle
- [conn1749 drawable gc rectangles]
+ [conn drawable gc rectangles]
  (clojure.core/let
-  [request-struct1750
-   (xcljb.gen.xproto-types/->PolyRectangleRequest
-    drawable
-    gc
-    rectangles)]
-  (xcljb.conn-internal/send conn1749 request-struct1750)))
+  [request
+   (clojure.core/zipmap
+    [:drawable :gc :rectangles]
+    [drawable gc rectangles])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/PolyRectangleRequest
+   request)))
 
 (clojure.core/defn
  poly-arc
- [conn1751 drawable gc arcs]
+ [conn drawable gc arcs]
  (clojure.core/let
-  [request-struct1752
-   (xcljb.gen.xproto-types/->PolyArcRequest drawable gc arcs)]
-  (xcljb.conn-internal/send conn1751 request-struct1752)))
+  [request
+   (clojure.core/zipmap [:drawable :gc :arcs] [drawable gc arcs])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/PolyArcRequest
+   request)))
 
 (clojure.core/defn
  fill-poly
- [conn1753 drawable gc shape coordinate-mode points]
+ [conn drawable gc shape coordinate-mode points]
  (clojure.core/let
-  [request-struct1754
-   (xcljb.gen.xproto-types/->FillPolyRequest
-    drawable
-    gc
-    shape
-    coordinate-mode
-    points)]
-  (xcljb.conn-internal/send conn1753 request-struct1754)))
+  [request
+   (clojure.core/zipmap
+    [:drawable :gc :shape :coordinate-mode :points]
+    [drawable gc shape coordinate-mode points])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/FillPolyRequest
+   request)))
 
 (clojure.core/defn
  poly-fill-rectangle
- [conn1755 drawable gc rectangles]
+ [conn drawable gc rectangles]
  (clojure.core/let
-  [request-struct1756
-   (xcljb.gen.xproto-types/->PolyFillRectangleRequest
-    drawable
-    gc
-    rectangles)]
-  (xcljb.conn-internal/send conn1755 request-struct1756)))
+  [request
+   (clojure.core/zipmap
+    [:drawable :gc :rectangles]
+    [drawable gc rectangles])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/PolyFillRectangleRequest
+   request)))
 
 (clojure.core/defn
  poly-fill-arc
- [conn1757 drawable gc arcs]
+ [conn drawable gc arcs]
  (clojure.core/let
-  [request-struct1758
-   (xcljb.gen.xproto-types/->PolyFillArcRequest drawable gc arcs)]
-  (xcljb.conn-internal/send conn1757 request-struct1758)))
+  [request
+   (clojure.core/zipmap [:drawable :gc :arcs] [drawable gc arcs])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/PolyFillArcRequest
+   request)))
 
 (clojure.core/defn
  put-image
- [conn1759
-  format
-  drawable
-  gc
-  width
-  height
-  dst-x
-  dst-y
-  left-pad
-  depth
-  data]
+ [conn format drawable gc width height dst-x dst-y left-pad depth data]
  (clojure.core/let
-  [request-struct1760
-   (xcljb.gen.xproto-types/->PutImageRequest
-    format
-    drawable
-    gc
-    width
-    height
-    dst-x
-    dst-y
-    left-pad
-    depth
-    data)]
-  (xcljb.conn-internal/send conn1759 request-struct1760)))
+  [request
+   (clojure.core/zipmap
+    [:format
+     :drawable
+     :gc
+     :width
+     :height
+     :dst-x
+     :dst-y
+     :left-pad
+     :depth
+     :data]
+    [format drawable gc width height dst-x dst-y left-pad depth data])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/PutImageRequest
+   request)))
 
 (clojure.core/defn
  get-image
- [conn1761 format drawable x y width height plane-mask]
+ [conn format drawable x y width height plane-mask]
  (clojure.core/let
-  [request-struct1762
-   (xcljb.gen.xproto-types/->GetImageRequest
-    format
-    drawable
-    x
-    y
-    width
-    height
-    plane-mask)]
-  (xcljb.conn-internal/send conn1761 request-struct1762)))
+  [request
+   (clojure.core/zipmap
+    [:format :drawable :x :y :width :height :plane-mask]
+    [format drawable x y width height plane-mask])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GetImageRequest
+   request)))
 
 (clojure.core/defn
  poly-text8
- [conn1763 drawable gc x y items]
+ [conn drawable gc x y items]
  (clojure.core/let
-  [request-struct1764
-   (xcljb.gen.xproto-types/->PolyText8Request drawable gc x y items)]
-  (xcljb.conn-internal/send conn1763 request-struct1764)))
+  [request
+   (clojure.core/zipmap
+    [:drawable :gc :x :y :items]
+    [drawable gc x y items])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/PolyText8Request
+   request)))
 
 (clojure.core/defn
  poly-text16
- [conn1765 drawable gc x y items]
+ [conn drawable gc x y items]
  (clojure.core/let
-  [request-struct1766
-   (xcljb.gen.xproto-types/->PolyText16Request drawable gc x y items)]
-  (xcljb.conn-internal/send conn1765 request-struct1766)))
+  [request
+   (clojure.core/zipmap
+    [:drawable :gc :x :y :items]
+    [drawable gc x y items])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/PolyText16Request
+   request)))
 
 (clojure.core/defn
  image-text8
- [conn1767 string-len drawable gc x y string]
+ [conn string-len drawable gc x y string]
  (clojure.core/let
-  [request-struct1768
-   (xcljb.gen.xproto-types/->ImageText8Request
-    string-len
-    drawable
-    gc
-    x
-    y
-    string)]
-  (xcljb.conn-internal/send conn1767 request-struct1768)))
+  [request
+   (clojure.core/zipmap
+    [:string-len :drawable :gc :x :y :string]
+    [string-len drawable gc x y string])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ImageText8Request
+   request)))
 
 (clojure.core/defn
  image-text16
- [conn1769 string-len drawable gc x y string]
+ [conn string-len drawable gc x y string]
  (clojure.core/let
-  [request-struct1770
-   (xcljb.gen.xproto-types/->ImageText16Request
-    string-len
-    drawable
-    gc
-    x
-    y
-    string)]
-  (xcljb.conn-internal/send conn1769 request-struct1770)))
+  [request
+   (clojure.core/zipmap
+    [:string-len :drawable :gc :x :y :string]
+    [string-len drawable gc x y string])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ImageText16Request
+   request)))
 
 (clojure.core/defn
  create-colormap
- [conn1771 alloc mid window visual]
+ [conn alloc mid window visual]
  (clojure.core/let
-  [request-struct1772
-   (xcljb.gen.xproto-types/->CreateColormapRequest
-    alloc
-    mid
-    window
-    visual)]
-  (xcljb.conn-internal/send conn1771 request-struct1772)))
+  [request
+   (clojure.core/zipmap
+    [:alloc :mid :window :visual]
+    [alloc mid window visual])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/CreateColormapRequest
+   request)))
 
 (clojure.core/defn
  free-colormap
- [conn1773 cmap]
+ [conn cmap]
  (clojure.core/let
-  [request-struct1774
-   (xcljb.gen.xproto-types/->FreeColormapRequest cmap)]
-  (xcljb.conn-internal/send conn1773 request-struct1774)))
+  [request (clojure.core/zipmap [:cmap] [cmap])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/FreeColormapRequest
+   request)))
 
 (clojure.core/defn
  copy-colormap-and-free
- [conn1775 mid src-cmap]
+ [conn mid src-cmap]
  (clojure.core/let
-  [request-struct1776
-   (xcljb.gen.xproto-types/->CopyColormapAndFreeRequest mid src-cmap)]
-  (xcljb.conn-internal/send conn1775 request-struct1776)))
+  [request (clojure.core/zipmap [:mid :src-cmap] [mid src-cmap])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/CopyColormapAndFreeRequest
+   request)))
 
 (clojure.core/defn
  install-colormap
- [conn1777 cmap]
+ [conn cmap]
  (clojure.core/let
-  [request-struct1778
-   (xcljb.gen.xproto-types/->InstallColormapRequest cmap)]
-  (xcljb.conn-internal/send conn1777 request-struct1778)))
+  [request (clojure.core/zipmap [:cmap] [cmap])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/InstallColormapRequest
+   request)))
 
 (clojure.core/defn
  uninstall-colormap
- [conn1779 cmap]
+ [conn cmap]
  (clojure.core/let
-  [request-struct1780
-   (xcljb.gen.xproto-types/->UninstallColormapRequest cmap)]
-  (xcljb.conn-internal/send conn1779 request-struct1780)))
+  [request (clojure.core/zipmap [:cmap] [cmap])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/UninstallColormapRequest
+   request)))
 
 (clojure.core/defn
  list-installed-colormaps
- [conn1781 window]
+ [conn window]
  (clojure.core/let
-  [request-struct1782
-   (xcljb.gen.xproto-types/->ListInstalledColormapsRequest window)]
-  (xcljb.conn-internal/send conn1781 request-struct1782)))
+  [request (clojure.core/zipmap [:window] [window])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ListInstalledColormapsRequest
+   request)))
 
 (clojure.core/defn
  alloc-color
- [conn1783 cmap red green blue]
+ [conn cmap red green blue]
  (clojure.core/let
-  [request-struct1784
-   (xcljb.gen.xproto-types/->AllocColorRequest cmap red green blue)]
-  (xcljb.conn-internal/send conn1783 request-struct1784)))
+  [request
+   (clojure.core/zipmap
+    [:cmap :red :green :blue]
+    [cmap red green blue])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/AllocColorRequest
+   request)))
 
 (clojure.core/defn
  alloc-named-color
- [conn1785 cmap name-len name]
+ [conn cmap name-len name]
  (clojure.core/let
-  [request-struct1786
-   (xcljb.gen.xproto-types/->AllocNamedColorRequest
-    cmap
-    name-len
-    name)]
-  (xcljb.conn-internal/send conn1785 request-struct1786)))
+  [request
+   (clojure.core/zipmap [:cmap :name-len :name] [cmap name-len name])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/AllocNamedColorRequest
+   request)))
 
 (clojure.core/defn
  alloc-color-cells
- [conn1787 contiguous cmap colors planes]
+ [conn contiguous cmap colors planes]
  (clojure.core/let
-  [request-struct1788
-   (xcljb.gen.xproto-types/->AllocColorCellsRequest
-    contiguous
-    cmap
-    colors
-    planes)]
-  (xcljb.conn-internal/send conn1787 request-struct1788)))
+  [request
+   (clojure.core/zipmap
+    [:contiguous :cmap :colors :planes]
+    [contiguous cmap colors planes])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/AllocColorCellsRequest
+   request)))
 
 (clojure.core/defn
  alloc-color-planes
- [conn1789 contiguous cmap colors reds greens blues]
+ [conn contiguous cmap colors reds greens blues]
  (clojure.core/let
-  [request-struct1790
-   (xcljb.gen.xproto-types/->AllocColorPlanesRequest
-    contiguous
-    cmap
-    colors
-    reds
-    greens
-    blues)]
-  (xcljb.conn-internal/send conn1789 request-struct1790)))
+  [request
+   (clojure.core/zipmap
+    [:contiguous :cmap :colors :reds :greens :blues]
+    [contiguous cmap colors reds greens blues])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/AllocColorPlanesRequest
+   request)))
 
 (clojure.core/defn
  free-colors
- [conn1791 cmap plane-mask pixels]
+ [conn cmap plane-mask pixels]
  (clojure.core/let
-  [request-struct1792
-   (xcljb.gen.xproto-types/->FreeColorsRequest cmap plane-mask pixels)]
-  (xcljb.conn-internal/send conn1791 request-struct1792)))
+  [request
+   (clojure.core/zipmap
+    [:cmap :plane-mask :pixels]
+    [cmap plane-mask pixels])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/FreeColorsRequest
+   request)))
 
 (clojure.core/defn
  store-colors
- [conn1793 cmap items]
+ [conn cmap items]
  (clojure.core/let
-  [request-struct1794
-   (xcljb.gen.xproto-types/->StoreColorsRequest cmap items)]
-  (xcljb.conn-internal/send conn1793 request-struct1794)))
+  [request (clojure.core/zipmap [:cmap :items] [cmap items])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/StoreColorsRequest
+   request)))
 
 (clojure.core/defn
  store-named-color
- [conn1795 flags cmap pixel name-len name]
+ [conn flags cmap pixel name-len name]
  (clojure.core/let
-  [request-struct1796
-   (xcljb.gen.xproto-types/->StoreNamedColorRequest
-    flags
-    cmap
-    pixel
-    name-len
-    name)]
-  (xcljb.conn-internal/send conn1795 request-struct1796)))
+  [request
+   (clojure.core/zipmap
+    [:flags :cmap :pixel :name-len :name]
+    [flags cmap pixel name-len name])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/StoreNamedColorRequest
+   request)))
 
 (clojure.core/defn
  query-colors
- [conn1797 cmap pixels]
+ [conn cmap pixels]
  (clojure.core/let
-  [request-struct1798
-   (xcljb.gen.xproto-types/->QueryColorsRequest cmap pixels)]
-  (xcljb.conn-internal/send conn1797 request-struct1798)))
+  [request (clojure.core/zipmap [:cmap :pixels] [cmap pixels])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/QueryColorsRequest
+   request)))
 
 (clojure.core/defn
  lookup-color
- [conn1799 cmap name-len name]
+ [conn cmap name-len name]
  (clojure.core/let
-  [request-struct1800
-   (xcljb.gen.xproto-types/->LookupColorRequest cmap name-len name)]
-  (xcljb.conn-internal/send conn1799 request-struct1800)))
+  [request
+   (clojure.core/zipmap [:cmap :name-len :name] [cmap name-len name])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/LookupColorRequest
+   request)))
 
 (clojure.core/defn
  create-cursor
- [conn1801
+ [conn
   cid
   source
   mask
@@ -1419,24 +1647,38 @@
   x
   y]
  (clojure.core/let
-  [request-struct1802
-   (xcljb.gen.xproto-types/->CreateCursorRequest
-    cid
-    source
-    mask
-    fore-red
-    fore-green
-    fore-blue
-    back-red
-    back-green
-    back-blue
-    x
-    y)]
-  (xcljb.conn-internal/send conn1801 request-struct1802)))
+  [request
+   (clojure.core/zipmap
+    [:cid
+     :source
+     :mask
+     :fore-red
+     :fore-green
+     :fore-blue
+     :back-red
+     :back-green
+     :back-blue
+     :x
+     :y]
+    [cid
+     source
+     mask
+     fore-red
+     fore-green
+     fore-blue
+     back-red
+     back-green
+     back-blue
+     x
+     y])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/CreateCursorRequest
+   request)))
 
 (clojure.core/defn
  create-glyph-cursor
- [conn1803
+ [conn
   cid
   source-font
   mask-font
@@ -1449,32 +1691,48 @@
   back-green
   back-blue]
  (clojure.core/let
-  [request-struct1804
-   (xcljb.gen.xproto-types/->CreateGlyphCursorRequest
-    cid
-    source-font
-    mask-font
-    source-char
-    mask-char
-    fore-red
-    fore-green
-    fore-blue
-    back-red
-    back-green
-    back-blue)]
-  (xcljb.conn-internal/send conn1803 request-struct1804)))
+  [request
+   (clojure.core/zipmap
+    [:cid
+     :source-font
+     :mask-font
+     :source-char
+     :mask-char
+     :fore-red
+     :fore-green
+     :fore-blue
+     :back-red
+     :back-green
+     :back-blue]
+    [cid
+     source-font
+     mask-font
+     source-char
+     mask-char
+     fore-red
+     fore-green
+     fore-blue
+     back-red
+     back-green
+     back-blue])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/CreateGlyphCursorRequest
+   request)))
 
 (clojure.core/defn
  free-cursor
- [conn1805 cursor]
+ [conn cursor]
  (clojure.core/let
-  [request-struct1806
-   (xcljb.gen.xproto-types/->FreeCursorRequest cursor)]
-  (xcljb.conn-internal/send conn1805 request-struct1806)))
+  [request (clojure.core/zipmap [:cursor] [cursor])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/FreeCursorRequest
+   request)))
 
 (clojure.core/defn
  recolor-cursor
- [conn1807
+ [conn
   cursor
   fore-red
   fore-green
@@ -1483,254 +1741,316 @@
   back-green
   back-blue]
  (clojure.core/let
-  [request-struct1808
-   (xcljb.gen.xproto-types/->RecolorCursorRequest
-    cursor
-    fore-red
-    fore-green
-    fore-blue
-    back-red
-    back-green
-    back-blue)]
-  (xcljb.conn-internal/send conn1807 request-struct1808)))
+  [request
+   (clojure.core/zipmap
+    [:cursor
+     :fore-red
+     :fore-green
+     :fore-blue
+     :back-red
+     :back-green
+     :back-blue]
+    [cursor
+     fore-red
+     fore-green
+     fore-blue
+     back-red
+     back-green
+     back-blue])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/RecolorCursorRequest
+   request)))
 
 (clojure.core/defn
  query-best-size
- [conn1809 class drawable width height]
+ [conn class drawable width height]
  (clojure.core/let
-  [request-struct1810
-   (xcljb.gen.xproto-types/->QueryBestSizeRequest
-    class
-    drawable
-    width
-    height)]
-  (xcljb.conn-internal/send conn1809 request-struct1810)))
+  [request
+   (clojure.core/zipmap
+    [:class :drawable :width :height]
+    [class drawable width height])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/QueryBestSizeRequest
+   request)))
 
 (clojure.core/defn
  query-extension
- [conn1811 name-len name]
+ [conn name-len name]
  (clojure.core/let
-  [request-struct1812
-   (xcljb.gen.xproto-types/->QueryExtensionRequest name-len name)]
-  (xcljb.conn-internal/send conn1811 request-struct1812)))
+  [request (clojure.core/zipmap [:name-len :name] [name-len name])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/QueryExtensionRequest
+   request)))
 
 (clojure.core/defn
  list-extensions
- [conn1813]
+ [conn]
  (clojure.core/let
-  [request-struct1814 (xcljb.gen.xproto-types/->ListExtensionsRequest)]
-  (xcljb.conn-internal/send conn1813 request-struct1814)))
+  [request (clojure.core/zipmap [] [])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ListExtensionsRequest
+   request)))
 
 (clojure.core/defn
  change-keyboard-mapping
- [conn1815 keycode-count first-keycode keysyms-per-keycode keysyms]
+ [conn keycode-count first-keycode keysyms-per-keycode keysyms]
  (clojure.core/let
-  [request-struct1816
-   (xcljb.gen.xproto-types/->ChangeKeyboardMappingRequest
-    keycode-count
-    first-keycode
-    keysyms-per-keycode
-    keysyms)]
-  (xcljb.conn-internal/send conn1815 request-struct1816)))
+  [request
+   (clojure.core/zipmap
+    [:keycode-count :first-keycode :keysyms-per-keycode :keysyms]
+    [keycode-count first-keycode keysyms-per-keycode keysyms])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ChangeKeyboardMappingRequest
+   request)))
 
 (clojure.core/defn
  get-keyboard-mapping
- [conn1817 first-keycode count]
+ [conn first-keycode count]
  (clojure.core/let
-  [request-struct1818
-   (xcljb.gen.xproto-types/->GetKeyboardMappingRequest
-    first-keycode
-    count)]
-  (xcljb.conn-internal/send conn1817 request-struct1818)))
+  [request
+   (clojure.core/zipmap [:first-keycode :count] [first-keycode count])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GetKeyboardMappingRequest
+   request)))
 
 (clojure.core/defn
  change-keyboard-control
- [conn1819 value]
+ [conn value]
  (clojure.core/let
-  [request-struct1820
-   (xcljb.gen.xproto-types/->ChangeKeyboardControlRequest value)]
-  (xcljb.conn-internal/send conn1819 request-struct1820)))
+  [request (clojure.core/zipmap [:value] [value])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ChangeKeyboardControlRequest
+   request)))
 
 (clojure.core/defn
  get-keyboard-control
- [conn1821]
+ [conn]
  (clojure.core/let
-  [request-struct1822
-   (xcljb.gen.xproto-types/->GetKeyboardControlRequest)]
-  (xcljb.conn-internal/send conn1821 request-struct1822)))
+  [request (clojure.core/zipmap [] [])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GetKeyboardControlRequest
+   request)))
 
 (clojure.core/defn
  bell
- [conn1823 percent]
+ [conn percent]
  (clojure.core/let
-  [request-struct1824 (xcljb.gen.xproto-types/->BellRequest percent)]
-  (xcljb.conn-internal/send conn1823 request-struct1824)))
+  [request (clojure.core/zipmap [:percent] [percent])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/BellRequest
+   request)))
 
 (clojure.core/defn
  change-pointer-control
- [conn1825
+ [conn
   acceleration-numerator
   acceleration-denominator
   threshold
   do-acceleration
   do-threshold]
  (clojure.core/let
-  [request-struct1826
-   (xcljb.gen.xproto-types/->ChangePointerControlRequest
-    acceleration-numerator
-    acceleration-denominator
-    threshold
-    do-acceleration
-    do-threshold)]
-  (xcljb.conn-internal/send conn1825 request-struct1826)))
+  [request
+   (clojure.core/zipmap
+    [:acceleration-numerator
+     :acceleration-denominator
+     :threshold
+     :do-acceleration
+     :do-threshold]
+    [acceleration-numerator
+     acceleration-denominator
+     threshold
+     do-acceleration
+     do-threshold])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ChangePointerControlRequest
+   request)))
 
 (clojure.core/defn
  get-pointer-control
- [conn1827]
+ [conn]
  (clojure.core/let
-  [request-struct1828
-   (xcljb.gen.xproto-types/->GetPointerControlRequest)]
-  (xcljb.conn-internal/send conn1827 request-struct1828)))
+  [request (clojure.core/zipmap [] [])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GetPointerControlRequest
+   request)))
 
 (clojure.core/defn
  set-screen-saver
- [conn1829 timeout interval prefer-blanking allow-exposures]
+ [conn timeout interval prefer-blanking allow-exposures]
  (clojure.core/let
-  [request-struct1830
-   (xcljb.gen.xproto-types/->SetScreenSaverRequest
-    timeout
-    interval
-    prefer-blanking
-    allow-exposures)]
-  (xcljb.conn-internal/send conn1829 request-struct1830)))
+  [request
+   (clojure.core/zipmap
+    [:timeout :interval :prefer-blanking :allow-exposures]
+    [timeout interval prefer-blanking allow-exposures])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/SetScreenSaverRequest
+   request)))
 
 (clojure.core/defn
  get-screen-saver
- [conn1831]
+ [conn]
  (clojure.core/let
-  [request-struct1832 (xcljb.gen.xproto-types/->GetScreenSaverRequest)]
-  (xcljb.conn-internal/send conn1831 request-struct1832)))
+  [request (clojure.core/zipmap [] [])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GetScreenSaverRequest
+   request)))
 
 (clojure.core/defn
  change-hosts
- [conn1833 mode family address-len address]
+ [conn mode family address-len address]
  (clojure.core/let
-  [request-struct1834
-   (xcljb.gen.xproto-types/->ChangeHostsRequest
-    mode
-    family
-    address-len
-    address)]
-  (xcljb.conn-internal/send conn1833 request-struct1834)))
+  [request
+   (clojure.core/zipmap
+    [:mode :family :address-len :address]
+    [mode family address-len address])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ChangeHostsRequest
+   request)))
 
 (clojure.core/defn
  list-hosts
- [conn1835]
+ [conn]
  (clojure.core/let
-  [request-struct1836 (xcljb.gen.xproto-types/->ListHostsRequest)]
-  (xcljb.conn-internal/send conn1835 request-struct1836)))
+  [request (clojure.core/zipmap [] [])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ListHostsRequest
+   request)))
 
 (clojure.core/defn
  set-access-control
- [conn1837 mode]
+ [conn mode]
  (clojure.core/let
-  [request-struct1838
-   (xcljb.gen.xproto-types/->SetAccessControlRequest mode)]
-  (xcljb.conn-internal/send conn1837 request-struct1838)))
+  [request (clojure.core/zipmap [:mode] [mode])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/SetAccessControlRequest
+   request)))
 
 (clojure.core/defn
  set-close-down-mode
- [conn1839 mode]
+ [conn mode]
  (clojure.core/let
-  [request-struct1840
-   (xcljb.gen.xproto-types/->SetCloseDownModeRequest mode)]
-  (xcljb.conn-internal/send conn1839 request-struct1840)))
+  [request (clojure.core/zipmap [:mode] [mode])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/SetCloseDownModeRequest
+   request)))
 
 (clojure.core/defn
  kill-client
- [conn1841 resource]
+ [conn resource]
  (clojure.core/let
-  [request-struct1842
-   (xcljb.gen.xproto-types/->KillClientRequest resource)]
-  (xcljb.conn-internal/send conn1841 request-struct1842)))
+  [request (clojure.core/zipmap [:resource] [resource])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/KillClientRequest
+   request)))
 
 (clojure.core/defn
  rotate-properties
- [conn1843 window atoms-len delta atoms]
+ [conn window atoms-len delta atoms]
  (clojure.core/let
-  [request-struct1844
-   (xcljb.gen.xproto-types/->RotatePropertiesRequest
-    window
-    atoms-len
-    delta
-    atoms)]
-  (xcljb.conn-internal/send conn1843 request-struct1844)))
+  [request
+   (clojure.core/zipmap
+    [:window :atoms-len :delta :atoms]
+    [window atoms-len delta atoms])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/RotatePropertiesRequest
+   request)))
 
 (clojure.core/defn
  force-screen-saver
- [conn1845 mode]
+ [conn mode]
  (clojure.core/let
-  [request-struct1846
-   (xcljb.gen.xproto-types/->ForceScreenSaverRequest mode)]
-  (xcljb.conn-internal/send conn1845 request-struct1846)))
+  [request (clojure.core/zipmap [:mode] [mode])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/ForceScreenSaverRequest
+   request)))
 
 (clojure.core/defn
  set-pointer-mapping
- [conn1847 map-len map]
+ [conn map-len map]
  (clojure.core/let
-  [request-struct1848
-   (xcljb.gen.xproto-types/->SetPointerMappingRequest map-len map)]
-  (xcljb.conn-internal/send conn1847 request-struct1848)))
+  [request (clojure.core/zipmap [:map-len :map] [map-len map])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/SetPointerMappingRequest
+   request)))
 
 (clojure.core/defn
  get-pointer-mapping
- [conn1849]
+ [conn]
  (clojure.core/let
-  [request-struct1850
-   (xcljb.gen.xproto-types/->GetPointerMappingRequest)]
-  (xcljb.conn-internal/send conn1849 request-struct1850)))
+  [request (clojure.core/zipmap [] [])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GetPointerMappingRequest
+   request)))
 
 (clojure.core/defn
  set-modifier-mapping
- [conn1851 keycodes-per-modifier keycodes]
+ [conn keycodes-per-modifier keycodes]
  (clojure.core/let
-  [request-struct1852
-   (xcljb.gen.xproto-types/->SetModifierMappingRequest
-    keycodes-per-modifier
-    keycodes)]
-  (xcljb.conn-internal/send conn1851 request-struct1852)))
+  [request
+   (clojure.core/zipmap
+    [:keycodes-per-modifier :keycodes]
+    [keycodes-per-modifier keycodes])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/SetModifierMappingRequest
+   request)))
 
 (clojure.core/defn
  get-modifier-mapping
- [conn1853]
+ [conn]
  (clojure.core/let
-  [request-struct1854
-   (xcljb.gen.xproto-types/->GetModifierMappingRequest)]
-  (xcljb.conn-internal/send conn1853 request-struct1854)))
+  [request (clojure.core/zipmap [] [])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/GetModifierMappingRequest
+   request)))
 
 (clojure.core/defn
  no-operation
- [conn1855]
+ [conn]
  (clojure.core/let
-  [request-struct1856 (xcljb.gen.xproto-types/->NoOperationRequest)]
-  (xcljb.conn-internal/send conn1855 request-struct1856)))
+  [request (clojure.core/zipmap [] [])]
+  (xcljb.conn-internal/send
+   conn
+   xcljb.gen.xproto-types/NoOperationRequest
+   request)))
 
 ;;; Manually written.
 
 (clojure.core/defn
  query-text-extents
- [conn__1325__auto__ font__1326__auto__ string__1327__auto__]
+ [conn font string]
  (xcljb.conn-internal/send
-  conn__1325__auto__
-  (xcljb.gen.xproto-types/->QueryTextExtentsRequest
-   font__1326__auto__
-   string__1327__auto__)))
+  conn
+  xcljb.gen.xproto-types/QueryTextExtentsRequest
+  {:string string, :font font}))
 
 (clojure.core/defn
  configure-window
- [conn__1304__auto__ window__1305__auto__ value__1306__auto__]
+ [conn window value]
  (xcljb.conn-internal/send
-  conn__1304__auto__
-  (xcljb.gen.xproto-types/->ConfigureWindowRequest
-   window__1305__auto__
-   value__1306__auto__)))
+  conn
+  xcljb.gen.xproto-types/ConfigureWindowRequest
+  {:value value, :window window}))
