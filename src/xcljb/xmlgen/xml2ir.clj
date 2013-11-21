@@ -269,7 +269,8 @@
                                   (map :number @EVENTS))
                           (get-in SKIP [(:header @CONTEXT) :event]))
            :errors (zipmap (map :name @ERRORS)
-                           (map :number @ERRORS))})))
+                           (map :number @ERRORS))
+           :ext-name (:extension-xname @CONTEXT)})))
 
 (defn xml->ir [elem]
   (read-typemap!)
