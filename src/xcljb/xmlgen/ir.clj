@@ -200,31 +200,6 @@
   (gen-read-type-name [this]
     (-> this (:name) (beautify :arg) (symbol))))
 
-(defrecord PrimitiveField [name type enum altenum mask]
-  Measurable
-  (gen-sizeof [this]
-    (let [s-type (-> this (:type) (parse-type))]
-      `(.sizeof ~s-type)))
-  (gen-read-sizeof [this]
-    (.gen-sizeof this))
-
-  CodeSerializable
-  (gen-to-frame [this]
-    (let [s-type (-> this (:type) (parse-type))]
-      `(.to-frame ~s-type)))
-  (gen-to-value [this]
-    (let [s-this (symbol "this")
-          k-name (-> this (:name) (beautify :arg) (keyword))]
-      `(~k-name ~s-this)))
-
-  ReadableType
-  (gen-read-type [this]
-    (let [s-ch (symbol "ch")
-          s-type (-> this (:type) (parse-type))]
-      `(.read-type ~s-type ~s-ch)))
-  (gen-read-type-name [this]
-    (-> this (:name) (beautify :arg) (symbol))))
-
 (defrecord Field [name type enum altenum mask]
   Measurable
   (gen-sizeof [this]
@@ -250,42 +225,6 @@
     (let [s-ch (symbol "ch")
           s-read-type (-> this (:type) (type->read-type))]
       `(~s-read-type ~s-ch)))
-  (gen-read-type-name [this]
-    (-> this (:name) (beautify :arg) (symbol))))
-
-(defrecord PrimitiveList [name type enum altenum mask expr]
-  Measurable
-  (gen-sizeof [this]
-    (let [s-this (symbol "this")
-          k-name (-> this (:name) (beautify :arg) (keyword))
-          s-type (-> this (:type) (parse-type))]
-      `(* (.sizeof ~s-type)
-          (count (~k-name ~s-this)))))
-  (gen-read-sizeof [this]
-    (assert (:expr this))
-    (let [s-type (-> this (:type) (parse-type))]
-      `(* (.sizeof ~s-type)
-          ~(.gen-eval (:expr this)))))
-
-  CodeSerializable
-  (gen-to-frame [this]
-    (let [s-this (symbol "this")
-          k-name (-> this (:name) (keyword))
-          s-type (-> this (:type) (parse-type))]
-      `(repeat (count (~k-name ~s-this))
-               (.to-frame ~s-type))))
-  (gen-to-value [this]
-    (let [s-this (symbol "this")
-          k-name (-> this (:name) (beautify :arg) (keyword))]
-      `(~k-name ~s-this)))
-
-  ReadableType
-  (gen-read-type [this]
-    (assert (:expr this))
-    (let [s-ch (symbol "ch")
-          s-type (-> this (:type) (parse-type))
-          len (-> this (:expr) (.gen-eval))]
-      `(doall (repeatedly ~len (fn [] (.read-type ~s-type ~s-ch))))))
   (gen-read-type-name [this]
     (-> this (:name) (beautify :arg) (symbol))))
 
@@ -381,9 +320,7 @@
 (defn- gen-args [content]
   (let [fs (filter #(instance-of? % [BoolField
                                      StringField
-                                     PrimitiveField
                                      Field
-                                     PrimitiveList
                                      List
                                      Valueparam])
                    content)]

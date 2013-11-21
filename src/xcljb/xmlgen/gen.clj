@@ -3,8 +3,7 @@
             [clojure.data.xml :as xml]
             [xcljb.xmlgen.ir :as ir]
             [xcljb.xmlgen.manual :as manual]
-            [xcljb.xmlgen.xml2ir :as xml2ir])
-  (:import [xcljb.xmlgen.ir Struct]))
+            [xcljb.xmlgen.xml2ir :as xml2ir]))
 
 (defn- gen-enum [enum]
   (let [s-name (-> enum (:name) (ir/beautify :enum) (symbol))
@@ -12,10 +11,6 @@
                   [(-> item (:name) (ir/beautify :enum-item) (keyword))
                    (:value item)])]
     `(def ~s-name ~(reduce conj {} content))))
-
-(defn- gen-primitive [[name type]]
-  `(def ~(symbol name)
-     (xcljb.common/->PrimitiveType ~type)))
 
 (defn- gen-xcb [xcb]
   `(def ~(symbol "-XCLJB") {:header ~(:header xcb)
@@ -35,8 +30,7 @@
   (let [root (xml/parse (java.io.BufferedReader. *in*))
         [xcb
          imports
-         prim-types
-         comp-types
+         types
          enums
          requests
          replies
@@ -85,14 +79,9 @@
                        `[~'xcljb.gen ~@(map #(symbol (str % "-types")) imports)])))
        wrtr)
 
-      (.write wrtr "\n")
-      (doseq [prim prim-types]
-        (pp/pprint (gen-primitive prim) wrtr))
-
-      (doseq [type comp-types]
+      (doseq [type types]
         (.write wrtr "\n")
-        (condp instance? type
-          Struct (pp/pprint (.gen-type type) wrtr)))
+        (pp/pprint (ir/gen-type type) wrtr))
 
       (doseq [request requests]
         (.write wrtr "\n")
@@ -131,11 +120,6 @@
           (:require [~@(map symbol ["xcljb" "common"])]
                     [~@(map symbol ["xcljb.gen" (str (:header xcb) "-types")])]))
        wrtr)
-
-      (doseq [type comp-types]
-        (.write wrtr "\n")
-        (condp instance? type
-          Struct (pp/pprint (.gen-read-fn type) wrtr)))
 
       (doseq [reply replies]
         (.write wrtr "\n")

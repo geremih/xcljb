@@ -16,28 +16,21 @@
 
 (def ^:private TYPEMAP (atom nil))
 
-(def ^:private PRIMITIVE-TYPES (atom nil))
-(def ^:private COMPOSITE-TYPES (atom []))
+(def ^:private TYPES (atom nil))
 (def ^:private ENUMS (atom {}))
 (def ^:private REQUESTS (atom []))
 (def ^:private REPLIES (atom []))
 (def ^:private EVENTS (atom []))
 (def ^:private ERRORS (atom []))
 
-(defn- primitive? [qualified-type]
-  (let [name (:name qualified-type)]
-    (or (@PRIMITIVE-TYPES name)
-        (some #((:primitives (@TYPEMAP %)) name) @IMPORTS))))
 
 (defn- parse-type [type]
   (let [[_ ns name] (re-matches #"^([^:]+):(.+)$" type)]
     (if ns
       (ir/->QualifiedType ns name)
-      (let [h (some #(if ((apply set/union (vals (@TYPEMAP %))) type) % nil)
-                    @IMPORTS)]
-        (if h
-          (ir/->QualifiedType h type)
-          (ir/->QualifiedType (:header @CONTEXT) type))))))
+      (if-let [h (some #(if (get-in @TYPEMAP [% :types type]) %) @IMPORTS)]
+        (ir/->QualifiedType h type)
+        (ir/->QualifiedType (:header @CONTEXT) type)))))
 
 (defn- parse-expression [elem]
   (case (:tag elem)
@@ -75,19 +68,16 @@
     (cond
      (= (:name t) "BOOL") (ir/->BoolField name 1)
      (= (:name t) "BOOL32") (ir/->BoolField name 4)
-     (primitive? t) (ir/->PrimitiveField name t enum altenum mask)
      :else (ir/->Field name t enum altenum mask))))
 
 (defn- parse-list [elem]
   (let [{:keys [name type enum altenum mask]} (:attrs elem)
         t (parse-type type)
         expr (if-let [e (-> elem (:content) (first))]
-               (parse-expression e)
-               nil)]
-    (cond
-     (or (= (:name t) "char") (= (:name t) "STRING8")) (ir/->StringField name expr)
-     (primitive? t) (ir/->PrimitiveList name t enum altenum mask expr)
-     :else (ir/->List name t enum altenum mask expr))))
+               (parse-expression e))]
+    (case (:name t)
+      ("char" "STRING8") (ir/->StringField name expr)
+      (ir/->List name t enum altenum mask expr))))
 
 (defn- parse-valueparam [elem]
   (assert (= (:tag elem) :valueparam))
@@ -123,17 +113,14 @@
 (defn- parse-xids [elem]
   (assert (#{:xidtype :xidunion} (:tag elem)))
   (let [name (-> elem (:attrs) (:name))]
-    (swap! PRIMITIVE-TYPES conj [name :uint32])))
+    (swap! TYPES conj (ir/->Primitive name :uint32))))
 
 (defn- parse-typedef [elem]
   (let [attrs (:attrs elem)
         oldname (:oldname attrs)
-        newname (:newname attrs)]
-    (if-let [prim-type (@PRIMITIVE-TYPES oldname)]
-      (swap! PRIMITIVE-TYPES conj [newname prim-type])
-      (let [comp-type (some #(= (:name %) oldname) @COMPOSITE-TYPES)]
-        (assert comp-type)
-        (swap! COMPOSITE-TYPES conj (assoc comp-type :name newname))))))
+        newname (:newname attrs)
+        t (parse-type oldname)]
+    (swap! TYPES conj (ir/->Typedef newname t))))
 
 (defn- parse-content [content]
   (for [c content
@@ -147,10 +134,8 @@
 (defn- parse-struct [elem]
   (assert (= (:tag elem) :struct))
   (let [name (-> elem (:attrs) (:name))
-        content (parse-content (:content elem))
-        struct (ir/->Struct @CONTEXT name content)]
-    (swap! COMPOSITE-TYPES conj struct)
-    struct))
+        content (parse-content (:content elem))]
+    (swap! TYPES conj (ir/->Struct name content))))
 
 (defn- parse-reply [name request-opcode elem]
   (let [content (parse-content (:content elem))
@@ -235,20 +220,20 @@
     (if (= header "xproto")
       (do
         (reset! IMPORTS #{})
-        (reset! PRIMITIVE-TYPES {"BYTE" :ubyte
-                                 "INT8" :byte
-                                 "INT16" :int16
-                                 "INT32" :int32
-                                 "CARD8" :ubyte
-                                 "CARD16" :uint16
-                                 "CARD32" :uint32
-                                 "char" :ubyte
-                                 "void" :ubyte
-                                 "float" :float32
-                                 "double" :float64}))
+        (reset! TYPES [(ir/->Primitive "BYTE" :ubyte)
+                       (ir/->Primitive "INT8" :byte)
+                       (ir/->Primitive "INT16" :int16)
+                       (ir/->Primitive "INT32" :int32)
+                       (ir/->Primitive "CARD8" :ubyte)
+                       (ir/->Primitive "CARD16" :uint16)
+                       (ir/->Primitive "CARD32" :uint32)
+                       (ir/->Primitive "char" :ubyte)
+                       (ir/->Primitive "void" :ubyte)
+                       (ir/->Primitive "float" :float32)
+                       (ir/->Primitive "double" :float64)]))
       (do
         (reset! IMPORTS #{"xproto"})
-        (reset! PRIMITIVE-TYPES {})))
+        (reset! TYPES [])))
     xcb))
 
 (defn- read-typemap! []
@@ -259,8 +244,7 @@
   (spit "src/xcljb/gen/typemap.clj"
         (assoc @TYPEMAP
           (:header @CONTEXT)
-          {:primitives (set (keys @PRIMITIVE-TYPES))
-           :composites (set (map :name @COMPOSITE-TYPES))})))
+          {:types (set (map :name @TYPES))})))
 
 (defn xml->ir [elem]
   (read-typemap!)
@@ -283,4 +267,4 @@
         :error (parse-error e)
         :errorcopy (parse-errorcopy e)))
     (write-typemap!)
-    [xcb @IMPORTS @PRIMITIVE-TYPES @COMPOSITE-TYPES @ENUMS @REQUESTS @REPLIES @EVENTS @ERRORS]))
+    [xcb @IMPORTS @TYPES @ENUMS @REQUESTS @REPLIES @EVENTS @ERRORS]))
