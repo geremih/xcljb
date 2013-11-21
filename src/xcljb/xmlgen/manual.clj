@@ -3,7 +3,8 @@
 (ns xcljb.xmlgen.manual)
 
 (def MANUAL {"xproto" {:request #{"ConfigureWindow" "QueryTextExtents"}
-                       :event #{"ClientMessage"}}})
+                       :event #{"ClientMessage"}}
+             "randr" {:event #{"Notify"}}})
 
 (defmulti gen-request-fn identity)
 (defmulti gen-event-fn identity)
@@ -110,5 +111,38 @@
                 8 20
                 16 10
                 32 5)))
+            ~'buf
+            ~'context)))])))
+
+;;; randr
+
+;;; Notify
+
+(defmethod gen-event-fn "Notify" [_]
+  `(defmethod xcljb.common/read-event ["RANDR" 1] [~'_ ~'_ ~'event-buf]
+     (xcljb.gen-common/deserialize xcljb.gen.randr-types/NotifyEvent
+                                   ~'event-buf
+                                   nil)))
+
+(defmethod gen-event-type "Notify" [_]
+  `(def ~'NotifyEvent
+     (xcljb.gen-common/->Event
+      "RANDR"
+      "Notify"
+      1
+      false
+      [(xcljb.gen-common/->Field "sub-code" xcljb.gen.xproto-types/CARD8)
+       (reify
+         xcljb.gen-common/Measurable
+         (~'sizeof [~'_ ~'_]
+           28)
+
+         xcljb.gen-common/Deserializable
+         (~'deserialize [~'_ ~'buf ~'context]
+           (xcljb.gen-common/deserialize
+            (case (:sub-code ~'context)
+              0 xcljb.gen.randr-types/CrtcChange
+              1 xcljb.gen.randr-types/OutputChange
+              2 xcljb.gen.randr-types/OutputProperty)
             ~'buf
             ~'context)))])))
