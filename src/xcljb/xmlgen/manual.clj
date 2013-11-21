@@ -16,103 +16,99 @@
 ;;; ConfigureWindow
 
 (defmethod gen-request-fn "ConfigureWindow" [_]
-  `(defn ~(symbol "configure-window") [conn# window# value#]
-     (xcljb.conn-internal/send conn#
-                               (xcljb.gen.xproto-types/->ConfigureWindowRequest
-                                window# value#))))
+  `(defn ~'configure-window [~'conn ~'window ~'value]
+     (xcljb.conn-internal/send ~'conn
+                               xcljb.gen.xproto-types/ConfigureWindowRequest
+                               {:window ~'window
+                                :value ~'value})))
 
 (defmethod gen-request-type "ConfigureWindow" [_]
-  (let [s-this (symbol "this")
-        s-_ (symbol "_")
-        [[s-window s-value]
-         [k-window k-value]] ((juxt #(map symbol %) #(map keyword %))
-                              ["window" "value"])]
-    `(defrecord ~(symbol "ConfigureWindowRequest") [~s-window ~s-value]
-       xcljb.common/Measurable
-       (~(symbol "sizeof") [~s-this]
-        (+ 3
-          1
-          (.sizeof xcljb.gen.xproto-types/WINDOW)
-          (.sizeof xcljb.gen.xproto-types/CARD16)
-          2
-          (* 4
-             (count (~k-value ~s-this)))))
+  `(def ~'ConfigureWindowRequest
+     (xcljb.gen-common/->Request
+      nil
+      12
+      [(xcljb.gen-common/->Pad 1)
+       (xcljb.gen-common/->Field "window" xcljb.gen.xproto-types/WINDOW)
+       (reify
+         xcljb.gen-common/Measurable
+         (~'sizeof [~'_ ~'vp]
+           (+ 4 (* (count ~'vp) 4)))
 
-       xcljb.common/Serializable
-       (~(symbol "to-frame") [~s-this]
-        [:ubyte
-         (.to-frame xcljb.gen.xproto-types/WINDOW)
-         :uint16
-         :uint16
-         (repeat (count (~k-value ~s-this))
-                 :uint32)])
-       (~(symbol "to-value") [~s-this]
-        (let [vp# (xcljb.common/valueparam->value (~k-value ~s-this))]
-          [0
-           (~k-window ~s-this)
-           (first vp#)
-           0
-           (second vp#)]))
-
-       xcljb.common/Request
-       (~(symbol "opcode") [~s-_]
-        12))))
+         xcljb.gen-common/Serializable
+         (~'->frame [~'_ ~'context]
+           (let [~'vp (:value ~'context)]
+             [:uint16
+              :ubyte :ubyte
+              (repeat (count ~'vp) :uint32)]))
+         (~'->value [~'_ ~'context]
+           (let [~'vp (:value ~'context)]
+             [(reduce bit-or 0 (keys ~'vp))
+              0 0
+              (->> ~'vp (sort-by key) (map second))])))])))
 
 ;;; QueryTextExtents
 
 (defmethod gen-request-fn "QueryTextExtents" [_]
-  `(defn ~(symbol "query-text-extents") [conn# font# string#]
-     (xcljb.conn-internal/send conn#
-                               (xcljb.gen.xproto-types/->QueryTextExtentsRequest
-                                font# string#))))
+  `(defn ~'query-text-extents [~'conn ~'font ~'string]
+     (xcljb.conn-internal/send ~'conn
+                               xcljb.gen.xproto-types/QueryTextExtentsRequest
+                               {:font ~'font
+                                :string ~'string})))
 
 (defmethod gen-request-type "QueryTextExtents" [_]
-  (let [s-this (symbol "this")
-        s-_ (symbol "_")
-        [[s-font s-string]
-         [k-font k-string]] ((juxt #(map symbol %) #(map keyword %))
-                             ["font" "string"])]
-    `(defrecord ~(symbol "QueryTextExtentsRequest") [~s-font ~s-string]
-       xcljb.common/Measurable
-       (~(symbol "sizeof") [~s-this]
-        (+ 3
-          1
-          (.sizeof xcljb.gen.xproto-types/FONTABLE)
-          (.sizeof (~k-string ~s-this))))
+  `(def ~'QueryTextExtentsRequest
+     (xcljb.gen-common/->Request
+      nil
+      48
+      [(reify
+         xcljb.gen-common/Measurable
+         (~'sizeof [~'_ ~'_]
+           1)
 
-       xcljb.common/Serializable
-       (~(symbol "to-frame") [~s-this]
-        [:ubyte
-         (.to-frame xcljb.gen.xproto-types/FONTABLE)
-         (map #(.to-frame %) (~k-string ~s-this))
-         (repeat (xcljb.common/padding (.sizeof ~s-this)) :byte)])
-       (~(symbol "to-value") [~s-this]
-        [(if (odd? (count (~k-string ~s-this))) 1 0)
-         (~k-font ~s-this)
-         (map #(.to-value %) (~k-string ~s-this))
-         (repeat (xcljb.common/padding (.sizeof ~s-this)) 0)])
-
-       xcljb.common/Request
-       (~(symbol "opcode") [~s-_]
-        48))))
+         xcljb.gen-common/Serializable
+         (~'->frame [~'_ ~'_]
+           :ubyte)
+         (~'->value [~'_ ~'context]
+           (if (odd? (count (:string ~'context))) 1 0)))
+       (xcljb.gen-common/->Field "font" xcljb.gen.xproto-types/FONTABLE)
+       (xcljb.gen-common/->List "string" xcljb.gen.xproto-types/CHAR2B nil)])))
 
 ;;; ClientMessage
 
 (defmethod gen-event-fn "ClientMessage" [_]
-  (let [s-_ (symbol "_")]
-    `(defmethod xcljb.common/read-event [nil 33] [~s-_ ~s-_ ch#]
-       (let [format# (.read-type xcljb.gen.xproto-types/CARD8 ch#)
-             seq-num# (xcljb.common/read-bytes ch# 2)
-             window# (.read-type xcljb.gen.xproto-types/WINDOW ch#)
-             type# (.read-type xcljb.gen.xproto-types/ATOM ch#)
-             data# (case format#
-                     8 (doall (repeatedly 20 #(.read-type xcljb.gen.xproto-types/CARD8 ch#)))
-                     16 (doall (repeatedly 10 #(.read-type xcljb.gen.xproto-types/CARD16 ch#)))
-                     32 (doall (repeatedly 5 #(.read-type xcljb.gen.xproto-types/CARD32 ch#))))]
-         {:seq-num seq-num#
-          :event (xcljb.gen.xproto-types/->ClientMessageEvent
-                  format# window# type# data#)}))))
+  `(defmethod xcljb.common/read-event [nil 33] [~'_ ~'_ ~'event-buf]
+     (xcljb.gen-common/deserialize xcljb.gen.xproto-types/ClientMessageEvent
+                                   ~'event-buf
+                                   nil)))
 
 (defmethod gen-event-type "ClientMessage" [_]
-  `(defrecord ~(symbol "ClientMessageEvent")
-       [~@(map symbol ["format" "window" "type" "data"])]))
+  `(def ~'ClientMessageEvent
+     (xcljb.gen-common/->Event
+      nil
+      "ClientMessage"
+      33
+      false
+      [(xcljb.gen-common/->Field "format" xcljb.gen.xproto-types/CARD8)
+       (xcljb.gen-common/->Field "window" xcljb.gen.xproto-types/WINDOW)
+       (xcljb.gen-common/->Field "ATOM" xcljb.gen.xproto-types/ATOM)
+       (reify
+         xcljb.gen-common/Measurable
+         (~'sizeof [~'_ ~'_]
+           160)
+
+         xcljb.gen-common/Deserializable
+         (~'deserialize [~'_ ~'buf ~'context]
+           (xcljb.gen-common/deserialize
+            (xcljb.gen-common/->List
+             "data"
+             (case (:format ~'context)
+               8 xcljb.gen.xproto-types/CARD8
+               16 xcljb.gen.xproto-types/CARD16
+               32 xcljb.gen.xproto-types/CARD32)
+             (xcljb.gen-common/->Value
+              (case (:format ~'context)
+                8 20
+                16 10
+                32 5)))
+            ~'buf
+            ~'context)))])))
