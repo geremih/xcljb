@@ -104,9 +104,6 @@
       (doseq [request (get-in manual/MANUAL [(:header xcb) :request])]
         (.write wrtr "\n")
         (pp/pprint (manual/gen-request-type request) wrtr))
-      (doseq [reply (get-in manual/MANUAL [(:header xcb) :reply])]
-        (.write wrtr "\n")
-        (pp/pprint (manual/gen-reply-type reply) wrtr))
       (doseq [event (get-in manual/MANUAL [(:header xcb) :event])]
         (.write wrtr "\n")
         (pp/pprint (manual/gen-event-type event) wrtr)))
@@ -135,9 +132,6 @@
 
       ;; Manually written read functions.
       (write-manual-comment wrtr)
-      (doseq [reply (get-in manual/MANUAL [(:header xcb) :reply])]
-        (.write wrtr "\n")
-        (pp/pprint (manual/gen-reply-fn reply) wrtr))
       (doseq [event (get-in manual/MANUAL [(:header xcb) :event])]
         (.write wrtr "\n")
         (pp/pprint (manual/gen-event-fn event) wrtr)))))
