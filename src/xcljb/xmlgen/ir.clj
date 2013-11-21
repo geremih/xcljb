@@ -41,6 +41,10 @@
     (symbol (str "xcljb.gen." (beautify ns :ns-name) "-internal")
             (-> name (beautify :type) (beautify :read-type)))))
 
+(defn- name->type [context name]
+  (symbol (str "xcljb.gen." (beautify (:header context) :ns-name) "-types")
+          (beautify name :type)))
+
 (defn- name->->type [context name]
   (symbol (str "xcljb.gen." (beautify (:header context) :ns-name) "-types")
           (-> name (beautify :type) (beautify :->type))))
@@ -203,178 +207,117 @@
 ;; Request, Reply, Event, Error.
 
 (defrecord Request [context name opcode combine-adjacent content]
-  Measurable
-  (gen-sizeof [this]
-    `(+ ~(if (extension-name (:context this)) 4 3)
-        ~@(map #(.gen-sizeof %) (:content this))))
-  (gen-read-sizeof [this]
-    (throw (Exception.)))
-
   RequestFn
   (gen-request-fn [this]
     (let [s-name (-> this (:name) (beautify :fn-name) (symbol))
-          s-args (->> this (:content) (gen-args) (map symbol))
-          s-struct (name->->type (:context this)
-                                 (-> this (:name) (beautify :request)))
-          conn (gensym "conn")
-          request-struct (gensym "request-struct")]
-      `(defn ~s-name [~conn ~@s-args]
-         (let [~request-struct (~s-struct ~@s-args)]
+          s-spec (name->type (:context this)
+                             (beautify (:name this) :request))
+          args (-> this (:content) (gen-args))
+          k-args (vec (map keyword args))
+          s-args (vec (map symbol args))]
+      `(defn ~s-name [~'conn ~@s-args]
+         (let [~'request (zipmap ~k-args ~s-args)]
            ~(if-let [ext-name (extension-name (:context this))]
-              `(xcljb.conn-ext/send ~conn
-                                    ~request-struct
-                                    ~ext-name)
-              `(xcljb.conn-internal/send ~conn
-                                         ~request-struct))))))
-
-  CodeSerializable
-  (gen-to-frame [this]
-    `[~@(map #(.gen-to-frame %) (:content this))])
-  (gen-to-value [this]
-    `[~@(map #(.gen-to-value %) (:content this))])
+              `(xcljb.conn-ext/send ~'conn ~ext-name ~s-spec ~'request)
+              `(xcljb.conn-internal/send ~'conn ~s-spec ~'request))))))
 
   Type
   (gen-type [this]
-    (let [s-name (-> this (:name) (beautify :request) (symbol))
-          s-args (->> this (:content) (gen-args) (map symbol))]
-      `(defrecord ~s-name [~@s-args]
-         xcljb.common/Measurable
-         (~(symbol "sizeof") [~(symbol "this")]
-          ~(.gen-sizeof this))
-
-         xcljb.common/Serializable
-         (~(symbol "to-frame") [~(symbol "this")]
-          ~(.gen-to-frame this))
-         (~(symbol "to-value") [~(symbol "this")]
-          ~(.gen-to-value this))
-
-         xcljb.common/Request
-         (~(symbol "opcode") [~(symbol "_")]
-          ~(:opcode this))))))
-
-(defrecord SequenceNumber []
-  Measurable
-  (gen-sizeof [_]
-    2)
-  (gen-read-sizeof [this]
-    (.gen-sizeof this))
-
-  ReadableType
-  (gen-read-type [_]
-    (let [s-ch (symbol "ch")
-          s-read-bytes (symbol "xcljb.common" "read-bytes")]
-      `(~s-read-bytes ~s-ch 2)))
-  ;; FIXME: Pick a name without causing naming conflict.
-  (gen-read-type-name [_]
-    (symbol "seq-num")))
+    `(def ~(-> this (:name) (beautify :request) (symbol))
+       (xcljb.gen-common/->Request ~(extension-name (:context this))
+                                   ~(:opcode this)
+                                   [~@(map gen-type (:content this))]))))
 
 (defrecord Reply [context name request-opcode content]
-  Measurable
-  (gen-sizeof [this]
-    (throw (Exception.)))
-  (gen-read-sizeof [this]
-    `(+ ~@(map #(.gen-read-sizeof %) (:content this))))
-
   Type
   (gen-type [this]
-    (let [s-name (-> this (:name) (beautify :reply) (symbol))
-          s-args (->> this (:content) (gen-args) (map symbol))]
-      `(defrecord ~s-name [~@s-args])))
+    `(def ~(-> this (:name) (beautify :reply) (symbol))
+       (xcljb.gen-common/->Reply [~@(map gen-type (:content this))])))
 
   ReadableFn
   (gen-read-fn [this]
-    (let [s-ch (symbol "ch")
-          s-_ (symbol "_")
-          ;; Has to be named "length", since e.g. GetKeyboardMapping requires it.
-          s-len (symbol "length")
-          ext-name (extension-name (:context this))
+    (let [ext-name (extension-name (:context this))
           opcode (:request-opcode this)
-          s-reply (name->->type (:context this)
-                                (-> this (:name) (beautify :reply)))
-          s-args (->> this (:content) (gen-args) (map symbol))]
-      `(defmethod xcljb.common/read-reply [~ext-name ~opcode] [~s-_ ~s-_ ~s-ch ~s-len val#]
-         (let [~(.gen-read-type-name (first (:content this))) val#]
-           ~(gen-read-fields
-             (rest (:content this))
-             `(let [size# (+ 7 ~(.gen-read-sizeof this))
-                    pads# (max (- 32 size#)
-                               (xcljb.common/padding size#))]
-                (xcljb.common/read-pad ~s-ch pads#))
-             `(~s-reply ~@s-args)))))))
+          s-reply (name->type (:context this)
+                              (-> this (:name) (beautify :reply)))]
+      `(defmethod xcljb.common/read-reply [~ext-name ~opcode] [~'_ ~'_ ~'reply-buf]
+         (xcljb.gen-common/deserialize ~s-reply ~'reply-buf nil)))))
+
+(defrecord QualifiedRef [ext-name number])
 
 (defrecord Event [context name number no-seq-number content]
-  Measurable
-  (gen-sizeof [this]
-    (throw (Exception.)))
-  (gen-read-sizeof [this]
-    (if (:no-seq-number this)
-      `(+ ~@(map #(.gen-read-sizeof %) (:content this)))
-      `(+ ~(.gen-read-sizeof (->SequenceNumber))
-          ~@(map #(.gen-read-sizeof %) (:content this)))))
-
   Type
   (gen-type [this]
-    (let [s-name (-> this (:name) (beautify :event) (symbol))
-          s-args (->> this (:content) (gen-args) (map symbol))]
-      `(defrecord ~s-name [~@s-args])))
+    `(def ~(-> this (:name) (beautify :event) (symbol))
+       (xcljb.gen-common/->Event ~(extension-name (:context this))
+                                 ~(:name this)
+                                 ~(:number this)
+                                 ~(:no-seq-number this)
+                                 [~@(map gen-type (:content this))])))
 
   ReadableFn
   (gen-read-fn [this]
-    (let [s-ch (symbol "ch")
-          s-_ (symbol "_")
-          s-event (name->->type (:context this)
-                                (-> this (:name) (beautify :event)))
-          ext-name (extension-name (:context this))
+    (let [ext-name (extension-name (:context this))
           number (:number this)
-          seq-num (->SequenceNumber)
-          content (:content this)
-          fields (if (:no-seq-number this)
-                   content
-                   (apply conj
-                          [(first content)]
-                          seq-num
-                          (rest content)))
-          s-args (map symbol (gen-args fields))]
-      `(defmethod xcljb.common/read-event [~ext-name ~number] [~s-_ ~s-_ ~s-ch]
-         ~(gen-read-fields
-           fields
-           `(let [size# (+ 1 ~(.gen-read-sizeof this))
-                  pads# (max 0 (- 32 size#))]
-              (xcljb.common/read-pad ~s-ch pads#))
-           `{:seq-num ~(if (:no-seq-number this)
-                         nil
-                         (.gen-read-type-name seq-num))
-             :event (~s-event ~@s-args)})))))
+          s-event (name->type (:context this)
+                              (-> this (:name) (beautify :event)))]
+      `(defmethod xcljb.common/read-event [~ext-name ~number] [~'_ ~'_ ~'event-buf]
+         (xcljb.gen-common/deserialize ~s-event ~'event-buf nil)))))
+
+(defrecord EventCopy [context name number ref]
+  Type
+  (gen-type [this]
+    `(def ~(-> this (:name) (beautify :event) (symbol))
+       (xcljb.gen-common/->EventCopy ~(extension-name (:context this))
+                                     ~(:name this)
+                                     ~(:number this)
+                                     ~(:ref this))))
+
+  ReadableFn
+  (gen-read-fn [this]
+    (let [ext-name (extension-name (:context this))
+          number (:number this)
+          s-event (name->type (:context this)
+                              (-> this (:name) (beautify :event)))]
+      `(defmethod xcljb.common/read-event [~ext-name ~number] [~'_ ~'_ ~'event-buf]
+         (xcljb.gen-common/deserialize ~s-event ~'event-buf nil)))))
 
 ;; Avoid naming conflict with java.lang.Error.
 (defrecord -Error [context name number content]
-  Measurable
-  (gen-sizeof [this]
-    (throw (Exception.)))
-  (gen-read-sizeof [this]
-    `(+ ~@(map #(.gen-read-sizeof %) (:content this))))
-
   Type
   (gen-type [this]
-    (let [s-name (-> this (:name) (beautify :error) (symbol))
-          s-args (->> this (:content) (gen-args) (map symbol))]
-      `(defrecord ~s-name [~@s-args])))
+    `(def ~(-> this (:name) (beautify :error) (symbol))
+       (xcljb.gen-common/->Error' ~(extension-name (:context this))
+                                  ~(:name this)
+                                  ~(:number this)
+                                  [~@(map gen-type (:content this))])))
 
   ReadableFn
   (gen-read-fn [this]
-    (let [s-ch (symbol "ch")
-          s-_ (symbol "_")
-          ext-name (extension-name (:context this))
-          s-error (name->->type (:context this)
-                                (-> this (:name) (beautify :error)))
-          s-args (->> this (:content) (gen-args) (map symbol))]
-      `(defmethod xcljb.common/read-error [~ext-name ~number] [~s-_ ~s-_ ~s-ch]
-         ~(gen-read-fields
-           (:content this)
-           `(let [size# (+ 4 ~(.gen-read-sizeof this))
-                  pads# (max 0 (- 32 size#))]
-              (xcljb.common/read-pad ~s-ch pads#))
-           `(~s-error ~@s-args))))))
+    (let [ext-name (extension-name (:context this))
+          number (:number this)
+          s-error (name->type (:context this)
+                              (-> this (:name) (beautify :error)))]
+      `(defmethod xcljb.common/read-error [~ext-name ~number] [~'_ ~'_ ~'error-buf]
+         (xcljb.gen-common/deserialize ~s-error ~'error-buf nil)))))
+
+(defrecord ErrorCopy [context name number ref]
+  Type
+  (gen-type [this]
+    `(def ~(-> this (:name) (beautify :error) (symbol))
+       (xcljb.gen-common/->ErrorCopy ~(extension-name (:context this))
+                                     ~(:name this)
+                                     ~(:number this)
+                                     ~(:ref this))))
+
+  ReadableFn
+  (gen-read-fn [this]
+    (let [ext-name (extension-name (:context this))
+          number (:number this)
+          s-error (name->type (:context this)
+                              (-> this (:name) (beautify :error)))]
+      `(defmethod xcljb.common/read-error [~ext-name ~number] [~'_ ~'_ ~'error-buf]
+         (xcljb.gen-common/deserialize ~s-error ~'error-buf nil)))))
 
 ;; Xcb.
 
