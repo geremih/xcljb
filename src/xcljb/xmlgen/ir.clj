@@ -57,16 +57,15 @@
 (defprotocol RequestFn
   (gen-request-fn [this]))
 
-(defprotocol CodeSerializable
-  (gen-to-frame [this])
-  (gen-to-value [this]))
-
 (defprotocol Measurable
   (gen-sizeof [this])
   (gen-read-sizeof [this]))
 
 (defprotocol Type
   (gen-type [this]))
+
+(defprotocol Expr
+  (gen-expr [this]))
 
 (defprotocol ReadableFn
   (gen-read-fn [this]))
@@ -75,237 +74,98 @@
   (gen-read-type [this])
   (gen-read-type-name [this]))
 
-(defprotocol Evalable
-  (gen-eval [this]))
-
 ;;; Expressions.
 
 (defrecord Op [op expr1 expr2]
-  Evalable
-  (gen-eval [this]
-    (let [v1 (.gen-eval (:expr1 this))
-          v2 (.gen-eval (:expr2 this))]
-      (case (:op this)
-        "+" `(+ ~v1 ~v2)
-        "-" `(- ~v1 ~v2)
-        "*" `(* ~v1 ~v2)
-        "/" `(/ ~v1 ~v2)
-        "&" `(bit-and ~v1 ~v2)
-        "<<" `(bit-shift-left ~v1 ~v2)))))
+  Expr
+  (gen-expr [this]
+    (let [op (case (:op this)
+               "+" 'clojure.core/+
+               "-" 'clojure.core/-
+               "*" 'clojure.core/*
+               "/" 'clojure.core//
+               "&" 'clojure.core/bit-and
+               "<<" 'clojure.core/bit-shift-left)]
+      `(xcljb.gen-common/->Op ~op
+                              ~(gen-expr (:expr1 this))
+                              ~(gen-expr (:expr2 this))))))
 
 (defrecord Unop [op expr]
-  Evalable
-  (gen-eval [this]
-    (let [v (.gen-eval (:expr this))]
-      (case (:op this)
-        "~" `(bit-not ~v)))))
+  Expr
+  (gen-expr [this]
+    (let [op (case (:op this)
+               "~" 'clojure.core/bit-not)]
+      `(xcljb.gen-common/->Unop ~op ~(gen-expr (:expr this))))))
 
 (defrecord Fieldref [ref]
-  Evalable
-  (gen-eval [this]
-    (-> this (:ref) (beautify :arg) (symbol))))
+  Expr
+  (gen-expr [this]
+    `(xcljb.gen-common/->Fieldref ~(beautify (:ref this) :arg))))
 
 (defrecord Popcount [expr]
-  Evalable
-  (gen-eval [this]
-    (let [v (.gen-eval (:expr this))]
-      `(xcljb.common/bit-count ~v))))
+  Expr
+  (gen-expr [this]
+    `(xcljb.gen-common/->Popcount ~(gen-expr (:expr this)))))
 
 (defrecord Sumof [ref]
-  Evalable
-  (gen-eval [this]
-    (let [s-ref (-> this (:ref) (beautify :arg) (symbol))]
-      `(apply + ~s-ref))))
+  Expr
+  (gen-expr [this]
+    `(xcljb.gen-common/->Sumof ~(beautify (:ref this) :arg))))
 
 (defrecord Value [value]
-  Evalable
-  (gen-eval [this]
-    (:value this)))
+  Expr
+  (gen-expr [this]
+    `(xcljb.gen-common/->Value ~(:value this))))
+
+;;; Primitives.
+
+(defrecord Primitive [name type]
+  Type
+  (gen-type [this]
+    `(def ~(symbol (:name this))
+       (xcljb.gen-common/->Primitive ~(:type this)))))
 
 ;;; Fields.
 
 (defrecord Pad [bytes]
-  Measurable
-  (gen-sizeof [this]
-    (:bytes this))
-  (gen-read-sizeof [this]
-    (.gen-sizeof this))
-
-  CodeSerializable
-  (gen-to-frame [this]
-    `(repeat ~(:bytes this) :byte))
-  (gen-to-value [this]
-    `(repeat ~(:bytes this) 0))
-
-  ReadableType
-  (gen-read-type [this]
-    (let [s-ch (symbol "ch")
-          s-read-pad (symbol "xcljb.common" "read-pad")]
-      `(~s-read-pad ~s-ch ~(:bytes this))))
-  (gen-read-type-name [_]
-    (symbol "_")))
+  Type
+  (gen-type [this]
+    `(xcljb.gen-common/->Pad ~(:bytes this))))
 
 (defrecord BoolField [name size]
-  Measurable
-  (gen-sizeof [this]
-    (:size this))
-  (gen-read-sizeof [this]
-    (.gen-sizeof this))
-
-  CodeSerializable
-  (gen-to-frame [this]
-    (case (:size this)
-      1 :ubyte
-      4 :uint32))
-  (gen-to-value [this]
-    (let [s-this (symbol "this")
-          k-name (-> this (:name) (beautify :arg) (keyword))]
-      `(if (~k-name ~s-this)
-         1
-         0)))
-
-  ReadableType
-  (gen-read-type [this]
-    (let [s-ch (symbol "ch")]
-      `(if (= (xcljb.common/read-bytes ~s-ch ~(:size this)) 1)
-         true
-         false)))
-  (gen-read-type-name [this]
-    (-> this (:name) (beautify :arg) (symbol))))
+  Type
+  (gen-type [this]
+    `(xcljb.gen-common/->BoolField ~(beautify (:name this) :arg)
+                                   ~(:size this))))
 
 (defrecord StringField [name expr]
-  Measurable
-  (gen-sizeof [this]
-    (let [s-this (symbol "this")
-          k-name (-> this (:name) (beautify :arg) (keyword))]
-      `(count (~k-name ~s-this))))
-  (gen-read-sizeof [this]
-    (assert (:expr this))
-    (.gen-eval (:expr this)))
-
-  CodeSerializable
-  (gen-to-frame [this]
-    `(gloss.core/string :ascii))
-  (gen-to-value [this]
-    (let [s-this (symbol "this")
-          k-name (-> this (:name) (beautify :arg) (keyword))]
-      `(~k-name ~s-this)))
-
-  ReadableType
-  (gen-read-type [this]
-    (assert (:expr this))
-    (let [s-ch (symbol "ch")
-          len (-> this (:expr) (.gen-eval))]
-      `(xcljb.common/read-string ~s-ch ~len)))
-  (gen-read-type-name [this]
-    (-> this (:name) (beautify :arg) (symbol))))
+  Type
+  (gen-type [this]
+    `(xcljb.gen-common/->StringField ~(beautify (:name this) :arg)
+                                     ~(when-let [expr (:expr this)]
+                                        (gen-expr expr)))))
 
 (defrecord Field [name type enum altenum mask]
-  Measurable
-  (gen-sizeof [this]
-    (let [s-this (symbol "this")
-          k-name (-> this (:name) (beautify :arg) (keyword))]
-      `(.sizeof (~k-name ~s-this))))
-  (gen-read-sizeof [this]
-    (let [s-name (-> this (:name) (beautify :arg) (symbol))]
-      `(.sizeof ~s-name)))
-
-  CodeSerializable
-  (gen-to-frame [this]
-    (let [s-this (symbol "this")
-          k-name (-> this (:name) (beautify :arg) (keyword))]
-      `(.to-frame (~k-name ~s-this))))
-  (gen-to-value [this]
-    (let [s-this (symbol "this")
-          k-name (-> this (:name) (beautify :arg) (keyword))]
-      `(.to-value (~k-name ~s-this))))
-
-  ReadableType
-  (gen-read-type [this]
-    (let [s-ch (symbol "ch")
-          s-read-type (-> this (:type) (type->read-type))]
-      `(~s-read-type ~s-ch)))
-  (gen-read-type-name [this]
-    (-> this (:name) (beautify :arg) (symbol))))
+  Type
+  (gen-type [this]
+    `(xcljb.gen-common/->Field ~(beautify (:name this) :arg)
+                               ~(parse-type (:type this)))))
 
 (defrecord List [name type enum altenum mask expr]
-  Measurable
-  (gen-sizeof [this]
-    (let [s-this (symbol "this")
-          k-name (-> this (:name) (beautify :arg) (keyword))]
-      `(reduce (fn [x# y#] (+ x# (.sizeof y#)))
-               0
-               (~k-name ~s-this))))
-  (gen-read-sizeof [this]
-    (let [s-name (-> this (:name) (beautify :arg) (symbol))]
-      `(reduce (fn [x# y#] (+ x# (.sizeof y#)))
-               0
-               ~s-name)))
-
-  CodeSerializable
-  (gen-to-frame [this]
-    (let [s-this (symbol "this")
-          k-name (-> this (:name) (beautify :arg) (keyword))]
-      `(map #(.to-frame %)
-            (~k-name ~s-this))))
-  (gen-to-value [this]
-    (let [s-this (symbol "this")
-          k-name (-> this (:name) (beautify :arg) (keyword))]
-      `(map #(.to-value %)
-            (~k-name ~s-this))))
-
-  ReadableType
-  (gen-read-type [this]
-    (assert (:expr this))
-    (let [s-ch (symbol "ch")
-          s-read-type (-> this (:type) (type->read-type))
-          len (-> this (:expr) (.gen-eval))]
-      `(doall (repeatedly ~len (fn [] (~s-read-type ~s-ch))))))
-  (gen-read-type-name [this]
-    (-> this (:name) (beautify :arg) (symbol))))
+  Type
+  (gen-type [this]
+    `(xcljb.gen-common/->List ~(beautify (:name this) :arg)
+                              ~(parse-type (:type this))
+                              ~(when-let [expr (:expr this)]
+                                 (gen-expr expr)))))
 
 ;; Valueparam.
 
 (defrecord Valueparam [name mask-type]
-  Measurable
-  (gen-sizeof [this]
-    (let [s-this (symbol "this")
-          k-name (-> this (:name) (beautify :arg) (keyword))
-          s-mask-type (-> this (:mask-type) (parse-type))]
-      `(+ (.sizeof ~s-mask-type)
-          (* (-> ~s-this (~k-name) (count))
-             4))))
-  (gen-read-sizeof [this]
-    (let [s-name (-> this (:name) (beautify :arg) (symbol))
-          s-mask-type (-> this (:mask-type) (parse-type))]
-      `(+ (.sizeof ~s-mask-type)
-          (* ~s-name 4))))
-
-  ;; FIXME: For valueparam with mask type of "CARD16", the value-mask-name refers to actual, existing field.
-  CodeSerializable
-  (gen-to-frame [this]
-    (let [s-this (symbol "this")
-          k-name (-> this (:name) (beautify :arg) (keyword))
-          ;; Mask type is always a primitive type.
-          s-mask-type (-> this (:mask-type) (parse-type))]
-      `[(.to-frame ~s-mask-type)
-        (repeat (-> ~s-this (~k-name) (count))
-                :uint32)]))
-  (gen-to-value [this]
-    (let [s-this (symbol "this")
-          k-name (-> this (:name) (beautify :arg) (keyword))]
-      `(xcljb.common/valueparam->value (~k-name ~s-this))))
-
-  ReadableType
-  (gen-read-type [this]
-    (let [s-ch (symbol "ch")
-          s-mask-type (-> this (:mask-type) (parse-type))]
-      `(let [masks# (xcljb.common/mask->masks (.read-type ~s-mask-type ~s-ch))
-             vs# (doall (repeatedly (count masks#)
-                                    (fn [] (xcljb.common/read-bytes ~s-ch 4))))]
-         (zipmap masks# vs#))))
-  (gen-read-type-name [this]
-    (-> this (:name) (beautify :arg) (symbol))))
+  Type
+  (gen-type [this]
+    `(xcljb.gen-common/->Valueparam ~(beautify (:name this) :arg)
+                                    ~(parse-type (:mask-type this)))))
 
 ;; Enum and Item.
 
@@ -328,45 +188,17 @@
 
 ;; Struct.
 
-(defrecord Struct [context name content]
-  Measurable
-  (gen-sizeof [this]
-    `(+ ~@(map #(.gen-sizeof %) (:content this))))
-  (gen-read-sizeof [this]
-    `(+ ~@(map #(.gen-read-sizeof %) (:content this))))
-
-  CodeSerializable
-  (gen-to-frame [this]
-    ;; Has to be a vector, to prevent keyword being interpreted as function.
-    `[~@(map #(.gen-to-frame %) (:content this))])
-  (gen-to-value [this]
-    `[~@(map #(.gen-to-value %) (:content this))])
-
+(defrecord Struct [name content]
   Type
   (gen-type [this]
-    (let [s-name (-> this (:name) (beautify :type) (symbol))
-          s-args (->> this (:content) (gen-args) (map symbol))]
-      `(defrecord ~s-name [~@s-args]
-         xcljb.common/Measurable
-         (~(symbol "sizeof") [~(symbol "this")]
-          ~(.gen-sizeof this))
+    `(def ~(symbol (:name this))
+       (xcljb.gen-common/->Struct [~@(map gen-type (:content this))]))))
 
-         xcljb.common/Serializable
-         (~(symbol "to-frame") [~(symbol "this")]
-          ~(.gen-to-frame this))
-         (~(symbol "to-value") [~(symbol "this")]
-          ~(.gen-to-value this)))))
-
-  ReadableFn
-  (gen-read-fn [this]
-    (let [s-ch (symbol "ch")
-          s-name (-> this (:name) (beautify :type) (beautify :read-type) (symbol))
-          s-args (->> this (:content) (gen-args) (map symbol))
-          s-struct (name->->type (:context this) (:name this))]
-      `(defn ~s-name [~s-ch]
-         ~(gen-read-fields
-           (:content this)
-           `(~s-struct ~@s-args))))))
+(defrecord Typedef [name type]
+  Type
+  (gen-type [this]
+    `(def ~(symbol (:name this))
+       ~(parse-type (:type this)))))
 
 ;; Request, Reply, Event, Error.
 
