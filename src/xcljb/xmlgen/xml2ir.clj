@@ -283,4 +283,4 @@
         :error (parse-error e)
         :errorcopy (parse-errorcopy e)))
     (write-typemap!)
-    [xcb @PRIMITIVE-TYPES @COMPOSITE-TYPES @ENUMS @REQUESTS @REPLIES @EVENTS @ERRORS]))
+    [xcb @IMPORTS @PRIMITIVE-TYPES @COMPOSITE-TYPES @ENUMS @REQUESTS @REPLIES @EVENTS @ERRORS]))

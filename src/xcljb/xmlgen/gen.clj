@@ -34,6 +34,7 @@
 (defn -main [& args]
   (let [root (xml/parse (java.io.BufferedReader. *in*))
         [xcb
+         imports
          prim-types
          comp-types
          enums
@@ -78,7 +79,10 @@
       (.write wrtr "\n")
       (pp/pprint
        `(ns ~(symbol (str "xcljb.gen." ns-name "-types"))
-          (:require [~@(map symbol ["xcljb" "common"])]))
+          (:require [~@(map symbol ["xcljb" "common"])]
+                    ~(if (empty? imports)
+                       (symbol "")
+                       `[~'xcljb.gen ~@(map #(symbol (str % "-types")) imports)])))
        wrtr)
 
       (.write wrtr "\n")
