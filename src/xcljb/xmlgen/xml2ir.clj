@@ -46,7 +46,7 @@
                          :let [code (get-in tm [key ref])]
                          :when code]
                      (ir/->QualifiedRef (:ext-name tm) code)))
-        res2 (when-let [e (first (filter #(= (:name %) ref) v))]
+        res2 (if-let [e (first (filter #(= (:name %) ref) v))]
                (ir/->QualifiedRef (:extension-xname @CONTEXT) (:number e)))]
     (assert (or res res2))
     (or res res2)))
@@ -92,7 +92,7 @@
 (defn- parse-list [elem]
   (let [{:keys [name type enum altenum mask]} (:attrs elem)
         t (parse-type type)
-        expr (if-let [e (-> elem (:content) (first))]
+        expr (when-let [e (-> elem (:content) (first))]
                (parse-expression e))]
     (case (:name t)
       ("char" "STRING8") (ir/->StringField name expr)
@@ -132,14 +132,16 @@
 (defn- parse-xids [elem]
   (assert (#{:xidtype :xidunion} (:tag elem)))
   (let [name (-> elem (:attrs) (:name))]
-    (swap! TYPES conj (ir/->Primitive name :uint32))))
+    (swap! TYPES conj (ir/->Primitive name :uint32))
+    nil))
 
 (defn- parse-typedef [elem]
   (let [attrs (:attrs elem)
         oldname (:oldname attrs)
         newname (:newname attrs)
         t (parse-type oldname)]
-    (swap! TYPES conj (ir/->Typedef newname t))))
+    (swap! TYPES conj (ir/->Typedef newname t))
+    nil))
 
 (defn- parse-content [content]
   (for [c content
@@ -154,13 +156,15 @@
   (assert (= (:tag elem) :struct))
   (let [name (-> elem (:attrs) (:name))
         content (parse-content (:content elem))]
-    (swap! TYPES conj (ir/->Struct name content))))
+    (swap! TYPES conj (ir/->Struct name content))
+    nil))
 
 (defn- parse-reply [name request-opcode elem]
   (when-not (skip? name :reply)
     (let [content (parse-content (:content elem))
           reply (ir/->Reply @CONTEXT name request-opcode content)]
-      (swap! REPLIES conj reply))))
+      (swap! REPLIES conj reply)))
+  nil)
 
 (defn- parse-request [elem]
   (assert (= (:tag elem) :request))
@@ -196,7 +200,7 @@
         ref (parse-ref (:ref attrs) :event)
         eventcopy (ir/->EventCopy @CONTEXT name num ref)]
     (swap! EVENTS conj eventcopy)
-    eventcopy))
+    nil))
 
 (defn- parse-error [elem]
   (let [attrs (:attrs elem)
@@ -205,7 +209,7 @@
         content (parse-content (:content elem))
         error (ir/->-Error @CONTEXT name num content)]
     (swap! ERRORS conj error)
-    error))
+    nil))
 
 (defn- parse-errorcopy [elem]
   (let [attrs (:attrs elem)
@@ -214,7 +218,7 @@
         ref (parse-ref (:ref attrs) :error)
         errorcopy (ir/->ErrorCopy @CONTEXT name num ref)]
     (swap! ERRORS conj errorcopy)
-    errorcopy))
+    nil))
 
 (defn- parse-import [elem]
   (let [header (-> elem (:content) (first))]
@@ -228,11 +232,9 @@
         ext-xname (:extension-xname attrs)
         ext-multiword (= (:extension-multiword attrs) "true")
         major-version (if-let [v (:major-version attrs)]
-                        (Integer/parseInt v)
-                        nil)
+                        (Integer/parseInt v))
         minor-version (if-let [v (:minor-version attrs)]
-                        (Integer/parseInt v)
-                        nil)
+                        (Integer/parseInt v))
         content (parse-content (:content elem))
         xcb (ir/->Xcb header ext-name ext-xname ext-multiword major-version minor-version)]
     (reset! CONTEXT xcb)

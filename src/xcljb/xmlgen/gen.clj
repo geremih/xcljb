@@ -59,7 +59,7 @@
 
       (doseq [request requests]
         (.write wrtr "\n")
-        (pp/pprint (.gen-request-fn request) wrtr))
+        (pp/pprint (ir/gen-request-fn request) wrtr))
 
       ;; Manually written requests.
       (write-manual-comment wrtr)
@@ -85,19 +85,19 @@
 
       (doseq [request requests]
         (.write wrtr "\n")
-        (pp/pprint (.gen-type request) wrtr))
+        (pp/pprint (ir/gen-type request) wrtr))
 
       (doseq [reply replies]
         (.write wrtr "\n")
-        (pp/pprint (.gen-type reply) wrtr))
+        (pp/pprint (ir/gen-type reply) wrtr))
 
       (doseq [event events]
         (.write wrtr "\n")
-        (pp/pprint (.gen-type event) wrtr))
+        (pp/pprint (ir/gen-type event) wrtr))
 
       (doseq [error errors]
         (.write wrtr "\n")
-        (pp/pprint (.gen-type error) wrtr))
+        (pp/pprint (ir/gen-type error) wrtr))
 
       ;; Manually written types.
       (write-manual-comment wrtr)
@@ -120,15 +120,15 @@
 
       (doseq [reply replies]
         (.write wrtr "\n")
-        (pp/pprint (.gen-read-fn reply) wrtr))
+        (pp/pprint (ir/gen-read-fn reply) wrtr))
 
       (doseq [event events]
         (.write wrtr "\n")
-        (pp/pprint (.gen-read-fn event) wrtr))
+        (pp/pprint (ir/gen-read-fn event) wrtr))
 
       (doseq [error errors]
         (.write wrtr "\n")
-        (pp/pprint (.gen-read-fn error) wrtr))
+        (pp/pprint (ir/gen-read-fn error) wrtr))
 
       ;; Manually written read functions.
       (write-manual-comment wrtr)
