@@ -4,12 +4,13 @@
             [gloss.io :as gio]
             [xcljb.auth]
             [xcljb.common :as common]
+            [xcljb gen-common]
             [xcljb.gen.xproto-internal :as xproto-internal]
             [xcljb.gen.xproto-types :as xproto-types]
             ;; Extensions (read-reply/event/error).
             xcljb.gen.xc-misc-internal)
   (:import [java.net InetSocketAddress]
-           [java.nio ByteOrder]
+           [java.nio ByteBuffer ByteOrder]
            [java.nio.channels SocketChannel]
            [java.util.concurrent LinkedBlockingQueue]))
 
@@ -54,72 +55,40 @@
                   auth-data
                   (repeat (common/padding data-len) 0)]))))
 
-(defn- handle-setup-failed-reply [ch]
-  (let [reason-len (common/read-bytes ch 1)
-        protocol-major-version (common/read-bytes ch 2)
-        protocol-minor-version (common/read-bytes ch 2)
-        length (common/read-bytes ch 2)
-        reason (common/read-string ch reason-len)
-        _ (common/read-pad ch (- (* length 4) reason-len))]
+(defn- handle-setup-failed-reply [buf]
+  (let [{:keys [protocol-major-version protocol-minor-version reason]} (xcljb.gen-common/deserialize xcljb.gen.xproto-types/SetupFailed buf nil)]
     (binding [*out* *err*]
       (println "Connection setup failed:" reason)
-      (println "Protocol version: major" protocol-major-version
-               "minor" protocol-minor-version))
+      (println "Protocol version (major/minor):"
+               protocol-major-version "/" protocol-minor-version))
     (System/exit 1)))
 
-(defn- handle-setup-authenticate-reply [ch]
-  (let [_ (common/read-pad ch 5)
-        length (common/read-bytes ch 2)
-        reason (common/read-string ch (* length 4))]
+(defn- handle-setup-success-reply [buf]
+  (xcljb.gen-common/deserialize xcljb.gen.xproto-types/Setup buf nil))
+
+(defn- handle-setup-authenticate-reply [buf]
+  (let [{:keys [reason]} (xcljb.gen-common/deserialize xcljb.gen.xproto-types/SetupAuthenticate buf nil)]
     (binding [*out* *err*]
       (println "Connection setup requires additional authentication:" reason))
     (System/exit 2)))
 
-(defn- get-setup-success-reply [ch]
-  (let [_ (common/read-pad ch 1)
-        protocol-major-version (common/read-bytes ch 2)
-        protocol-minor-version (common/read-bytes ch 2)
-        length (common/read-bytes ch 2)
-        release-number (common/read-bytes ch 4)
-        resource-id-base (common/read-bytes ch 4)
-        resource-id-mask (common/read-bytes ch 4)
-        motion-buffer-size (common/read-bytes ch 4)
-        vendor-len (common/read-bytes ch 2)
-        maximum-request-length (common/read-bytes ch 2)
-        roots-len (common/read-bytes ch 1)
-        pixmap-formats-len (common/read-bytes ch 1)
-        image-byte-order (common/read-bytes ch 1)
-        bitmap-format-bit-order (common/read-bytes ch 1)
-        bitmap-format-scanline-unit (common/read-bytes ch 1)
-        bitmap-format-scanline-pad (common/read-bytes ch 1)
-        min-keycode (.read-type xproto-types/KEYCODE ch)
-        max-keycode (.read-type xproto-types/KEYCODE ch)
-        _ (common/read-pad ch 4)
-        vendor (common/read-string ch vendor-len)
-        pixmap-formats (doall (repeatedly pixmap-formats-len #(xproto-internal/read-Format ch)))
-        roots (doall (repeatedly roots-len #(xproto-internal/read-Screen ch)))]
-    {:protocol-major-version protocol-major-version
-     :protocol-minor-version protocol-minor-version
-     :release-number release-number
-     :resource-id-base resource-id-base
-     :resource-id-mask resource-id-mask
-     :motion-buffer-size motion-buffer-size
-     :maximum-request-length maximum-request-length
-     :image-byte-order image-byte-order
-     :bitmap-format-bit-order bitmap-format-bit-order
-     :bitmap-format-scanline-unit bitmap-format-scanline-unit
-     :bitmap-format-scanline-pad bitmap-format-scanline-pad
-     :min-keycode min-keycode
-     :max-keycode max-keycode
-     :vendor vendor
-     :pixmap-formats pixmap-formats
-     :roots roots}))
-
 (defn- handle-setup-reply [ch]
-  (case (common/read-bytes ch 1)
-    0 (handle-setup-failed-reply ch)
-    1 (get-setup-success-reply ch)
-    2 (handle-setup-authenticate-reply ch)))
+  (let [header-buf (ByteBuffer/allocate 8)
+        _ (.read ch header-buf)
+        _ (-> header-buf (.limit 1) (.position 0))
+        status (gloss.io/decode :ubyte header-buf)
+        _ (-> header-buf (.limit 8) (.position 6))
+        len (gloss.io/decode :uint16 header-buf)
+        reply-buf (ByteBuffer/allocate (+ 8 (* len 4)))
+        _ (.clear header-buf)
+        _ (.put reply-buf header-buf)
+        _ (.read ch reply-buf)
+        ro-reply-buf (.asReadOnlyBuffer reply-buf)
+        _ (.rewind ro-reply-buf)]
+    (case status
+      0 (handle-setup-failed-reply ro-reply-buf)
+      1 (handle-setup-success-reply ro-reply-buf)
+      2 (handle-setup-authenticate-reply ro-reply-buf))))
 
 (defn- setup [ch]
   (let [auth (xcljb.auth/get-auth)
