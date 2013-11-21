@@ -73,7 +73,7 @@
       (.write wrtr "\n")
       (pp/pprint
        `(ns ~(symbol (str "xcljb.gen." ns-name "-types"))
-          (:require [~@(map symbol ["xcljb" "common"])]
+          (:require [~'xcljb ~'gen-common]
                     ~(if (empty? imports)
                        (symbol "")
                        `[~'xcljb.gen ~@(map #(symbol (str % "-types")) imports)])))
@@ -114,8 +114,8 @@
       (.write wrtr "\n")
       (pp/pprint
        `(ns ~(symbol (str "xcljb.gen." ns-name "-internal"))
-          (:require [~@(map symbol ["xcljb" "common"])]
-                    [~@(map symbol ["xcljb.gen" (str (:header xcb) "-types")])]))
+          (:require [~'xcljb ~'common ~'gen-common]
+                    [~'xcljb.gen ~(symbol (str (:header xcb) "-types"))]))
        wrtr)
 
       (doseq [reply replies]
