@@ -35,6 +35,22 @@
         (ir/->QualifiedType h type)
         (ir/->QualifiedType (:header @CONTEXT) type)))))
 
+(defn- parse-ref [ref kind]
+  (let [key (case kind
+              :event :events
+              :error :errors)
+        v (case kind
+            :event @EVENTS
+            :error @ERRORS)
+        res (first (for [[_ tm] (select-keys @TYPEMAP @IMPORTS)
+                         :let [code (get-in tm [key ref])]
+                         :when code]
+                     (ir/->QualifiedRef (:ext-name tm) code)))
+        res2 (when-let [e (first (filter #(= (:name %) ref) v))]
+               (ir/->QualifiedRef (:extension-xname @CONTEXT) (:number e)))]
+    (assert (or res res2))
+    (or res res2)))
+
 (defn- parse-expression [elem]
   (case (:tag elem)
     :op (let [op (-> elem (:attrs) (:op))
@@ -177,11 +193,10 @@
   (let [attrs (:attrs elem)
         name (:name attrs)
         num (-> attrs (:number) (Integer/parseInt))
-        ref (first (filter #(= (:name %) (:ref attrs)) @EVENTS))
-        event (assoc ref :name name :number num)]
-    (assert ref)
-    (swap! EVENTS conj event)
-    event))
+        ref (parse-ref (:ref attrs) :event)
+        eventcopy (ir/->EventCopy @CONTEXT name num ref)]
+    (swap! EVENTS conj eventcopy)
+    eventcopy))
 
 (defn- parse-error [elem]
   (let [attrs (:attrs elem)
@@ -196,11 +211,10 @@
   (let [attrs (:attrs elem)
         name (:name attrs)
         num (-> attrs (:number) (Integer/parseInt))
-        ref (first (filter #(= (:name %) (:ref attrs)) @ERRORS))
-        error (assoc ref :name name :number num)]
-    (assert ref)
-    (swap! ERRORS conj error)
-    error))
+        ref (parse-ref (:ref attrs) :error)
+        errorcopy (ir/->ErrorCopy @CONTEXT name num ref)]
+    (swap! ERRORS conj errorcopy)
+    errorcopy))
 
 (defn- parse-import [elem]
   (let [header (-> elem (:content) (first))]
@@ -249,7 +263,11 @@
   (spit "src/xcljb/gen/typemap.clj"
         (assoc @TYPEMAP
           (:header @CONTEXT)
-          {:types (set (map :name @TYPES))})))
+          {:types (set (map :name @TYPES))
+           :events (zipmap (map :name @EVENTS)
+                           (map :number @EVENTS))
+           :errors (zipmap (map :name @ERRORS)
+                           (map :number @ERRORS))})))
 
 (defn xml->ir [elem]
   (read-typemap!)
