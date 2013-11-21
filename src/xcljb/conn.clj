@@ -96,6 +96,49 @@
     (.write ch req)
     (handle-setup-reply ch)))
 
+(defn- read-error-buf [ch header-buf]
+  (let [_ (-> header-buf (.limit 2) (.position 1))
+        error-num (gloss.io/decode :ubyte header-buf)
+        _ (-> header-buf (.limit 4) (.position 2))
+        seq-num (gloss.io/decode :uint16 header-buf)
+        error-buf (ByteBuffer/allocate 32)]
+    (.clear header-buf)
+    (.put error-buf header-buf)
+    (.read ch error-buf)
+    {:error-num error-num
+     :seq-num seq-num
+     :buf (.asReadOnlyBuffer error-buf)}))
+
+(defn- read-reply-buf [ch header-buf]
+  (let [_ (-> header-buf (.limit 4) (.position 2))
+        seq-num (gloss.io/decode :uint16 header-buf)
+        len-buf (ByteBuffer/allocate 4)
+        _ (.read ch len-buf)
+        _ (.flip len-buf)
+        reply-len (gloss.io/decode :uint32 len-buf)
+        reply-buf (ByteBuffer/allocate (+ 32 (* reply-len 4)))]
+    (.clear header-buf)
+    (.clear len-buf)
+    (.put reply-buf header-buf)
+    (.put reply-buf len-buf)
+    (.read ch reply-buf)
+    {:seq-num seq-num
+     :len reply-len
+     :buf (.asReadOnlyBuffer reply-buf)}))
+
+(defn- read-event-buf [ch header-buf]
+  (let [_ (-> header-buf (.limit 1) (.position 0))
+        tmp-event-num (gloss.io/decode :ubyte header-buf)
+        event-num (bit-and tmp-event-num 0x7F)
+        from-sendevent (not (zero? (bit-and tmp-event-num 0x80)))
+        event-buf (ByteBuffer/allocate 32)]
+    (.clear header-buf)
+    (.put event-buf header-buf)
+    (.read ch event-buf)
+    {:event-num event-num
+     :from-sendevent from-sendevent
+     :buf (.asReadOnlyBuffer event-buf)}))
+
 (defn- clear-old-replies [replyq seq-num]
   (when-let [{seqn :seq-num, reply :reply} (.peek replyq)]
     (when (not= seqn seq-num)
@@ -130,44 +173,47 @@
       (- error-num error-base))
     error-num))
 
-(defn- handle-error [ch replyq ext-cache]
-  (let [code (common/read-bytes ch 1)
-        seq-n (common/read-bytes ch 2)
-        resp (get-response replyq seq-n)
+(defn- handle-error [err-buf replyq ext-cache]
+  (let [resp (get-response replyq (:seq-num err-buf))
         err (common/read-error (:ext-name resp)
-                               (get-error-number code ext-cache)
-                               ch)]
+                               (get-error-number (:error-num err-buf) ext-cache)
+                               err-buf)]
     (log/error err)
     (deliver (:reply resp) err)))
 
-(defn- handle-reply [ch replyq]
-  (let [val (common/read-bytes ch 1) ; always unsigned for xproto-1.8
-        seq-n (common/read-bytes ch 2)
-        len (common/read-bytes ch 4)
-        resp (get-response replyq seq-n)
-        reply (common/read-reply (:ext-name resp) (:opcode resp) ch len val)]
+(defn- handle-reply [reply-buf replyq]
+  (let [resp (get-response replyq (:seq-num reply-buf))
+        reply (common/read-reply (:ext-name resp)
+                                 (:opcode resp)
+                                 reply-buf)]
     (log/debug reply)
     (deliver (:reply resp) reply)))
 
-(defn- handle-event [ch event-num replyq eventq ext-cache]
-  (let [{:keys [event-num ext-name]} (get-event-number event-num ext-cache)
-        {:keys [seq-num event]} (common/read-event ext-name event-num ch)]
-    (log/debug event)
-    (when seq-num                       ; not KeymapNotify
+(defn- handle-event [evt-buf replyq eventq ext-cache]
+  (let [{:keys [event-num ext-name]} (get-event-number (:event-num evt-buf)
+                                                       ext-cache)
+        evt (common/read-event ext-name event-num evt-buf)]
+    (log/debug evt)
+    (when-let [seq-num (:xcljb/sequence-number evt)] ; not KeymapNotify
       (clear-old-replies replyq seq-num))
-    (.put eventq event)))
+    (.put eventq evt)))
 
 (defn- read-channel [ch replyq eventq ext-cache]
   (while (.isOpen ch)
     (try
-      (let [type-or-event (common/read-bytes ch 1)]
-        (case type-or-event
-          ;; Error.
-          0 (handle-error ch replyq ext-cache)
-          ;; Reply.
-          1 (handle-reply ch replyq)
-          ;; Event.
-          (handle-event ch type-or-event replyq eventq ext-cache)))
+      (let [header-buf (ByteBuffer/allocate 4)
+            _ (.read ch header-buf)
+            _ (-> header-buf (.limit 1) (.position 0))
+            type (gloss.io/decode :ubyte header-buf)]
+        (case type
+          0 (handle-error (read-error-buf ch header-buf)
+                          replyq
+                          ext-cache)
+          1 (handle-reply (read-reply-buf ch header-buf) replyq)
+          (handle-event (read-event-buf ch header-buf)
+                        replyq
+                        eventq
+                        ext-cache)))
 
       (catch java.nio.channels.AsynchronousCloseException e
         ;; Channel closed; do nothing.
