@@ -96,6 +96,8 @@
                (parse-expression e))]
     (case (:name t)
       ("char" "STRING8") (ir/->StringField name expr)
+      "BOOL" (ir/->BoolList name 1 expr)
+      "BOOL32" (ir/->BoolList name 4 expr)
       (ir/->List name t enum altenum mask expr))))
 
 (defn- parse-valueparam [elem]

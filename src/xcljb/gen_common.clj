@@ -138,6 +138,36 @@
   (deserialize [_ buf context]
     (deserialize type buf context)))
 
+(defrecord BoolList [name size expr]
+  Measurable
+  (sizeof [_ bs]
+    (* (count bs)
+       size))
+
+  Serializable
+  (->frame [_ context]
+    (repeat (count (get context (keyword name)))
+            (case size
+              1 :ubyte
+              4 :uint32)))
+  (->value [_ context]
+    (let [bs (get context (keyword name))]
+      (assert bs)
+      (map #(if % 1 0) bs)))
+
+  Deserializable
+  (deserialize [_ buf context]
+    (assert expr)
+    (let [len (eval-expr expr context)
+          _ (.limit buf (+ (.position buf)
+                           (* len size)))
+          frame (repeat len (case size
+                              1 :ubyte
+                              4 :uint32))
+          res (gloss.io/decode frame buf)]
+      (.position buf (.limit buf))
+      res)))
+
 (defrecord List [name type expr]
   Measurable
   (sizeof [_ vs]

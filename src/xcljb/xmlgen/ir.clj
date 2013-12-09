@@ -155,6 +155,14 @@
     `(xcljb.gen-common/->Field ~(beautify (:name this) :arg)
                                ~(parse-type (:type this)))))
 
+(defrecord BoolList [name size expr]
+  Type
+  (gen-type [this]
+    `(xcljb.gen-common/->BoolList ~(beautify (:name this) :arg)
+                                  ~(:size this)
+                                  ~(when-let [expr (:expr this)]
+                                     (gen-expr expr)))))
+
 (defrecord List [name type enum altenum mask expr]
   Type
   (gen-type [this]
