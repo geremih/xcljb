@@ -223,6 +223,21 @@
       (.position buf (.limit buf))
       (zipmap masks vs))))
 
+(defrecord Stub [name reification]
+  Measurable
+  (sizeof [_ v]
+    (sizeof reification v))
+
+  Serializable
+  (->frame [_ context]
+    (->frame reification context))
+  (->value [_ context]
+    (->value reification context))
+
+  Deserializable
+  (deserialize [_ buf context]
+    (deserialize reification buf context)))
+
 ;;; Concrete types
 
 (defrecord Primitive [type]
