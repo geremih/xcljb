@@ -178,7 +178,7 @@
         err (common/read-error (:ext-name resp)
                                (get-error-number (:error-num err-buf) ext-cache)
                                err-buf)]
-    (log/error err)
+    (log/error "ERROR" err)
     (deliver (:reply resp) err)))
 
 (defn- handle-reply [reply-buf replyq]
@@ -186,14 +186,14 @@
         reply (common/read-reply (:ext-name resp)
                                  (:opcode resp)
                                  reply-buf)]
-    (log/debug reply)
+    (log/debug "REPLY" reply)
     (deliver (:reply resp) reply)))
 
 (defn- handle-event [evt-buf replyq eventq ext-cache]
   (let [{:keys [event-num ext-name]} (get-event-number (:event-num evt-buf)
                                                        ext-cache)
         evt (common/read-event ext-name event-num evt-buf)]
-    (log/debug evt)
+    (log/debug "EVENT" evt)
     (when-let [seq-num (:xcljb/sequence-number evt)] ; not KeymapNotify
       (clear-old-replies replyq seq-num))
     (.put eventq evt)))
