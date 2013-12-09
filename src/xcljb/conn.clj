@@ -8,7 +8,34 @@
             [xcljb.gen.xproto-internal :as xproto-internal]
             [xcljb.gen.xproto-types :as xproto-types]
             ;; Extensions (read-reply/event/error).
-            xcljb.gen.xc-misc-internal)
+            [xcljb.gen
+             bigreq-internal
+             composite-internal
+             damage-internal
+             dpms-internal
+             dri2-internal
+             ge-internal
+             glx-internal
+             randr-internal
+             record-internal
+             render-internal
+             res-internal
+             screensaver-internal
+             shape-internal
+             shm-internal
+             sync-internal
+             xc-misc-internal
+             xevie-internal
+             xf86dri-internal
+             xf86vidmode-internal
+             xfixes-internal
+             xinerama-internal
+             xinput-internal
+             xprint-internal
+             xselinux-internal
+             xtest-internal
+             xv-internal
+             xvmc-internal])
   (:import [java.net InetSocketAddress]
            [java.nio ByteBuffer ByteOrder]
            [java.nio.channels SocketChannel]
