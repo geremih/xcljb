@@ -876,20 +876,22 @@
   1
   false
   [(xcljb.gen-common/->Field "sub-code" xcljb.gen.xproto-types/CARD8)
-   (clojure.core/reify
-    xcljb.gen-common/Measurable
-    (sizeof [_ _] 28)
-    xcljb.gen-common/Deserializable
-    (deserialize
-     [_ buf context]
-     (xcljb.gen-common/deserialize
-      (clojure.core/case
-       (:sub-code context)
-       0
-       xcljb.gen.randr-types/CrtcChange
-       1
-       xcljb.gen.randr-types/OutputChange
-       2
-       xcljb.gen.randr-types/OutputProperty)
-      buf
-      context)))]))
+   (xcljb.gen-common/->Stub
+    "u"
+    (clojure.core/reify
+     xcljb.gen-common/Measurable
+     (sizeof [_ _] 28)
+     xcljb.gen-common/Deserializable
+     (deserialize
+      [_ buf context]
+      (xcljb.gen-common/deserialize
+       (clojure.core/case
+        (:sub-code context)
+        0
+        xcljb.gen.randr-types/CrtcChange
+        1
+        xcljb.gen.randr-types/OutputChange
+        2
+        xcljb.gen.randr-types/OutputProperty)
+       buf
+       context))))]))

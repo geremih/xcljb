@@ -1378,9 +1378,9 @@
    (xcljb.gen-common/->Field "n" xcljb.gen.xproto-types/CARD32)
    (xcljb.gen-common/->BoolField "datum" 1)
    (xcljb.gen-common/->Pad 15)
-   (xcljb.gen-common/->List
+   (xcljb.gen-common/->BoolList
     "data"
-    xcljb.gen.glx-types/BOOL
+    1
     (xcljb.gen-common/->Fieldref "n"))]))
 
 (def
@@ -1741,9 +1741,9 @@
   [(xcljb.gen-common/->Pad 1)
    (xcljb.gen-common/->BoolField "ret-val" 4)
    (xcljb.gen-common/->Pad 20)
-   (xcljb.gen-common/->List
+   (xcljb.gen-common/->BoolList
     "data"
-    xcljb.gen.glx-types/BOOL
+    1
     (xcljb.gen-common/->Op
      clojure.core/*
      (xcljb.gen-common/->Fieldref "length")

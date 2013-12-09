@@ -2969,17 +2969,19 @@
  (xcljb.gen-common/->Request
   nil
   48
-  [(clojure.core/reify
-    xcljb.gen-common/Measurable
-    (sizeof [_ _] 1)
-    xcljb.gen-common/Serializable
-    (->frame [_ _] :ubyte)
-    (->value
-     [_ context]
-     (if
-      (clojure.core/odd? (clojure.core/count (:string context)))
-      1
-      0)))
+  [(xcljb.gen-common/->Stub
+    "odd-length"
+    (clojure.core/reify
+     xcljb.gen-common/Measurable
+     (sizeof [_ _] 1)
+     xcljb.gen-common/Serializable
+     (->frame [_ _] :ubyte)
+     (->value
+      [_ context]
+      (if
+       (clojure.core/odd? (clojure.core/count (:string context)))
+       1
+       0))))
    (xcljb.gen-common/->Field "font" xcljb.gen.xproto-types/FONTABLE)
    (xcljb.gen-common/->List
     "string"
@@ -2993,34 +2995,36 @@
   12
   [(xcljb.gen-common/->Pad 1)
    (xcljb.gen-common/->Field "window" xcljb.gen.xproto-types/WINDOW)
-   (clojure.core/reify
-    xcljb.gen-common/Measurable
-    (sizeof
-     [_ vp]
-     (clojure.core/+ 4 (clojure.core/* (clojure.core/count vp) 4)))
-    xcljb.gen-common/Serializable
-    (->frame
-     [_ context]
-     (clojure.core/let
-      [vp (:value context)]
-      [:uint16
-       :ubyte
-       :ubyte
-       (clojure.core/repeat (clojure.core/count vp) :uint32)]))
-    (->value
-     [_ context]
-     (clojure.core/let
-      [vp (:value context)]
-      [(clojure.core/reduce
-        clojure.core/bit-or
+   (xcljb.gen-common/->Stub
+    "value"
+    (clojure.core/reify
+     xcljb.gen-common/Measurable
+     (sizeof
+      [_ vp]
+      (clojure.core/+ 4 (clojure.core/* (clojure.core/count vp) 4)))
+     xcljb.gen-common/Serializable
+     (->frame
+      [_ context]
+      (clojure.core/let
+       [vp (:value context)]
+       [:uint16
+        :ubyte
+        :ubyte
+        (clojure.core/repeat (clojure.core/count vp) :uint32)]))
+     (->value
+      [_ context]
+      (clojure.core/let
+       [vp (:value context)]
+       [(clojure.core/reduce
+         clojure.core/bit-or
+         0
+         (clojure.core/keys vp))
         0
-        (clojure.core/keys vp))
-       0
-       0
-       (clojure.core/->>
-        vp
-        (clojure.core/sort-by clojure.core/key)
-        (clojure.core/map clojure.core/second))])))]))
+        0
+        (clojure.core/->>
+         vp
+         (clojure.core/sort-by clojure.core/key)
+         (clojure.core/map clojure.core/second))]))))]))
 
 (def
  ClientMessageEvent
@@ -3032,24 +3036,26 @@
   [(xcljb.gen-common/->Field "format" xcljb.gen.xproto-types/CARD8)
    (xcljb.gen-common/->Field "window" xcljb.gen.xproto-types/WINDOW)
    (xcljb.gen-common/->Field "ATOM" xcljb.gen.xproto-types/ATOM)
-   (clojure.core/reify
-    xcljb.gen-common/Measurable
-    (sizeof [_ _] 160)
-    xcljb.gen-common/Deserializable
-    (deserialize
-     [_ buf context]
-     (xcljb.gen-common/deserialize
-      (xcljb.gen-common/->List
-       "data"
-       (clojure.core/case
-        (:format context)
-        8
-        xcljb.gen.xproto-types/CARD8
-        16
-        xcljb.gen.xproto-types/CARD16
-        32
-        xcljb.gen.xproto-types/CARD32)
-       (xcljb.gen-common/->Value
-        (clojure.core/case (:format context) 8 20 16 10 32 5)))
-      buf
-      context)))]))
+   (xcljb.gen-common/->Stub
+    "data"
+    (clojure.core/reify
+     xcljb.gen-common/Measurable
+     (sizeof [_ _] 160)
+     xcljb.gen-common/Deserializable
+     (deserialize
+      [_ buf context]
+      (xcljb.gen-common/deserialize
+       (xcljb.gen-common/->List
+        "data"
+        (clojure.core/case
+         (:format context)
+         8
+         xcljb.gen.xproto-types/CARD8
+         16
+         xcljb.gen.xproto-types/CARD16
+         32
+         xcljb.gen.xproto-types/CARD32)
+        (xcljb.gen-common/->Value
+         (clojure.core/case (:format context) 8 20 16 10 32 5)))
+       buf
+       context))))]))
