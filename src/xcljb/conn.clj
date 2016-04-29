@@ -255,14 +255,12 @@
          (range (inc (bit-shift-right mask shifts))))))
 
 (defn connect
-  "Connects to the X server at the given host and port and returns a
-  connection object. Defaults to localhost and port 6000.
-
+" Connects to Unix domain socket for given display. 
   The connection object should be taken as an opaque object, i.e. do
   not modify or inspect the connection object."
-  [& {:keys [host port]
-      :or {host "localhost" port 6000}}]
-  (let [ SOCKET_PATH  "/tmp/.X11-unix/X0"
+  [& {:keys [display]
+      :or {display 0}}]
+  (let [ SOCKET_PATH  (str "/tmp/.X11-unix/X" display)
         ch (. UnixSocketChannel open
            (new UnixSocketAddress (io/file SOCKET_PATH)))
 
