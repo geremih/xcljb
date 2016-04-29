@@ -2,6 +2,7 @@
   (:require [clojure.tools.logging :as log]
             [gloss.core :as gcore]
             [gloss.io :as gio]
+            [clojure.java.io :as io]
             [xcljb.auth]
             [xcljb.common :as common]
             [xcljb gen-common]
@@ -36,9 +37,8 @@
              xtest-internal
              xv-internal
              xvmc-internal])
-  (:import [java.net InetSocketAddress]
-           [java.nio ByteBuffer ByteOrder]
-           [java.nio.channels SocketChannel]
+  (:import [java.nio ByteBuffer ByteOrder]
+           [jnr.unixsocket UnixSocketAddress UnixSocketChannel]
            [java.util.concurrent LinkedBlockingQueue]))
 
 (def ^:private PROTOCOL-MAJOR-VERSION 11)
@@ -262,10 +262,11 @@
   not modify or inspect the connection object."
   [& {:keys [host port]
       :or {host "localhost" port 6000}}]
-  (let [ch (SocketChannel/open (InetSocketAddress. host port))
-        ;; Disable Nagle's algorithm.
-        _ (-> ch (.socket) (.setTcpNoDelay true))
-        _ (.finishConnect ch)
+  (let [ SOCKET_PATH  "/tmp/.X11-unix/X0"
+        ch (. UnixSocketChannel open
+           (new UnixSocketAddress (io/file SOCKET_PATH)))
+
+
         setup-reply (future (setup ch))
         replyq (LinkedBlockingQueue.)
         eventq (LinkedBlockingQueue.)

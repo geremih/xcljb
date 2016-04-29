@@ -4,6 +4,7 @@
   :license {:name "The MIT License (MIT)"}
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/data.xml "0.0.8"]
+                 [com.github.jnr/jnr-unixsocket  "0.12"]
                  [org.slf4j/slf4j-log4j12 "1.7.5"]
                  [gloss "0.2.6"]]
   :jvm-opts ["-server"])
